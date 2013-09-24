@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 @Entity(name = "contact")
 @XmlRootElement
@@ -103,6 +104,7 @@ public class Contact implements java.io.Serializable {
     @JoinTable(name = "contact_paymentsent", joinColumns = {
         @JoinColumn(name = "contactId")}, inverseJoinColumns = {
         @JoinColumn(name = "paymentSentId")})
+    @XmlTransient
     public Collection<PaymentSent> getListOfPaymentReceived() {
         return listOfPaymentReceived;
     }
@@ -116,6 +118,7 @@ public class Contact implements java.io.Serializable {
     @JoinTable(name = "contact_paymentreceived", joinColumns = {
         @JoinColumn(name = "contactId")}, inverseJoinColumns = {
         @JoinColumn(name = "paymentReceivedId")})
+    @XmlTransient
     public Collection<PaymentReceived> getListOfPaymentSent() {
         return listOfPaymentSent;
     }
@@ -128,6 +131,7 @@ public class Contact implements java.io.Serializable {
     @JoinTable(name = "contact_sale", joinColumns = {
         @JoinColumn(name = "contactId")}, inverseJoinColumns = {
         @JoinColumn(name = "saleId")})
+    @XmlTransient
     public Collection<Sale> getListOfBuy() {
         return listOfBuy;
     }
@@ -158,6 +162,7 @@ public class Contact implements java.io.Serializable {
     @JoinTable(name = "contact_buy", joinColumns = {
         @JoinColumn(name = "contactId")}, inverseJoinColumns = {
         @JoinColumn(name = "buyId")})
+    @XmlTransient
     public Collection<Buy> getListOfSale() {
         return listOfSale;
     }
@@ -195,7 +200,6 @@ public class Contact implements java.io.Serializable {
 //            e.printStackTrace();
 //            throw e;
 //        }
-
         return myInfo;
     }
 
