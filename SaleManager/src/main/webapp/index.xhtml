@@ -9,91 +9,37 @@
     <ui:composition>
 
         <h:head>
+            <title>#{bundle.App}</title>            
         </h:head>
         <h:body>
-
             <h:form>  
-                <p:growl id="messages"/>  
+
                 <p:menubar autoDisplay="false">  
-                    <p:submenu label="File" icon="ui-icon-document">  
-                        <p:submenu label="New" icon="ui-icon-contact">  
-                            <p:menuitem value="Project" url="http://vannga.com" />  
-                            <p:menuitem value="Other" url="#" />  
-                        </p:submenu>  
-                        <p:menuitem value="Open" url="#" />  
-                        <p:separator />  
-                        <p:menuitem value="Quit" url="#" />  
+                    <p:submenu label="#{bundle.ModuleContact}" >  
+                        <p:menuitem value="#{bundle.New}" icon="ui-icon-document" onclick="dlg.show()" />  
+                        <p:menuitem value="#{bundle.ShowList}" icon="ui-icon-document" onclick="dlg.show()" /> 
                     </p:submenu>  
-
-                    <p:submenu label="Edit" icon="ui-icon-pencil">  
-                        <p:menuitem value="Undo" url="#" icon="ui-icon-arrowreturnthick-1-w" />  
-                        <p:menuitem value="Redo" url="#" icon="ui-icon-arrowreturnthick-1-e" />  
+                    <p:submenu label="#{bundle.ModuleProduct}">  
+                        <p:menuitem value="#{bundle.New}" icon="ui-icon-document" onclick="dlg.show()" /> 
+                        <p:menuitem value="#{bundle.ShowList}" icon="ui-icon-document" onclick="dlg.show()" /> 
                     </p:submenu>  
-
-                    <p:submenu label="Help" icon="ui-icon-help">  
-                        <p:menuitem value="Contents" url="#" />  
-                        <p:submenu label="Search" icon="ui-icon-search">  
-                            <p:submenu label="Text">  
-                                <p:menuitem value="Workspace" url="#" />  
-                            </p:submenu>  
-                            <p:menuitem value="File" url="#" />  
-                        </p:submenu>  
-                    </p:submenu>  
-
-                    <p:submenu label="Actions" icon="ui-icon-gear">  
-                        <p:submenu label="Ajax" icon="ui-icon-refresh">  
-                            <p:menuitem value="Save" actionListener="#{menuBean.save}" icon="ui-icon-disk" update="messages"/>  
-                            <p:menuitem value="Update" actionListener="#{menuBean.update}" icon="ui-icon-arrowrefresh-1-w" update="messages"/>  
-                        </p:submenu>  
-                        <p:submenu label="Non-Ajax" icon="ui-icon-newwin">  
-                            <p:menuitem value="Delete" actionListener="#{menuBean.delete}" icon="ui-icon-close" update="messages" ajax="false"/>  
-                        </p:submenu>  
-                    </p:submenu>  
-
-                    <p:menuitem value="Quit" url="http://www.primefaces.org" icon="ui-icon-close" />  
+                    <p:menuitem value="Quit" url="http://vannga.com" />  
 
                     <f:facet name="options">  
                         <p:inputText style="margin-right:10px"/>  
                         <p:commandButton type="button" value="Logout" icon="ui-icon-extlink" />  
                     </f:facet>  
-                </p:menubar>  
-            </h:form>   
+                </p:menubar>
 
-            <h:form>
-                <h:panelGrid columns="4" cellpadding="5">  
-                    <h:outputLabel for="name" value="Name:" style="font-weight:bold"/>  
-                    <p:inputText id="name" value="#{pprBean.firstname}" />  
-                    <p:commandButton value="Submit" update="display"/>  
-                    <h:outputText value="#{pprBean.firstname}" id="display" />  
-                </h:panelGrid>  
-
-                <p:commandButton value="View" icon="ui-icon-extlink" actionListener="#{pprBean.viewCars}" />  
-
-                <p:dialog position="top" header="Header Text" widgetVar="dlg">
+                <p:dialog header="Header Text" widgetVar="dlg">
                     <h:outputLabel for="name" value="Name:" style="font-weight:bold"/>  
                     <p:inputText id="name2" value="#{pprBean.firstname}" />  
                     <p:commandButton value="Submit" update="display2"/>  
                     <h:outputText value="#{pprBean.firstname}" id="display2" /> 
                 </p:dialog>
-
-                <br />
-
-                <p:commandButton value="Show" type="button" onclick="dlg.show()" />
-                <p:commandButton value="Hide" type="button" onclick="dlg.hide()" />
-
-                <br />      
-
-                <p:commandButton value="Delete" type="button" onclick="cd.show()" />
-                <p:confirmDialog message="Are you sure about destroying the world?"
-                                 header="Initiating destroy process" severity="alert"
-                                 widgetVar="cd">
-                    <p:commandButton value="Yes Sure" type="button" onclick="confirmation.hide()"/>
-                    <p:commandButton value="Not Yet" type="button" onclick="confirmation.hide()"/>
-
-                </p:confirmDialog>
-
-            </h:form>
-            
+                
+                
+            </h:form>                
         </h:body>
     </ui:composition>
 </html>
