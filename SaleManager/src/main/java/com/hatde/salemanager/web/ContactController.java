@@ -29,6 +29,7 @@ public class ContactController implements Serializable {
     private ContactFacadeREST bean;
 
     private List<Contact> list;
+    private List<Contact> filterList;
 
     @PostConstruct
     public void init() {
@@ -45,5 +46,13 @@ public class ContactController implements Serializable {
 
     public void setList(List<Contact> list) {
         this.list = list;
+    }
+
+    public List<Contact> getFilterList() {
+        return filterList;
+    }
+
+    public void setFilterList(List<Contact> filterList) {
+        this.filterList = filterList;
     }
 }

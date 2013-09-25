@@ -32,44 +32,63 @@
                 </p:menubar>
 
                 <p:dialog header="Header Text" widgetVar="dlg">
-                    <p:dataTable var="item" value="#{contactController.list}">  
+                    <p:dataTable id="dataTable" var="item" value="#{contactController.list}"
+                                 widgetVar="contactTable" 
+                                 emptyMessage="No contact found with given criteria" 
+                                 filteredValue="#{contactController.filterList}">   
                         <f:facet name="header">  
-                            #{fn:length(contactController.list)} #{bundle.ModuleContact} 
+                            <p:outputPanel>  
+                                <h:outputText value="Search all fields:" />  
+                                <p:inputText id="globalFilter" onkeyup="contactTable.filter()" style="width:150px" />  
+                            </p:outputPanel> 
                         </f:facet>  
-                        <p:column sortBy="contactId" headerText="ID">  
+                        <p:column id="contactIdColumn" filterBy="contactId"   
+                                  headerText="ID" footerText="contains"  
+                                  filterMatchMode="contains">  
                             <h:outputText value="#{item.contactId}" />  
                         </p:column>  
 
-                        <p:column sortBy="name" headerText="#{bundle.Contact_Name}">  
+                        <p:column id="nameColumn" filterBy="name"   
+                                  headerText="Name" footerText="startsWith">                                    
                             <h:outputText value="#{item.name}" />  
                         </p:column>  
 
-                        <p:column sortBy="address" headerText="#{bundle.Contact_Address}">  
+                        <p:column id="addressColumn" filterBy="address"   
+                                  headerText="Address" footerText="exact"  
+                                  filterMatchMode="exact">  
                             <h:outputText value="#{item.address}" />  
                         </p:column>  
-
-                        <p:column sortBy="district" headerText="#{bundle.Contact_District}">  
+                        
+                        <p:column id="districtColumn" filterBy="district"   
+                                  headerText="District" footerText="endsWith"  
+                                  filterMatchMode="endsWith">  
                             <h:outputText value="#{item.district}" />  
                         </p:column>  
-
-                        <p:column sortBy="city" headerText="#{bundle.Contact_City}">  
+                        
+                        <p:column id="cityColumn" filterBy="city"   
+                                  headerText="City" footerText="contains"  
+                                  filterMatchMode="contains">  
                             <h:outputText value="#{item.city}" />  
                         </p:column>  
 
-                        <p:column sortBy="country" headerText="#{bundle.Contact_Country}">  
+                        <p:column id="countryColumn" filterBy="country"   
+                                  headerText="Country" footerText="contains"                                    
+                                  filterMatchMode="contains">  
                             <h:outputText value="#{item.country}" />  
                         </p:column>  
 
-                        <p:column sortBy="postcode" headerText="#{bundle.Contact_Postcode}">  
+                        <p:column id="postcodeColumn" filterBy="postcode"   
+                                  headerText="Postcode" footerText="contains"  
+                                  filterMatchMode="contains">  
                             <h:outputText value="#{item.postcode}" />  
                         </p:column>  
 
-                        <p:column sortBy="moreInfo" headerText="#{bundle.Contact_MoreInfo}">  
+                        <p:column id="moreInfoColumn" filterBy="moreInfo"   
+                                  headerText="More info" footerText="contains"  
+                                  filterMatchMode="contains">  
                             <h:outputText value="#{item.moreInfo}" />  
                         </p:column>  
-
                     </p:dataTable>                     
-
                 </p:dialog>
             </h:form>                
         </h:body>
