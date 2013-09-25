@@ -8,6 +8,7 @@ package com.hatde.salemanager.services;
 import com.hatde.salemanager.entities.Contact;
 import java.util.List;
 import javax.ejb.Stateless;
+import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
@@ -23,6 +24,7 @@ import javax.ws.rs.Produces;
  *
  * @author Do
  */
+@Named
 @Stateless
 @Path("contact")
 public class ContactFacadeREST extends AbstractFacade<Contact> {
@@ -67,6 +69,10 @@ public class ContactFacadeREST extends AbstractFacade<Contact> {
         return super.findAll();
     }
 
+    public List<Contact> getList() {
+        return super.findAll();
+    }
+    
     @GET
     @Path("{from}/{to}")
     @Produces({"application/xml", "application/json"})
