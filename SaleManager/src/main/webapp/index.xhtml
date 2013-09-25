@@ -4,7 +4,8 @@
        xmlns:h="http://xmlns.jcp.org/jsf/html"
        xmlns:p="http://primefaces.org/ui"
        xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-       xmlns:f="http://xmlns.jcp.org/jsf/core">
+       xmlns:f="http://xmlns.jcp.org/jsf/core"
+       xmlns:fn="http://java.sun.com/jsp/jstl/functions">
 
     <ui:composition>
 
@@ -13,7 +14,6 @@
         </h:head>
         <h:body>
             <h:form>  
-
                 <p:menubar autoDisplay="false">  
                     <p:submenu label="#{bundle.ModuleContact}" >  
                         <p:menuitem value="#{bundle.New}" icon="ui-icon-document" onclick="dlg.show()" />  
@@ -35,63 +35,47 @@
                     <h:outputLabel for="name" value="Name:" style="font-weight:bold"/>  
                     <p:inputText id="name2" value="#{pprBean.firstname}" />  
                     <p:commandButton value="Submit" update="display2"/>  
-                    <h:outputText value="#{pprBean.firstname}" id="display2" /> 
-                </p:dialog>
+                    <h:outputText value="#{pprBean.firstname}" id="display2" />
 
-                <h:selectOneRadio layout="pageDirection" required="true">
-                    <f:selectItems value="#{ContactFacadeREST.list}" var="m" itemValue="#{m.contactId}" itemLabel="#{m.name}"/>
-                </h:selectOneRadio>
-                
-                <h:dataTable value="#{ContactFacadeREST.list}" id="tableContacts" var="item" border="0" cellpadding="2" cellspacing="0" rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all" style="border:solid 1px">
-                    <h:column>
-                        <f:facet name="header">
-                            <h:outputText value="ID"/>
-                        </f:facet>
-                        <h:outputText value="#{item.contactId}"/>
-                    </h:column>
-                    <h:column>
-                        <f:facet name="header">
-                            <h:outputText value="#{bundle.Contact_Name}"/>
-                        </f:facet>
-                        <h:outputText value="#{item.name}"/>
-                    </h:column>
-                    <h:column>
-                        <f:facet name="header">
-                            <h:outputText value="#{bundle.Contact_Address}"/>
-                        </f:facet>
-                        <h:outputText value="#{item.address}"/>
-                    </h:column>
-                    <h:column>
-                        <f:facet name="header">
-                            <h:outputText value="#{bundle.Contact_District}"/>
-                        </f:facet>
-                        <h:outputText value="#{item.district}"/>
-                    </h:column>
-                    <h:column>
-                        <f:facet name="header">
-                            <h:outputText value="#{bundle.Contact_City}"/>
-                        </f:facet>
-                        <h:outputText value="#{item.city}"/>
-                    </h:column>
-                    <h:column>
-                        <f:facet name="header">
-                            <h:outputText value="#{bundle.Contact_Country}"/>
-                        </f:facet>
-                        <h:outputText value="#{item.country}"/>
-                    </h:column>
-                    <h:column>
-                        <f:facet name="header">
-                            <h:outputText value="#{bundle.Contact_Postcode}"/>
-                        </f:facet>
-                        <h:outputText value="#{item.postcode}"/>
-                    </h:column>
-                    <h:column>
-                        <f:facet name="header">
-                            <h:outputText value="#{bundle.Contact_MoreInfo}"/>
-                        </f:facet>
-                        <h:outputText value="#{item.moreInfo}"/>
-                    </h:column>
-                </h:dataTable>
+                    <p:dataTable var="item" value="#{contactFacadeREST.list}">  
+                        <f:facet name="header">  
+                            #{fn:length(contactFacadeREST.list)} #{bundle.ModuleContact} 
+                        </f:facet>  
+                        <p:column headerText="ID">  
+                            <h:outputText value="#{item.contactId}" />  
+                        </p:column>  
+
+                        <p:column headerText="#{bundle.Contact_Name}">  
+                            <h:outputText value="#{item.name}" />  
+                        </p:column>  
+
+                        <p:column headerText="#{bundle.Contact_Address}">  
+                            <h:outputText value="#{item.address}" />  
+                        </p:column>  
+
+                        <p:column headerText="#{bundle.Contact_District}">  
+                            <h:outputText value="#{item.district}" />  
+                        </p:column>  
+
+                        <p:column headerText="#{bundle.Contact_City}">  
+                            <h:outputText value="#{item.city}" />  
+                        </p:column>  
+
+                        <p:column headerText="#{bundle.Contact_Country}">  
+                            <h:outputText value="#{item.country}" />  
+                        </p:column>  
+
+                        <p:column headerText="#{bundle.Contact_Postcode}">  
+                            <h:outputText value="#{item.postcode}" />  
+                        </p:column>  
+
+                        <p:column headerText="#{bundle.Contact_MoreInfo}">  
+                            <h:outputText value="#{item.moreInfo}" />  
+                        </p:column>  
+
+                    </p:dataTable>                     
+
+                </p:dialog>
             </h:form>                
         </h:body>
     </ui:composition>
