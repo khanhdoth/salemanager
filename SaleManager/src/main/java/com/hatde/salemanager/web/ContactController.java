@@ -34,13 +34,23 @@ public class ContactController implements Serializable {
     private List<Contact> list;
     private List<Contact> filterList;
     private Contact selectedContact;
+    private Contact newContact;
 
     @PostConstruct
     public void init() {
+        initDataList();
+        initNewContact();
+    }
+
+    public void initDataList() {
         list = new ArrayList();
         list = bean.findAll();
     }
 
+    public void initNewContact() {
+        newContact = new Contact();
+    }
+    
     public ContactController() {
     }
 
@@ -80,6 +90,7 @@ public class ContactController implements Serializable {
             bean.remove(selectedContact);
             FacesMessage msg = new FacesMessage("Deleted successfully", "");
             FacesContext.getCurrentInstance().addMessage(null, msg);
+            initDataList();
 
         } catch(Exception e){
             FacesMessage msg = new FacesMessage("Cannot delete this contact!", "name = " + selectedContact.getName());
@@ -87,12 +98,33 @@ public class ContactController implements Serializable {
         }
     }
 
+    public void create() {
+        try{
+            bean.create(newContact);
+            FacesMessage msg = new FacesMessage("Contact is created successfully", "");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            init();
+
+        } catch(Exception e){
+            FacesMessage msg = new FacesMessage("Cannot create this contact", "");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+        }
+    }
+    
     public Contact getSelectedContact() {
         return selectedContact;
     }
 
     public void setSelectedContact(Contact selectedContact) {
         this.selectedContact = selectedContact;
+    }
+
+    public Contact getNewContact() {
+        return newContact;
+    }
+
+    public void setNewContact(Contact newContact) {
+        this.newContact = newContact;
     }
 
 }

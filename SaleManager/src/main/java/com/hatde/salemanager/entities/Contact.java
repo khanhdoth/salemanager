@@ -11,6 +11,7 @@ import javax.persistence.JoinTable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import javax.persistence.GenerationType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -46,7 +47,7 @@ public class Contact implements java.io.Serializable {
     }
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public int getContactId() {
         return contactId;
     }
