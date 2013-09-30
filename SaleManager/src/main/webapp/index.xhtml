@@ -20,6 +20,7 @@
                         <p:menuitem value="#{bundle.New}" icon="ui-icon-document" onclick="dlg.show()" />  
                         <p:menuitem value="#{bundle.ShowList}" icon="ui-icon-document" onclick="dlg.show()" /> 
                     </p:submenu>  
+                    
                     <p:submenu label="#{bundle.ModuleProduct}">  
                         <p:menuitem value="#{bundle.New}" icon="ui-icon-document" onclick="dlg.show()" /> 
                         <p:menuitem value="#{bundle.ShowList}" icon="ui-icon-document" onclick="dlg.show()" /> 
@@ -33,10 +34,16 @@
                 </p:menubar>
 
                 <p:dialog header="Header Text" widgetVar="dlg">
+
+                    <p:contextMenu for="dataTable">  
+                        <p:menuitem value="Delete" update="dataTable, messages" icon="ui-icon-close" actionListener="#{contactController.delete}"/>  
+                    </p:contextMenu>
+                    
                     <p:dataTable id="dataTable" var="item" value="#{contactController.list}" editable="true"
-                                 widgetVar="contactTable" 
+                                 widgetVar="contactTable" rowKey="#{item.contactId}" 
                                  emptyMessage="No contact found with given criteria" 
-                                 filteredValue="#{contactController.filterList}">   
+                                 filteredValue="#{contactController.filterList}"
+                                 selection="#{contactController.selectedContact}" selectionMode="single">   
                         <f:facet name="header">  
                             <p:outputPanel>  
                                 <h:outputText value="Search all fields:" />  

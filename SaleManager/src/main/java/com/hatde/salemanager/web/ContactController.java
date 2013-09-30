@@ -27,11 +27,13 @@ import org.primefaces.event.RowEditEvent;
 @Named(value = "contactController")
 @SessionScoped
 public class ContactController implements Serializable {
+
     @EJB
     private ContactFacadeREST bean;
 
     private List<Contact> list;
     private List<Contact> filterList;
+    private Contact selectedContact;
 
     @PostConstruct
     public void init() {
@@ -60,16 +62,37 @@ public class ContactController implements Serializable {
     }
 
     public void onEdit(RowEditEvent event) {
-        Contact c = (Contact) event.getObject();        
+        Contact c = (Contact) event.getObject();
         FacesMessage msg = new FacesMessage("Customer Edited", "name = " + c.getName());
 
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 
     public void onCancel(RowEditEvent event) {
-        Contact c = (Contact) event.getObject();        
+        Contact c = (Contact) event.getObject();
         FacesMessage msg = new FacesMessage("Customer Cancelled", "name = " + c.getName());
 
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
+
+    public void delete() {
+        try{
+            bean.remove(selectedContact);
+            FacesMessage msg = new FacesMessage("Deleted successfully", "");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+
+        } catch(Exception e){
+            FacesMessage msg = new FacesMessage("Cannot delete this contact!", "name = " + selectedContact.getName());
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+        }
+    }
+
+    public Contact getSelectedContact() {
+        return selectedContact;
+    }
+
+    public void setSelectedContact(Contact selectedContact) {
+        this.selectedContact = selectedContact;
+    }
+
 }
