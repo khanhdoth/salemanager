@@ -4,6 +4,7 @@ package com.hatde.salemanager.entities;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -26,7 +27,8 @@ public class Language implements java.io.Serializable {
         this.name = name;
     }
 
-    @Id @GeneratedValue
+    @Id 
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Integer getLanguageId() {
         return this.languageId;
     }

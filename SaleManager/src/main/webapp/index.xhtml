@@ -52,7 +52,7 @@
                         <h:outputLabel for="fpostcode" value="Post code" style="font-weight:bold"/>  
                         <p:inputText id="fpostcode" value="#{contactController.newContact.postcode}" />  
 
-                        <h:outputLabel for="fcountry" value="Name" style="font-weight:bold"/>  
+                        <h:outputLabel for="fcountry" value="Country" style="font-weight:bold"/>  
                         <p:inputText id="fcountry" value="#{contactController.newContact.country}" />  
 
                         <h:outputLabel for="fmoreInfo" value="MoreInfo" style="font-weight:bold"/>  
@@ -62,17 +62,18 @@
                     </h:panelGrid>  
                 </p:dialog>
 
-                <p:dialog header="Contact" widgetVar="dlg">
+                <p:dialog header="Contact" widgetVar="dlg" position="bottom">
 
                     <p:contextMenu for="dataTable">  
                         <p:menuitem value="Delete" update="dataTable, messages" icon="ui-icon-close" actionListener="#{contactController.delete}"/>  
                     </p:contextMenu>
 
                     <p:dataTable id="dataTable" var="item" value="#{contactController.list}" editable="true"
-                                 widgetVar="contactTable" rowKey="#{item.contactId}" scrollable="true" scrollHeight="400" scrollWidth="1200"
+                                 widgetVar="contactTable" rowKey="#{item.contactId}" scrollable="true" scrollHeight="400"
                                  emptyMessage="No contact found with given criteria" 
                                  filteredValue="#{contactController.filterList}"
-                                 selection="#{contactController.selectedContact}" selectionMode="single">   
+                                 selection="#{contactController.selectedContact}" selectionMode="single"
+                                 resizableColumns="true" liveResize="true" >   
                         <f:facet name="header">  
                             <p:outputPanel>  
                                 <h:outputText value="Search all fields:" />  
@@ -82,13 +83,12 @@
                         <p:ajax event="rowEdit" listener="#{contactController.onEdit}" update=":form:messages" />  
                         <p:ajax event="rowEditCancel" listener="#{contactController.onCancel}" update=":form:messages" />  
                         <p:column id="contactIdColumn" sortBy="contactId" filterBy="contactId"   
-                                  headerText="ID" footerText="contains"  
-                                  filterMatchMode="contains">  
+                                  headerText="ID" filterMatchMode="contains">  
                             <h:outputText value="#{item.contactId}" />  
                         </p:column>  
 
                         <p:column id="nameColumn" sortBy="name" filterBy="name"   
-                                  headerText="Name" footerText="startsWith">                                    
+                                  headerText="Name">                                    
                             <p:cellEditor>  
                                 <f:facet name="output">  
                                     <h:outputText value="#{item.name}" />  
@@ -100,37 +100,37 @@
                         </p:column>  
 
                         <p:column id="addressColumn" sortBy="address" filterBy="address"   
-                                  headerText="Address" footerText="exact"  
-                                  filterMatchMode="exact">  
+                                  headerText="Address"
+                                  filterMatchMode="contains">  
                             <h:outputText value="#{item.address}" />  
                         </p:column>  
 
                         <p:column id="districtColumn" sortBy="district" filterBy="district"   
-                                  headerText="District" footerText="endsWith"  
-                                  filterMatchMode="endsWith">  
+                                  headerText="District"
+                                  filterMatchMode="contains">  
                             <h:outputText value="#{item.district}" />  
                         </p:column>  
 
                         <p:column id="cityColumn" sortBy="city" filterBy="city"   
-                                  headerText="City" footerText="contains"  
+                                  headerText="City"
                                   filterMatchMode="contains">  
                             <h:outputText value="#{item.city}" />  
                         </p:column>  
 
                         <p:column id="countryColumn" sortBy="country" filterBy="country"   
-                                  headerText="Country" footerText="contains"                                    
+                                  headerText="Country"
                                   filterMatchMode="contains">  
                             <h:outputText value="#{item.country}" />  
                         </p:column>  
 
                         <p:column id="postcodeColumn" sortBy="postcode" filterBy="postcode"   
-                                  headerText="Postcode" footerText="contains"  
+                                  headerText="Postcode"
                                   filterMatchMode="contains">  
                             <h:outputText value="#{item.postcode}" />  
                         </p:column>  
 
                         <p:column id="moreInfoColumn" sortBy="moreInfo" filterBy="moreInfo"   
-                                  headerText="More info" footerText="contains"  
+                                  headerText="More info"
                                   filterMatchMode="contains">  
                             <h:outputText value="#{item.moreInfo}" />  
                         </p:column>  

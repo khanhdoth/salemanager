@@ -3,6 +3,7 @@ package com.hatde.salemanager.entities;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity(name = "Store")
@@ -22,7 +23,7 @@ public class Store implements java.io.Serializable {
     }
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public int getStoreId() {
         return storeId;
     }
