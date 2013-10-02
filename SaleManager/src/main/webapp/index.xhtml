@@ -15,7 +15,7 @@
         <h:body>
 
 
-            <h:form id="form">
+            <h:form id="form" onkeypress="return event.keyCode != 13;">
                 <p:growl id="messages" showDetail="true"/>
                 <p:menubar autoDisplay="false">  
                     <p:submenu label="#{bundle.ModuleContact}" >  
@@ -58,7 +58,7 @@
                         <h:outputLabel for="fmoreInfo" value="MoreInfo" style="font-weight:bold"/>  
                         <p:inputText id="fmoreInfo" value="#{contactController.newContact.moreInfo}" />  
 
-                        <p:commandButton value="Create" actionListener="#{contactController.create}" update="dataTable"/>  
+                        <p:commandButton value="Create" actionListener="#{contactController.createContact}" update="dataTable"/>  
                     </h:panelGrid>  
                 </p:dialog>
 

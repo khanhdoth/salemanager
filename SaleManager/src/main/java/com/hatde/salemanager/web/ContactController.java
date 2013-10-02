@@ -51,7 +51,7 @@ public class ContactController implements Serializable {
     public void initNewContact() {
         newContact = new Contact();
     }
-    
+
     public ContactController() {
     }
 
@@ -74,9 +74,14 @@ public class ContactController implements Serializable {
 
     public void onEdit(RowEditEvent event) {
         Contact c = (Contact) event.getObject();
-        FacesMessage msg = new FacesMessage("Customer Edited", "name = " + c.getName());
-
-        FacesContext.getCurrentInstance().addMessage(null, msg);
+        try {            
+            bean.edit(c);
+            FacesMessage msg = new FacesMessage("Customer edited", "name = " + c.getName());
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+        } catch (Exception e) {
+            FacesMessage msg = new FacesMessage("Cannot edit this customer", "name = " + c.getName());
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+        }
     }
 
     public void onCancel(RowEditEvent event) {
@@ -87,31 +92,33 @@ public class ContactController implements Serializable {
     }
 
     public void delete() {
-        try{
+        try {
             bean.remove(selectedContact);
             FacesMessage msg = new FacesMessage("Deleted successfully", "");
             FacesContext.getCurrentInstance().addMessage(null, msg);
             initDataList();
 
-        } catch(Exception e){
+        } catch (Exception e) {
             FacesMessage msg = new FacesMessage("Cannot delete this contact!", "name = " + selectedContact.getName());
             FacesContext.getCurrentInstance().addMessage(null, msg);
         }
     }
 
-    public void create() {
-        try{
+    public void createContact() {
+        System.out.println("============== createContact =============");
+        try {
             bean.create(newContact);
             FacesMessage msg = new FacesMessage("Contact is created successfully", "");
             FacesContext.getCurrentInstance().addMessage(null, msg);
             init();
 
-        } catch(Exception e){
+        } catch (Exception e) {
             FacesMessage msg = new FacesMessage("Cannot create this contact", "");
             FacesContext.getCurrentInstance().addMessage(null, msg);
         }
+        
     }
-    
+
     public Contact getSelectedContact() {
         return selectedContact;
     }
