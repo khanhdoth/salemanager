@@ -70,7 +70,7 @@
 
                     <p:dataTable id="dataTable" var="item" value="#{contactController.list}" editable="true"
                                  widgetVar="contactTable" rowKey="#{item.contactId}" scrollable="true" scrollHeight="400"
-                                 emptyMessage="No contact found with given criteria" 
+                                 emptyMessage="No contact found with given criteria" editMode="cell"
                                  filteredValue="#{contactController.filterList}"
                                  selection="#{contactController.selectedContact}" selectionMode="single"
                                  resizableColumns="true" liveResize="true" >   
@@ -80,15 +80,15 @@
                                 <p:inputText id="globalFilter" onkeyup="contactTable.filter()" style="width:150px" />  
                             </p:outputPanel> 
                         </f:facet>
-                        <p:ajax event="rowEdit" listener="#{contactController.onEdit}" update=":form:messages" />  
-                        <p:ajax event="rowEditCancel" listener="#{contactController.onCancel}" update=":form:messages" />  
+                        <p:ajax event="cellEdit" listener="#{contactController.onCellEdit}" update=":form:messages" /> 
                         <p:column id="contactIdColumn" sortBy="contactId" filterBy="contactId"   
                                   headerText="ID" filterMatchMode="contains">  
                             <h:outputText value="#{item.contactId}" />  
                         </p:column>  
 
                         <p:column id="nameColumn" sortBy="name" filterBy="name"   
-                                  headerText="Name">                                    
+                                  headerText="Name"
+                                  filterMatchMode="contains">                                    
                             <p:cellEditor>  
                                 <f:facet name="output">  
                                     <h:outputText value="#{item.name}" />  

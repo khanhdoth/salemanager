@@ -17,6 +17,8 @@ import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
+import org.primefaces.component.datatable.DataTable;
+import org.primefaces.event.CellEditEvent;
 import org.primefaces.event.RowEditEvent;
 
 /**
@@ -72,9 +74,30 @@ public class ContactController implements Serializable {
         this.filterList = filterList;
     }
 
+    public void onCellEdit(CellEditEvent event) {
+        Object oldValue = event.getOldValue();
+        Object newValue = event.getNewValue();
+
+        if (newValue != null && !newValue.equals(oldValue)) {
+            Contact c = (Contact) ((DataTable) event.getSource()).getRowData();
+            try {                
+                bean.edit(c);
+                FacesMessage msg = new FacesMessage("Customer edited", "name = " + c.getName());
+                FacesContext.getCurrentInstance().addMessage(null, msg);
+            } catch (Exception e) {
+                FacesMessage msg = new FacesMessage("Cannot edit this customer", "name = " + c.getName());
+                FacesContext.getCurrentInstance().addMessage(null, msg);
+            }
+
+            //FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Cell Changed", "Old: " + oldValue + ", New:" + newValue);
+            //FacesContext.getCurrentInstance().addMessage(null, msg);
+        }
+    }
+
     public void onEdit(RowEditEvent event) {
+        System.out.println("============== onEdit =============");
         Contact c = (Contact) event.getObject();
-        try {            
+        try {
             bean.edit(c);
             FacesMessage msg = new FacesMessage("Customer edited", "name = " + c.getName());
             FacesContext.getCurrentInstance().addMessage(null, msg);
@@ -116,7 +139,7 @@ public class ContactController implements Serializable {
             FacesMessage msg = new FacesMessage("Cannot create this contact", "");
             FacesContext.getCurrentInstance().addMessage(null, msg);
         }
-        
+
     }
 
     public Contact getSelectedContact() {
