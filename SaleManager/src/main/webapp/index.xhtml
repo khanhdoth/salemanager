@@ -13,8 +13,6 @@
             <title>#{bundle.App}</title>            
         </h:head>
         <h:body>
-
-
             <h:form id="form" onkeypress="return event.keyCode != 13;">
                 <p:growl id="messages" showDetail="true"/>
                 <p:menubar autoDisplay="false">  
@@ -34,9 +32,6 @@
                         <p:commandButton type="button" value="Logout" icon="ui-icon-extlink" />  
                     </f:facet>  
                 </p:menubar>
-
-                <p:commandButton value="View" icon="ui-icon-extlink" actionListener="#{contactController.viewCars}" />  
-                <p:commandButton value="Options" icon="ui-icon-extlink" actionListener="#{contactController.viewCarsCustomized}" />  
 
                 <p:dialog header="New contact" widgetVar="createContact" appendToBody="true">
                     <h:panelGrid columns="2" cellpadding="5">  
@@ -65,7 +60,7 @@
                     </h:panelGrid>  
                 </p:dialog>
 
-                <p:confirmDialog global="true" showEffect="fade" hideEffect="explode">  
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">  
                     <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>  
                     <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>       
                 </p:confirmDialog>  

@@ -10,9 +10,7 @@ import com.hatde.salemanager.entities.Contact;
 import com.hatde.salemanager.services.ContactFacadeREST;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
@@ -20,7 +18,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import org.primefaces.component.datatable.DataTable;
-import org.primefaces.context.RequestContext;
 import org.primefaces.event.CellEditEvent;
 import org.primefaces.event.RowEditEvent;
 import org.primefaces.event.SelectEvent;
@@ -51,7 +48,7 @@ public class ContactController implements Serializable {
 
     public void initDataList() {
         list = new ArrayList();
-        list = bean.findAll();
+        //list = bean.findAll();
     }
 
     public void initNewContact() {
@@ -170,26 +167,5 @@ public class ContactController implements Serializable {
     public void setNewContact(Contact newContact) {
         this.newContact = newContact;
     }
-
-    public void viewCars() {
-        RequestContext.getCurrentInstance().openDialog("createContact");
-    }
-
-    public void viewCarsCustomized() {
-        Map<String, Object> options = new HashMap<String, Object>();
-        options.put("rendered", true);
-        options.put("draggable", true);
-        options.put("resizable", true);
-        options.put("modal", true);
-        options.put("closable", true);
-        options.put("appendToBody", true);
-        options.put("showHeader", true);
-        options.put("width", 400);
-        options.put("minWidth", 150);
-        options.put("height", 400);
-        //options.put("contentHeight", 450);
-        //hint: available options are modal, draggable, resizable, width, height, contentWidth and contentHeight  
-
-        RequestContext.getCurrentInstance().openDialog("createContact", options, null);
-    }
+    
 }
