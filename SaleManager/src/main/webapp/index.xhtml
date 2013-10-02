@@ -12,12 +12,14 @@
         <h:head>
             <title>#{bundle.App}</title>            
         </h:head>
-        <h:body>
 
+        <h:body>
+            <h:outputStylesheet name="css/default.css" />
+            
             <!--****************************************************************
                 *  Main form
                 *************************************************************-->            
-            <h:form id="form" onkeypress="return event.keyCode != 13;">
+            <h:form id="mainForm" onkeypress="return event.keyCode != 13;">
                 <p:growl id="messages" showDetail="true"/>
 
                 <!--****************************************************************
@@ -25,49 +27,49 @@
                     *************************************************************-->            
                 <p:menubar autoDisplay="false">  
                     <p:submenu label="#{bundle.ModuleContact}" >  
-                        <p:menuitem value="#{bundle.New}" icon="ui-icon-document" onclick="wDlgContact.show()" />  
-                        <p:menuitem value="#{bundle.ShowList}" icon="ui-icon-document" onclick="dlg.show()" /> 
+                        <p:menuitem value="#{bundle.Contact_NewContact}" icon="ui-icon-document" onclick="wDlgContact.show()" />  
+                        <p:menuitem value="#{bundle.Contact_ContactList}" icon="ui-icon-document" onclick="dlg.show()" /> 
                     </p:submenu>  
 
                     <p:submenu label="#{bundle.ModuleProduct}">  
-                        <p:menuitem value="#{bundle.New}" icon="ui-icon-document" onclick="wDlgContact.show()" /> 
-                        <p:menuitem value="#{bundle.ShowList}" icon="ui-icon-document" onclick="dlg.show()" /> 
+                        <p:menuitem value="#{bundle.Product_NewProduct}" icon="ui-icon-document" onclick="wDlgContact.show()" /> 
+                        <p:menuitem value="#{bundle.Product_ProductList}" icon="ui-icon-document" onclick="dlg.show()" /> 
                     </p:submenu>  
-                    <p:menuitem value="Quit" url="http://vannga.com" />  
+                    <p:menuitem value="#{bundle.Quit}" url="http://vannga.com" />  
 
                     <f:facet name="options">  
                         <p:inputText style="margin-right:10px"/>  
-                        <p:commandButton type="button" value="Logout" icon="ui-icon-extlink" />  
+                        <p:commandButton type="button" value="#{bundle.Logout}" icon="ui-icon-extlink" />  
                     </f:facet>  
                 </p:menubar>
 
                 <!--****************************************************************
                     *  Dialog to create contact
                     *************************************************************-->            
-                <p:dialog id="iDlgContact" header="New contact" widgetVar="wDlgContact">
+                <p:dialog id="iDlgContact" header="#{bundle.Contact_NewContact}" widgetVar="wDlgContact">
                     <h:panelGrid columns="2" cellpadding="5">  
-                        <h:outputLabel value="Name" style="font-weight:bold"/>  
+                        <h:outputLabel value="#{bundle.Contact_Name}" />  
                         <p:inputText value="#{contactController.newContact.name}" />  
 
-                        <h:outputLabel value="Address" style="font-weight:bold"/>  
+                        <h:outputLabel value="#{bundle.Contact_Address}" />  
                         <p:inputText value="#{contactController.newContact.address}" />  
 
-                        <h:outputLabel value="District" style="font-weight:bold"/>  
+                        <h:outputLabel value="#{bundle.Contact_District}" />  
                         <p:inputText value="#{contactController.newContact.district}" />  
 
-                        <h:outputLabel value="City" style="font-weight:bold"/>  
+                        <h:outputLabel value="#{bundle.Contact_City}" />  
                         <p:inputText value="#{contactController.newContact.city}" />  
 
-                        <h:outputLabel value="Post code" style="font-weight:bold"/>  
+                        <h:outputLabel value="#{bundle.Contact_Postcode}" />  
                         <p:inputText value="#{contactController.newContact.postcode}" />  
 
-                        <h:outputLabel value="Country" style="font-weight:bold"/>  
+                        <h:outputLabel value="#{bundle.Contact_Country}" />  
                         <p:inputText value="#{contactController.newContact.country}" />  
 
-                        <h:outputLabel value="MoreInfo" />  
+                        <h:outputLabel value="#{bundle.Contact_MoreInfo}" />  
                         <p:inputText value="#{contactController.newContact.moreInfo}" />  
 
-                        <p:commandButton value="Create" actionListener="#{contactController.createContact}" update="iDlgContact, dataTable" 
+                        <p:commandButton value="#{bundle.Save}" actionListener="#{contactController.createContact}" update="iDlgContact, dataTable" 
                                          oncomplete="wDlgContact.hide()"/>  
                     </h:panelGrid>  
                 </p:dialog>
@@ -76,14 +78,14 @@
                     *  Dialog for confirmation
                     *************************************************************-->            
                 <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">  
-                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>  
-                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>       
+                    <p:commandButton value="#{bundle.Yes}" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>  
+                    <p:commandButton value="#{bundle.No}" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>       
                 </p:confirmDialog>  
 
                 <!--****************************************************************
                     *  Dialog for contact list
                     *************************************************************-->            
-                <p:dialog header="Contact" widgetVar="dlg" position="bottom">
+                <p:dialog header="#{bundle.Product_ProductList}" widgetVar="dlg" position="bottom">
                     <p:dataTable id="dataTable" var="item" value="#{contactController.list}" editable="true"
                                  widgetVar="contactTable" rowKey="#{item.contactId}" scrollable="true" scrollHeight="400"
                                  emptyMessage="No contact found with given criteria" editMode="cell" 
@@ -92,29 +94,29 @@
 
                         <f:facet name="header">  
                             <p:outputPanel style="text-align:left"> 
-                                <h:outputText value="Search all fields" />
+                                <h:outputText value="#{bundle.Search}" />
                                 <p:inputText id="globalFilter" onkeyup="contactTable.filter()" style="width:150px" />                            
-                                <p:commandButton id="refreshButton" update="dataTable, :form:messages" action="#{contactController.initDataList}" icon="ui-icon-refresh" title="Refresh" />  
+                                <p:commandButton id="refreshButton" update="dataTable, :mainForm:messages" action="#{contactController.initDataList}" icon="ui-icon-refresh" title="#{bundle.Reresh}" />  
                             </p:outputPanel>
                         </f:facet>
 
-                        <p:ajax event="cellEdit" listener="#{contactController.onCellEdit}" update=":form:messages" /> 
-                        <p:ajax event="rowSelect" listener="#{contactController.onRowSelect}" update=":form:messages" /> 
+                        <p:ajax event="cellEdit" listener="#{contactController.onCellEdit}" update=":mainForm:messages" /> 
+                        <p:ajax event="rowSelect" listener="#{contactController.onRowSelect}" update=":mainForm:messages" /> 
 
-                        <p:column style="width:4%">  
-                            <p:commandButton id="deleteButton" update="dataTable, :form:messages" action="#{contactController.delete}" icon="ui-icon-trash" title="Delete">  
+                        <p:column style="width:5%">  
+                            <p:commandButton id="deleteButton" update="dataTable, :mainForm:messages" action="#{contactController.delete}" icon="ui-icon-trash" title="#{bundle.Delete}">  
                                 <p:confirm header="Confirmation" message="Are you sure?" icon="ui-icon-alert" />  
                                 <f:setPropertyActionListener value="#{item}" target="#{contactController.selectedContact}" />  
                             </p:commandButton> 
                         </p:column> 
 
                         <p:column id="contactIdColumn" sortBy="contactId" filterBy="contactId"   
-                                  headerText="ID" filterMatchMode="contains">  
+                                  headerText="#{bundle.ID}" filterMatchMode="contains">  
                             <h:outputText value="#{item.contactId}" />  
                         </p:column>  
 
                         <p:column id="nameColumn" sortBy="name" filterBy="name"   
-                                  headerText="Name"
+                                  headerText="#{bundle.Contact_Name}"
                                   filterMatchMode="contains">                                    
                             <p:cellEditor>  
                                 <f:facet name="output">  
@@ -127,7 +129,7 @@
                         </p:column>  
 
                         <p:column id="addressColumn" sortBy="address" filterBy="address"   
-                                  headerText="Address"
+                                  headerText="#{bundle.Contact_Address}"
                                   filterMatchMode="contains">  
                             <p:cellEditor>  
                                 <f:facet name="output">  
@@ -140,7 +142,7 @@
                         </p:column>  
 
                         <p:column id="districtColumn" sortBy="district" filterBy="district"   
-                                  headerText="District"
+                                  headerText="#{bundle.Contact_District}"
                                   filterMatchMode="contains">  
                             <p:cellEditor>  
                                 <f:facet name="output">  
@@ -153,7 +155,7 @@
                         </p:column>  
 
                         <p:column id="cityColumn" sortBy="city" filterBy="city"   
-                                  headerText="City"
+                                  headerText="#{bundle.Contact_City}"
                                   filterMatchMode="contains">  
                             <p:cellEditor>  
                                 <f:facet name="output">  
@@ -166,7 +168,7 @@
                         </p:column>  
 
                         <p:column id="countryColumn" sortBy="country" filterBy="country"   
-                                  headerText="Country"
+                                  headerText="#{bundle.Contact_Country}"
                                   filterMatchMode="contains">  
                             <p:cellEditor>  
                                 <f:facet name="output">  
@@ -179,7 +181,7 @@
                         </p:column>  
 
                         <p:column id="postcodeColumn" sortBy="postcode" filterBy="postcode"   
-                                  headerText="Postcode"
+                                  headerText="#{bundle.Contact_Postcode}"
                                   filterMatchMode="contains">  
                             <p:cellEditor>  
                                 <f:facet name="output">  
@@ -192,7 +194,7 @@
                         </p:column>  
 
                         <p:column id="moreInfoColumn" sortBy="moreInfo" filterBy="moreInfo"   
-                                  headerText="More info"
+                                  headerText="#{bundle.Contact_MoreInfo}"
                                   filterMatchMode="contains">  
                             <p:cellEditor>  
                                 <f:facet name="output">  
