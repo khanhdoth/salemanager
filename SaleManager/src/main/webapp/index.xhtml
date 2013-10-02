@@ -35,6 +35,9 @@
                     </f:facet>  
                 </p:menubar>
 
+                <p:commandButton value="View" icon="ui-icon-extlink" actionListener="#{contactController.viewCars}" />  
+                <p:commandButton value="Options" icon="ui-icon-extlink" actionListener="#{contactController.viewCarsCustomized}" />  
+
                 <p:dialog header="New contact" widgetVar="createContact" appendToBody="true">
                     <h:panelGrid columns="2" cellpadding="5">  
                         <h:outputLabel for="fname" value="Name" style="font-weight:bold"/>  
