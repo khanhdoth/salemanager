@@ -141,9 +141,9 @@ public class ContactController implements Serializable {
         System.out.println("============== createContact ============= " + newContact.getName());
         try {
             bean.create(newContact);
-            FacesMessage msg = new FacesMessage("Contact is created successfully", "");
-            FacesContext.getCurrentInstance().addMessage(null, msg);
             init();
+            FacesMessage msg = new FacesMessage("Contact is created successfully", "");
+            FacesContext.getCurrentInstance().addMessage(null, msg);            
 
         } catch (Exception e) {
             FacesMessage msg = new FacesMessage("Cannot create this contact", "");

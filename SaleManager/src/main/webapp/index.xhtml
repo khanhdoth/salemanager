@@ -13,16 +13,24 @@
             <title>#{bundle.App}</title>            
         </h:head>
         <h:body>
+
+            <!--****************************************************************
+                *  Main form
+                *************************************************************-->            
             <h:form id="form" onkeypress="return event.keyCode != 13;">
                 <p:growl id="messages" showDetail="true"/>
+
+                <!--****************************************************************
+                    *  Main menu
+                    *************************************************************-->            
                 <p:menubar autoDisplay="false">  
                     <p:submenu label="#{bundle.ModuleContact}" >  
-                        <p:menuitem value="#{bundle.New}" icon="ui-icon-document" onclick="createContact.show()" />  
+                        <p:menuitem value="#{bundle.New}" icon="ui-icon-document" onclick="wDlgContact.show()" />  
                         <p:menuitem value="#{bundle.ShowList}" icon="ui-icon-document" onclick="dlg.show()" /> 
                     </p:submenu>  
 
                     <p:submenu label="#{bundle.ModuleProduct}">  
-                        <p:menuitem value="#{bundle.New}" icon="ui-icon-document" onclick="createContact.show()" /> 
+                        <p:menuitem value="#{bundle.New}" icon="ui-icon-document" onclick="wDlgContact.show()" /> 
                         <p:menuitem value="#{bundle.ShowList}" icon="ui-icon-document" onclick="dlg.show()" /> 
                     </p:submenu>  
                     <p:menuitem value="Quit" url="http://vannga.com" />  
@@ -33,38 +41,48 @@
                     </f:facet>  
                 </p:menubar>
 
-                <p:dialog id="dlgContact" header="New contact" widgetVar="createContact" appendToBody="true" >
+                <!--****************************************************************
+                    *  Dialog to create contact
+                    *************************************************************-->            
+                <p:dialog id="iDlgContact" header="New contact" widgetVar="wDlgContact">
                     <h:panelGrid columns="2" cellpadding="5">  
-                        <h:outputLabel for="fname" value="Name" style="font-weight:bold"/>  
-                        <p:inputText id="fname" value="#{contactController.newContact.name}" />  
+                        <h:outputLabel value="Name" style="font-weight:bold"/>  
+                        <p:inputText value="#{contactController.newContact.name}" />  
 
-                        <h:outputLabel for="faddress" value="Address" style="font-weight:bold"/>  
-                        <p:inputText id="faddress" value="#{contactController.newContact.address}" />  
+                        <h:outputLabel value="Address" style="font-weight:bold"/>  
+                        <p:inputText value="#{contactController.newContact.address}" />  
 
-                        <h:outputLabel for="fdistrict" value="District" style="font-weight:bold"/>  
-                        <p:inputText id="fdistrict" value="#{contactController.newContact.district}" />  
+                        <h:outputLabel value="District" style="font-weight:bold"/>  
+                        <p:inputText value="#{contactController.newContact.district}" />  
 
-                        <h:outputLabel for="fcity" value="City" style="font-weight:bold"/>  
-                        <p:inputText id="fcity" value="#{contactController.newContact.city}" />  
+                        <h:outputLabel value="City" style="font-weight:bold"/>  
+                        <p:inputText value="#{contactController.newContact.city}" />  
 
-                        <h:outputLabel for="fpostcode" value="Post code" style="font-weight:bold"/>  
-                        <p:inputText id="fpostcode" value="#{contactController.newContact.postcode}" />  
+                        <h:outputLabel value="Post code" style="font-weight:bold"/>  
+                        <p:inputText value="#{contactController.newContact.postcode}" />  
 
-                        <h:outputLabel for="fcountry" value="Country" style="font-weight:bold"/>  
-                        <p:inputText id="fcountry" value="#{contactController.newContact.country}" />  
+                        <h:outputLabel value="Country" style="font-weight:bold"/>  
+                        <p:inputText value="#{contactController.newContact.country}" />  
 
-                        <h:outputLabel for="fmoreInfo" value="MoreInfo" style="font-weight:bold"/>  
-                        <p:inputText id="fmoreInfo" value="#{contactController.newContact.moreInfo}" />  
+                        <h:outputLabel value="MoreInfo" />  
+                        <p:inputText value="#{contactController.newContact.moreInfo}" />  
 
-                        <p:commandButton value="Create" actionListener="#{contactController.createContact}" update="dataTable" />  
+                        <p:commandButton value="Create" actionListener="#{contactController.createContact}" update="iDlgContact, dataTable" 
+                                         oncomplete="wDlgContact.hide()"/>  
                     </h:panelGrid>  
                 </p:dialog>
 
+                <!--****************************************************************
+                    *  Dialog for confirmation
+                    *************************************************************-->            
                 <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">  
                     <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>  
                     <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>       
                 </p:confirmDialog>  
 
+                <!--****************************************************************
+                    *  Dialog for contact list
+                    *************************************************************-->            
                 <p:dialog header="Contact" widgetVar="dlg" position="bottom">
                     <p:dataTable id="dataTable" var="item" value="#{contactController.list}" editable="true"
                                  widgetVar="contactTable" rowKey="#{item.contactId}" scrollable="true" scrollHeight="400"
@@ -187,6 +205,7 @@
                         </p:column>  
                     </p:dataTable>                     
                 </p:dialog>
+
             </h:form>                
         </h:body>
     </ui:composition>
