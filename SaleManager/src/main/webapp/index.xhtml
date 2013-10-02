@@ -33,7 +33,7 @@
                     </f:facet>  
                 </p:menubar>
 
-                <p:dialog header="New contact" widgetVar="createContact" appendToBody="true">
+                <p:dialog id="dlgContact" header="New contact" widgetVar="createContact" appendToBody="true" >
                     <h:panelGrid columns="2" cellpadding="5">  
                         <h:outputLabel for="fname" value="Name" style="font-weight:bold"/>  
                         <p:inputText id="fname" value="#{contactController.newContact.name}" />  
@@ -56,7 +56,7 @@
                         <h:outputLabel for="fmoreInfo" value="MoreInfo" style="font-weight:bold"/>  
                         <p:inputText id="fmoreInfo" value="#{contactController.newContact.moreInfo}" />  
 
-                        <p:commandButton value="Create" actionListener="#{contactController.createContact}" update="dataTable"/>  
+                        <p:commandButton value="Create" actionListener="#{contactController.createContact}" update="dataTable" />  
                     </h:panelGrid>  
                 </p:dialog>
 

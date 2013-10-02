@@ -19,6 +19,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.event.CellEditEvent;
+import org.primefaces.event.CloseEvent;
 import org.primefaces.event.RowEditEvent;
 import org.primefaces.event.SelectEvent;
 
@@ -48,7 +49,7 @@ public class ContactController implements Serializable {
 
     public void initDataList() {
         list = new ArrayList();
-        //list = bean.findAll();
+        list = bean.findAll();
     }
 
     public void initNewContact() {
@@ -137,7 +138,7 @@ public class ContactController implements Serializable {
     }
 
     public void createContact() {
-        System.out.println("============== createContact =============");
+        System.out.println("============== createContact ============= " + newContact.getName());
         try {
             bean.create(newContact);
             FacesMessage msg = new FacesMessage("Contact is created successfully", "");
@@ -168,4 +169,11 @@ public class ContactController implements Serializable {
         this.newContact = newContact;
     }
     
+     public void handleClose(CloseEvent event) {  
+        FacesContext facesContext = FacesContext.getCurrentInstance();  
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,   
+            event.getComponent().getId() + " closed", "So you don't like nature?");  
+          
+        facesContext.addMessage(null, message);  
+    }     
 }
