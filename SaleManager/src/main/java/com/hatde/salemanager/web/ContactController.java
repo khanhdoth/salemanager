@@ -20,6 +20,7 @@ import javax.inject.Named;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.event.CellEditEvent;
 import org.primefaces.event.RowEditEvent;
+import org.primefaces.event.SelectEvent;
 
 /**
  *
@@ -94,6 +95,13 @@ public class ContactController implements Serializable {
         }
     }
 
+    public void onRowSelect(SelectEvent event) {
+        System.out.println("============== onRowSelect =============");
+        Contact c = (Contact) event.getObject();
+        FacesMessage msg = new FacesMessage("Customer selected", "name = " + c.getName());
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+    }
+    
     public void onEdit(RowEditEvent event) {
         System.out.println("============== onEdit =============");
         Contact c = (Contact) event.getObject();
@@ -115,6 +123,7 @@ public class ContactController implements Serializable {
     }
 
     public void delete() {
+        System.out.println("============== delete =============");
         try {
             bean.remove(selectedContact);
             FacesMessage msg = new FacesMessage("Deleted successfully", "");
@@ -146,8 +155,9 @@ public class ContactController implements Serializable {
         return selectedContact;
     }
 
-    public void setSelectedContact(Contact selectedContact) {
+    public void setSelectedContact(Contact selectedContact) {        
         this.selectedContact = selectedContact;
+        System.out.println("============== setSelectedContact =============" + selectedContact.getName());
     }
 
     public Contact getNewContact() {
