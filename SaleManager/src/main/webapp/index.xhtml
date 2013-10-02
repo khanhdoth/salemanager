@@ -73,12 +73,13 @@
                                  emptyMessage="No contact found with given criteria" editMode="cell" 
                                  filteredValue="#{contactController.filterList}"                                 
                                  resizableColumns="true" liveResize="true" >   
+
                         <f:facet name="header">  
-                            <p:outputPanel>  
-                                <h:outputText value="Search all fields:" />  
-                                <p:inputText id="globalFilter" onkeyup="contactTable.filter()" style="width:150px" />  
-                            </p:outputPanel> 
+                            <h:outputText value="Search all fields" />  
+                            <p:inputText id="globalFilter" onkeyup="contactTable.filter()" style="width:150px" />  
+                            <p:commandButton id="refreshButton" update="dataTable, :form:messages" action="#{contactController.initDataList}" icon="ui-icon-refresh" title="Refresh" />  
                         </f:facet>
+
                         <p:ajax event="cellEdit" listener="#{contactController.onCellEdit}" update=":form:messages" /> 
                         <p:ajax event="rowSelect" listener="#{contactController.onRowSelect}" update=":form:messages" /> 
 
