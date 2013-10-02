@@ -19,7 +19,6 @@ import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.event.CellEditEvent;
-import org.primefaces.event.CloseEvent;
 import org.primefaces.event.RowEditEvent;
 import org.primefaces.event.SelectEvent;
 
@@ -84,10 +83,10 @@ public class ContactController implements Serializable {
             Contact c = (Contact) ((DataTable) event.getSource()).getRowData();
             try {
                 bean.edit(c);
-                FacesMessage msg = new FacesMessage("Customer edited", "name = " + c.getName());
+                FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Customer edited", "name = " + c.getName());
                 FacesContext.getCurrentInstance().addMessage(null, msg);
             } catch (Exception e) {
-                FacesMessage msg = new FacesMessage("Cannot edit this customer", "name = " + c.getName());
+                FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cannot edit this customer", "name = " + c.getName());
                 FacesContext.getCurrentInstance().addMessage(null, msg);
             }
 
@@ -108,10 +107,10 @@ public class ContactController implements Serializable {
         Contact c = (Contact) event.getObject();
         try {
             bean.edit(c);
-            FacesMessage msg = new FacesMessage("Customer edited", "name = " + c.getName());
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Customer edited", "name = " + c.getName());
             FacesContext.getCurrentInstance().addMessage(null, msg);
         } catch (Exception e) {
-            FacesMessage msg = new FacesMessage("Cannot edit this customer", "name = " + c.getName());
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Cannot edit this customer", "name = " + c.getName());
             FacesContext.getCurrentInstance().addMessage(null, msg);
         }
     }
@@ -127,12 +126,12 @@ public class ContactController implements Serializable {
         System.out.println("============== delete =============");
         try {
             bean.remove(selectedContact);
-            FacesMessage msg = new FacesMessage("Deleted successfully", "");
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Deleted successfully", "");
             FacesContext.getCurrentInstance().addMessage(null, msg);
             initDataList();
 
         } catch (Exception e) {
-            FacesMessage msg = new FacesMessage("Cannot delete this contact!", "name = " + selectedContact.getName());
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cannot delete this contact!", "name = " + selectedContact.getName());
             FacesContext.getCurrentInstance().addMessage(null, msg);
         }
     }
@@ -142,11 +141,11 @@ public class ContactController implements Serializable {
         try {
             bean.create(newContact);
             init();
-            FacesMessage msg = new FacesMessage("Contact is created successfully", "");
-            FacesContext.getCurrentInstance().addMessage(null, msg);            
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Contact is created successfully", "");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
 
         } catch (Exception e) {
-            FacesMessage msg = new FacesMessage("Cannot create this contact", "");
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cannot create this contact", "");
             FacesContext.getCurrentInstance().addMessage(null, msg);
         }
 
@@ -168,12 +167,9 @@ public class ContactController implements Serializable {
     public void setNewContact(Contact newContact) {
         this.newContact = newContact;
     }
-    
-     public void handleClose(CloseEvent event) {  
-        FacesContext facesContext = FacesContext.getCurrentInstance();  
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,   
-            event.getComponent().getId() + " closed", "So you don't like nature?");  
-          
-        facesContext.addMessage(null, message);  
-    }     
+
+    public void refreshList() {
+        initDataList();
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Refreshing list...", ""));
+    }
 }

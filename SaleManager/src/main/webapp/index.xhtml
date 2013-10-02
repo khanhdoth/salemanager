@@ -96,13 +96,12 @@
                             <p:outputPanel style="text-align:left"> 
                                 <h:outputText value="#{bundle.Search}" />
                                 <p:inputText id="globalFilter" onkeyup="contactTable.filter()" style="width:150px" />                            
-                                <p:commandButton id="refreshButton" update="dataTable, :mainForm:messages" action="#{contactController.initDataList}" icon="ui-icon-refresh" title="#{bundle.Reresh}" />  
+                                <p:commandButton id="refreshButton" update="dataTable, :mainForm:messages" action="#{contactController.refreshList}" icon="ui-icon-refresh" title="#{bundle.Reresh}" />  
                             </p:outputPanel>
                         </f:facet>
 
                         <p:ajax event="cellEdit" listener="#{contactController.onCellEdit}" update=":mainForm:messages" /> 
-                        <p:ajax event="rowSelect" listener="#{contactController.onRowSelect}" update=":mainForm:messages" /> 
-
+                        
                         <p:column style="width:5%">  
                             <p:commandButton id="deleteButton" update="dataTable, :mainForm:messages" action="#{contactController.delete}" icon="ui-icon-trash" title="#{bundle.Delete}">  
                                 <p:confirm header="Confirmation" message="Are you sure?" icon="ui-icon-alert" />  

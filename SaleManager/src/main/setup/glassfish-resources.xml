@@ -7,7 +7,7 @@
         <property name="databaseName" value="vnsale"/>
         <property name="User" value="khanh_do"/>
         <property name="Password" value="Andr0id!"/>
-        <property name="URL" value="jdbc:mysql://192.168.1.5:3306/vnsale"/>
+        <property name="URL" value="jdbc:mysql://192.168.1.5:3306/vnsale?characterEncoding=utf8"/>
         <property name="driverClass" value="com.mysql.jdbc.Driver"/>
     </jdbc-connection-pool>
     <jdbc-resource enabled="true" jndi-name="SaleManager" object-type="user" pool-name="mysql_vnsale_khanh_doPool"/>
