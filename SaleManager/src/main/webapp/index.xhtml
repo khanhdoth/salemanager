@@ -10,16 +10,29 @@
     <ui:composition>
 
         <h:head>
-            <title>#{bundle.App}</title>            
+            <title>#{bundle.App}</title>                
         </h:head>
 
         <h:body>
             <h:outputStylesheet name="css/default.css" />
+
+            <p:ajaxStatus style="width:1px;height:1px;position:fixed;left:40%;" id="ajaxStatusPanel">  
+                <f:facet name="start">  
+                    <h:graphicImage value="images/ajax_loader.gif" />  
+                </f:facet>  
+
+                <f:facet name="complete">  
+                    <h:outputText value="" />  
+                </f:facet>  
+            </p:ajaxStatus> 
             
+
             <!--****************************************************************
                 *  Main form
                 *************************************************************-->            
             <h:form id="mainForm" onkeypress="return event.keyCode != 13;">
+
+
                 <p:growl id="messages" showDetail="true"/>
 
                 <!--****************************************************************
@@ -46,7 +59,7 @@
                 <!--****************************************************************
                     *  Dialog to create contact
                     *************************************************************-->            
-                <p:dialog id="iDlgContact" header="#{bundle.Contact_NewContact}" widgetVar="wDlgContact">
+                <p:dialog id="iDlgContact" header="#{bundle.Contact_NewContact}" widgetVar="wDlgContact">                    
                     <h:panelGrid columns="2" cellpadding="5">  
                         <h:outputLabel value="#{bundle.Contact_Name}" />  
                         <p:inputText value="#{contactController.newContact.name}" />  
@@ -101,7 +114,7 @@
                         </f:facet>
 
                         <p:ajax event="cellEdit" listener="#{contactController.onCellEdit}" update=":mainForm:messages" /> 
-                        
+
                         <p:column style="width:5%">  
                             <p:commandButton id="deleteButton" update="dataTable, :mainForm:messages" action="#{contactController.delete}" icon="ui-icon-trash" title="#{bundle.Delete}">  
                                 <p:confirm header="Confirmation" message="Are you sure?" icon="ui-icon-alert" />  
@@ -207,8 +220,10 @@
                     </p:dataTable>                     
                 </p:dialog>
 
-            </h:form>                
+            </h:form>    
+
         </h:body>
-    </ui:composition>
+    </ui:composition>    
+
 </html>
 

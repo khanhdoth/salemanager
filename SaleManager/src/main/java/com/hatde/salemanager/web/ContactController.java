@@ -39,6 +39,7 @@ public class ContactController implements Serializable {
     private List<Contact> filterList;
     private Contact selectedContact;
     private Contact newContact;
+    private String ajaxStatusStyle; 
 
     @PostConstruct
     public void init() {
@@ -110,7 +111,7 @@ public class ContactController implements Serializable {
             FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Customer edited", "name = " + c.getName());
             FacesContext.getCurrentInstance().addMessage(null, msg);
         } catch (Exception e) {
-            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Cannot edit this customer", "name = " + c.getName());
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cannot edit this customer", "name = " + c.getName());
             FacesContext.getCurrentInstance().addMessage(null, msg);
         }
     }
