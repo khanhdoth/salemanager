@@ -171,6 +171,5 @@ public class ContactController implements Serializable {
 
     public void refreshList() {
         initDataList();
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Refreshing list...", ""));
     }
 }

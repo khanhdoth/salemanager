@@ -16,7 +16,7 @@
         <h:body>
             <h:outputStylesheet name="css/default.css" />
 
-            <p:ajaxStatus style="width:1px;height:1px;position:fixed;left:40%;" id="ajaxStatusPanel">  
+            <p:ajaxStatus style="width:1px;height:1px;" id="ajaxStatusPanel">  
                 <f:facet name="start">  
                     <h:graphicImage value="images/ajax_loader.gif" />  
                 </f:facet>  
@@ -109,7 +109,7 @@
                             <p:outputPanel style="text-align:left"> 
                                 <h:outputText value="#{bundle.Search}" />
                                 <p:inputText id="globalFilter" onkeyup="contactTable.filter()" style="width:150px" />                            
-                                <p:commandButton id="refreshButton" update="dataTable, :mainForm:messages" action="#{contactController.refreshList}" icon="ui-icon-refresh" title="#{bundle.Reresh}" />  
+                                <p:commandButton id="refreshButton" update="dataTable" action="#{contactController.refreshList}" icon="ui-icon-refresh" title="#{bundle.Reresh}" />  
                             </p:outputPanel>
                         </f:facet>
 
