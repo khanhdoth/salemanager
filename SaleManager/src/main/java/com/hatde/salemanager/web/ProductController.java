@@ -1,7 +1,7 @@
 package com.hatde.salemanager.web;
 
-import com.hatde.salemanager.entities.Contact;
-import com.hatde.salemanager.services.ContactFacadeREST;
+import com.hatde.salemanager.entities.Product;
+import com.hatde.salemanager.services.ProductFacadeREST;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,31 +20,31 @@ import org.primefaces.event.CellEditEvent;
  *
  * @author Do
  */
-@Named(value = "contactController")
+@Named(value = "productController")
 @SessionScoped
-public class ContactController implements Serializable {
+public class ProductController implements Serializable {
 
     @EJB
-    private ContactFacadeREST bean;
+    private ProductFacadeREST bean;
 
     @Inject
     private BundleBean bundleBean;
 
-    private List<Contact> list;
-    private List<Contact> filterList;
-    private Contact selectedContact;
-    private Contact newContact;
+    private List<Product> list;
+    private List<Product> filterList;
+    private Product selectedProduct;
+    private Product newProduct;
     private ResourceBundle bundle;
 
     @PostConstruct
     public void init() {
-        initListandNewContact();
+        initListandNewProduct();
         bundle = bundleBean.getBundle();
     }
 
-    public void initListandNewContact() {
+    public void initListandNewProduct() {
         initDataList();
-        initNewContact();
+        initNewProduct();
     }
 
     public void initDataList() {
@@ -52,27 +52,27 @@ public class ContactController implements Serializable {
         list = bean.findAll();
     }
 
-    public void initNewContact() {
-        newContact = new Contact();
+    public void initNewProduct() {
+        newProduct = new Product();
     }
 
-    public ContactController() {
+    public ProductController() {
     }
 
-    public List<Contact> getList() {
-        System.out.println("----ContactController.getList----");
+    public List<Product> getList() {
+        System.out.println("----ProductController.getList----");
         return list;
     }
 
-    public void setList(List<Contact> list) {
+    public void setList(List<Product> list) {
         this.list = list;
     }
 
-    public List<Contact> getFilterList() {
+    public List<Product> getFilterList() {
         return filterList;
     }
 
-    public void setFilterList(List<Contact> filterList) {
+    public void setFilterList(List<Product> filterList) {
         this.filterList = filterList;
     }
 
@@ -81,7 +81,7 @@ public class ContactController implements Serializable {
         Object newValue = event.getNewValue();
 
         if (newValue != null && !newValue.equals(oldValue)) {
-            Contact c = (Contact) ((DataTable) event.getSource()).getRowData();
+            Product c = (Product) ((DataTable) event.getSource()).getRowData();
             try {
                 bean.edit(c);
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, bundle.getString("Edit_Success"), "name = " + c.getName()));
@@ -95,19 +95,19 @@ public class ContactController implements Serializable {
         System.out.println("============== delete =============");
 
         try {
-            bean.remove(selectedContact);
+            bean.remove(selectedProduct);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, bundle.getString("Delete_Success"), ""));
             initDataList();
         } catch (Exception e) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getString("Delete_Failed_Message"), "name = " + selectedContact.getName()));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getString("Delete_Failed_Message"), "name = " + selectedProduct.getName()));
         }
     }
 
-    public void createContact() {
-        System.out.println("============== createContact ============= " + newContact.getName());
+    public void createProduct() {
+        System.out.println("============== createProduct ============= " + newProduct.getName());
         try {
-            bean.create(newContact);
-            initListandNewContact();
+            bean.create(newProduct);
+            initListandNewProduct();
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, bundle.getString("Create_Success"), ""));
 
         } catch (Exception e) {
@@ -116,20 +116,20 @@ public class ContactController implements Serializable {
 
     }
 
-    public Contact getSelectedContact() {
-        return selectedContact;
+    public Product getSelectedProduct() {
+        return selectedProduct;
     }
 
-    public void setSelectedContact(Contact selectedContact) {
-        this.selectedContact = selectedContact;
+    public void setSelectedProduct(Product selectedProduct) {
+        this.selectedProduct = selectedProduct;
     }
 
-    public Contact getNewContact() {
-        return newContact;
+    public Product getNewProduct() {
+        return newProduct;
     }
 
-    public void setNewContact(Contact newContact) {
-        this.newContact = newContact;
+    public void setNewProduct(Product newProduct) {
+        this.newProduct = newProduct;
     }
 
     public void refreshList() {

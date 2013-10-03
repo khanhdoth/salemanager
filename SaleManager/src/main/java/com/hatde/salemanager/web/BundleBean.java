@@ -14,10 +14,11 @@ import javax.inject.Named;
 @Named(value = "bundleBean")
 @SessionScoped
 public class BundleBean implements Serializable {
+
     private ResourceBundle bundle;
-    
+
     @PostConstruct
-    public void init() {        
+    public void init() {
         bundle = ResourceBundle.getBundle("lang", FacesContext.getCurrentInstance().getViewRoot().getLocale());
     }
 
