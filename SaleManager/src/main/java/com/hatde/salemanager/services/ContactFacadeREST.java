@@ -66,7 +66,7 @@ public class ContactFacadeREST extends AbstractFacade<Contact> {
     @Override
     @Produces({"application/xml", "application/json"})
     public List<Contact> findAll() {
-        System.out.println("-----findAll----");
+        System.out.println("-----Contact: findAll----");
         return super.findAll();
     }
 

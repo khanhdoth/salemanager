@@ -40,13 +40,13 @@
                     *************************************************************-->            
                 <p:menubar autoDisplay="false">  
                     <p:submenu label="#{bundle.ModuleContact}" >  
-                        <p:menuitem value="#{bundle.Contact_NewContact}" icon="ui-icon-document" onclick="wDlgContact.show()" />  
-                        <p:menuitem value="#{bundle.Contact_ContactList}" icon="ui-icon-document" onclick="wDlgContactList.show()" /> 
+                        <p:menuitem value="#{bundle.Contact_NewContact}" icon="ui-icon-document" onclick="wDlgContact.show()" process="@this" />  
+                        <p:menuitem value="#{bundle.Contact_ContactList}" icon="ui-icon-document" onclick="wDlgContactList.show()" process="@this" /> 
                     </p:submenu>  
 
                     <p:submenu label="#{bundle.ModuleProduct}">  
-                        <p:menuitem value="#{bundle.Product_NewProduct}" icon="ui-icon-document" onclick="wDlgProduct.show()" /> 
-                        <p:menuitem value="#{bundle.Product_ProductList}" icon="ui-icon-document" onclick="wDlgProductList.show()" /> 
+                        <p:menuitem value="#{bundle.Product_NewProduct}" icon="ui-icon-document" onclick="wDlgProduct.show()" process="@this" /> 
+                        <p:menuitem value="#{bundle.Product_ProductList}" icon="ui-icon-document" onclick="wDlgProductList.show()" process="@this" /> 
                     </p:submenu>  
                     <p:menuitem value="#{bundle.Quit}" url="http://vannga.com" />  
 
@@ -82,8 +82,8 @@
                         <h:outputLabel value="#{bundle.Contact_MoreInfo}" />  
                         <p:inputText value="#{contactController.newContact.moreInfo}" />  
 
-                        <p:commandButton value="#{bundle.Save}" actionListener="#{contactController.createContact}" update="iDlgContact, contactTable, :mainForm:messages" 
-                                         oncomplete="wDlgContact.hide()"/>  
+                        <p:commandButton value="#{bundle.Save}" actionListener="#{contactController.createContact}" update="iDlgContact, iContactTable, :mainForm:messages" 
+                                         oncomplete="wDlgContact.hide()" process="@this, iDlgContact, iContactTable" />  
                     </h:panelGrid>  
                 </p:dialog>
 
@@ -101,8 +101,8 @@
                         <h:outputLabel value="#{bundle.Product_Unit}" />  
                         <p:inputText value="#{productController.newProduct.unit}" />  
 
-                        <p:commandButton value="#{bundle.Save}" actionListener="#{productController.createProduct}" update="iDlgProduct, productTable, :mainForm:messages" 
-                                         oncomplete="wDlgContact.hide()"/>  
+                        <p:commandButton value="#{bundle.Save}" actionListener="#{productController.createProduct}" update="iDlgProduct, iProductTable, :mainForm:messages" 
+                                         oncomplete="wDlgContact.hide()" process="@this, iDlgProduct, iProductTable" />  
                     </h:panelGrid>  
                 </p:dialog>                
 
@@ -118,8 +118,8 @@
                     *  Dialog for contact list
                     *************************************************************-->            
                 <p:dialog header="#{bundle.Contact_ContactList}" widgetVar="wDlgContactList" position="bottom">
-                    <p:dataTable id="contactTable" var="item" value="#{contactController.list}" editable="true"
-                                 widgetVar="contactTable" rowKey="#{item.contactId}" scrollable="true" scrollHeight="400"
+                    <p:dataTable id="iContactTable" var="item" value="#{contactController.list}" editable="true"
+                                 widgetVar="wContactTable" rowKey="#{item.contactId}" scrollable="true" scrollHeight="400"
                                  emptyMessage="No contact found with given criteria" editMode="cell" 
                                  filteredValue="#{contactController.filterList}"                                 
                                  resizableColumns="true" liveResize="true" >   
@@ -127,16 +127,16 @@
                         <f:facet name="header">  
                             <p:outputPanel style="text-align:left"> 
                                 <h:outputText value="#{bundle.Search}" />
-                                <p:inputText id="globalFilter" onkeyup="contactTable.filter()" style="width:150px" />                            
-                                <p:commandButton id="refreshButton" update="contactTable" action="#{contactController.refreshList}" icon="ui-icon-refresh" title="#{bundle.Reresh}" />  
+                                <p:inputText id="globalFilter" onkeyup="wContactTable.filter()" style="width:150px" />                            
+                                <p:commandButton id="refreshButton" update="iContactTable" action="#{contactController.refreshList}" icon="ui-icon-refresh" title="#{bundle.Reresh}" process="@this" />  
                             </p:outputPanel>
                         </f:facet>
 
                         <p:ajax event="cellEdit" listener="#{contactController.onCellEdit}" update=":mainForm:messages" /> 
 
                         <p:column style="width:5%">  
-                            <p:commandButton id="deleteButton" update="contactTable, :mainForm:messages" action="#{contactController.delete}" icon="ui-icon-trash" title="#{bundle.Delete}">  
-                                <p:confirm header="Confirmation" message="Are you sure?" icon="ui-icon-alert" />  
+                            <p:commandButton id="deleteButton" update="iContactTable, :mainForm:messages" action="#{contactController.delete}" icon="ui-icon-trash" title="#{bundle.Delete}" process="@this" >  
+                                <p:confirm header="#{bundle.Confirmation}" message="#{bundle.Delete_Confirm_Message}" icon="ui-icon-alert" />  
                                 <f:setPropertyActionListener value="#{item}" target="#{contactController.selectedContact}" />  
                             </p:commandButton> 
                         </p:column> 
@@ -242,9 +242,9 @@
                 <!--****************************************************************
                     *  Dialog for product list
                     *************************************************************-->            
-                <p:dialog header="#{bundle.Product_ProductList}" widgetVar="wDlgProductList" position="bottom">
-                    <p:dataTable id="productTable" var="item" value="#{productController.list}" editable="true"
-                                 widgetVar="productTable" rowKey="#{item.productId}" scrollable="true" scrollHeight="400"
+                <p:dialog header="#{bundle.Product_ProductList}" widgetVar="wDlgProductList" position="bottom" >
+                    <p:dataTable id="iProductTable" var="item" value="#{productController.list}" editable="true"
+                                 widgetVar="wProductTable" rowKey="#{item.productId}" scrollable="true" scrollHeight="400"
                                  emptyMessage="No product found with given criteria" editMode="cell" 
                                  filteredValue="#{productController.filterList}"                                 
                                  resizableColumns="true" liveResize="true" >   
@@ -252,16 +252,16 @@
                         <f:facet name="header">  
                             <p:outputPanel style="text-align:left"> 
                                 <h:outputText value="#{bundle.Search}" />
-                                <p:inputText id="globalFilter" onkeyup="productTable.filter()" style="width:150px" />                            
-                                <p:commandButton id="refreshButton" update="productTable" action="#{productController.refreshList}" icon="ui-icon-refresh" title="#{bundle.Reresh}" />  
+                                <p:inputText id="globalFilter" onkeyup="wProductTable.filter()" style="width:150px" />                            
+                                <p:commandButton id="refreshButton" update="iProductTable" action="#{productController.refreshList}" icon="ui-icon-refresh" title="#{bundle.Reresh}" process="@this"/>  
                             </p:outputPanel>
                         </f:facet>
 
                         <p:ajax event="cellEdit" listener="#{productController.onCellEdit}" update=":mainForm:messages" /> 
 
                         <p:column style="width:5%">  
-                            <p:commandButton id="deleteButton" update="productTable, :mainForm:messages" action="#{productController.delete}" icon="ui-icon-trash" title="#{bundle.Delete}">  
-                                <p:confirm header="Confirmation" message="Are you sure?" icon="ui-icon-alert" />  
+                            <p:commandButton id="deleteButton" update="iProductTable, :mainForm:messages" action="#{productController.delete}" icon="ui-icon-trash" title="#{bundle.Delete}" process="@this">  
+                                <p:confirm header="#{bundle.Confirmation}" message="#{bundle.Delete_Confirm_Message}" icon="ui-icon-alert" />  
                                 <f:setPropertyActionListener value="#{item}" target="#{productController.selectedProduct}" />  
                             </p:commandButton> 
                         </p:column> 

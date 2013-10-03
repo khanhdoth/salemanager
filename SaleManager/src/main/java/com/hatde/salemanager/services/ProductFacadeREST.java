@@ -67,6 +67,7 @@ public class ProductFacadeREST extends AbstractFacade<Product> {
     @Override
     @Produces({"application/xml", "application/json"})
     public List<Product> findAll() {
+        System.out.println("-----Product: findAll----");
         return super.findAll();
     }
 
