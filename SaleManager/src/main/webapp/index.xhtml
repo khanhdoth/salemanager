@@ -26,14 +26,7 @@
                 </f:facet>  
             </p:ajaxStatus> 
 
-
-            <!--****************************************************************
-                *  Main form
-                *************************************************************-->            
-            <h:form id="mainForm" onkeypress="return event.keyCode != 13;">
-
-
-                <p:growl id="messages" showDetail="true"/>
+            <h:form id="menuForm" onkeypress="return event.keyCode != 13;">
 
                 <!--****************************************************************
                     *  Main menu
@@ -54,8 +47,26 @@
                         <p:inputText style="margin-right:10px"/>  
                         <p:commandButton type="button" value="#{bundle.Logout}" icon="ui-icon-extlink" />  
                     </f:facet>  
-                </p:menubar>
+                </p:menubar>            
+            </h:form>
 
+            <!--****************************************************************
+                *  Main form
+                *************************************************************-->            
+            <h:form id="mainForm" onkeypress="return event.keyCode != 13;">                
+                <p:growl id="messages" showDetail="true"/>
+
+                <!--****************************************************************
+               *  Dialog for confirmation
+               *************************************************************-->            
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">  
+                    <p:commandButton value="#{bundle.Yes}" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>  
+                    <p:commandButton value="#{bundle.No}" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>       
+                </p:confirmDialog>  
+            </h:form>
+
+
+            <h:form id="contactForm" onkeypress="return event.keyCode != 13;">
                 <!--****************************************************************
                     *  Dialog to create contact
                     *************************************************************-->            
@@ -88,35 +99,8 @@
                 </p:dialog>
 
                 <!--****************************************************************
-                    *  Dialog to create product
-                    *************************************************************-->            
-                <p:dialog id="iDlgProduct" header="#{bundle.Product_NewProduct}" widgetVar="wDlgProduct">                    
-                    <h:panelGrid columns="2" cellpadding="5">  
-                        <h:outputLabel value="#{bundle.Product_Name}" />  
-                        <p:inputText value="#{productController.newProduct.name}" />  
-
-                        <h:outputLabel value="#{bundle.Product_Manufacturer}" />  
-                        <p:inputText value="#{productController.newProduct.manufacturer}" />  
-
-                        <h:outputLabel value="#{bundle.Product_Unit}" />  
-                        <p:inputText value="#{productController.newProduct.unit}" />  
-
-                        <p:commandButton value="#{bundle.Save}" actionListener="#{productController.createProduct}" update="iDlgProduct, iProductTable, :mainForm:messages" 
-                                         oncomplete="wDlgContact.hide()" process="@this, iDlgProduct, iProductTable" />  
-                    </h:panelGrid>  
-                </p:dialog>                
-
-                <!--****************************************************************
-                    *  Dialog for confirmation
-                    *************************************************************-->            
-                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">  
-                    <p:commandButton value="#{bundle.Yes}" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>  
-                    <p:commandButton value="#{bundle.No}" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>       
-                </p:confirmDialog>  
-
-                <!--****************************************************************
-                    *  Dialog for contact list
-                    *************************************************************-->            
+               *  Dialog for contact list
+               *************************************************************-->            
                 <p:dialog header="#{bundle.Contact_ContactList}" widgetVar="wDlgContactList" position="bottom">
                     <p:dataTable id="iContactTable" var="item" value="#{contactController.list}" editable="true"
                                  widgetVar="wContactTable" rowKey="#{item.contactId}" scrollable="true" scrollHeight="400"
@@ -238,11 +222,33 @@
                         </p:column>  
                     </p:dataTable>                     
                 </p:dialog>
+            </h:form>
 
+            <h:form id="productForm" onkeypress="return event.keyCode != 13;">
+                <!--****************************************************************
+                    *  Dialog to create product
+                    *************************************************************-->            
+                <p:dialog id="iDlgProduct" header="#{bundle.Product_NewProduct}" widgetVar="wDlgProduct">                    
+                    <h:panelGrid columns="2" cellpadding="5">  
+                        <h:outputLabel value="#{bundle.Product_Name}" />  
+                        <p:inputText value="#{productController.newProduct.name}" />  
+
+                        <h:outputLabel value="#{bundle.Product_Manufacturer}" />  
+                        <p:inputText value="#{productController.newProduct.manufacturer}" />  
+
+                        <h:outputLabel value="#{bundle.Product_Unit}" />  
+                        <p:inputText value="#{productController.newProduct.unit}" />  
+
+                        <p:commandButton value="#{bundle.Save}" actionListener="#{productController.createProduct}" update="iDlgProduct, iProductTable, :mainForm:messages" 
+                                         oncomplete="wDlgContact.hide()" process="@this, iDlgProduct, iProductTable" />  
+                    </h:panelGrid>  
+                </p:dialog>                
+                
                 <!--****************************************************************
                     *  Dialog for product list
                     *************************************************************-->            
                 <p:dialog header="#{bundle.Product_ProductList}" widgetVar="wDlgProductList" position="bottom" >
+                    
                     <p:dataTable id="iProductTable" var="item" value="#{productController.list}" editable="true"
                                  widgetVar="wProductTable" rowKey="#{item.productId}" scrollable="true" scrollHeight="400"
                                  emptyMessage="No product found with given criteria" editMode="cell" 
@@ -308,11 +314,14 @@
                                     <p:inputText value="#{item.unit}" />  
                                 </f:facet>  
                             </p:cellEditor>                             
-                        </p:column>                          
-                    </p:dataTable>                     
-                </p:dialog>                
-
-            </h:form>    
+                        
+                        </p:column> 
+                        
+                    </p:dataTable>  
+                    
+                </p:dialog>  
+                
+            </h:form>
 
         </h:body>
     </ui:composition>    
