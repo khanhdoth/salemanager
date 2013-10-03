@@ -38,10 +38,15 @@ public class ContactController implements Serializable {
 
     @PostConstruct
     public void init() {
-        initListandNewContact();
+        initFirstListandNewContact();        
         bundle = bundleBean.getBundle();
     }
 
+    public void initFirstListandNewContact() {
+        list = new ArrayList();;
+        initNewContact();
+    }
+    
     public void initListandNewContact() {
         initDataList();
         initNewContact();

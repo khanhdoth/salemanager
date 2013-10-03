@@ -38,12 +38,17 @@ public class ProductController implements Serializable {
 
     @PostConstruct
     public void init() {
-        initListandNewProduct();
+        initFirstListandNewProduct();        
         bundle = bundleBean.getBundle();
     }
 
     public void initListandNewProduct() {
         initDataList();
+        initNewProduct();
+    }
+    
+    public void initFirstListandNewProduct() {
+        list = new ArrayList();;
         initNewProduct();
     }
 
