@@ -8,7 +8,7 @@
        xmlns:fn="http://java.sun.com/jsp/jstl/functions">
 
     <ui:composition>
-
+        
         <h:head>
             <title>#{bundle.App}</title>                
         </h:head>
@@ -26,11 +26,8 @@
                 </f:facet>  
             </p:ajaxStatus> 
 
+            <!-- menu -->            
             <h:form id="menuForm" onkeypress="return event.keyCode != 13;">
-
-                <!--****************************************************************
-                    *  Main menu
-                    *************************************************************-->            
                 <p:menubar autoDisplay="false">  
                     <p:submenu label="#{bundle.ModuleContact}" >  
                         <p:menuitem value="#{bundle.Contact_NewContact}" icon="ui-icon-document" onclick="wDlgContact.show()" process="@this" />  
@@ -50,26 +47,19 @@
                 </p:menubar>            
             </h:form>
 
-            <!--****************************************************************
-                *  Main form
-                *************************************************************-->            
+            <!-- Main form -->            
             <h:form id="mainForm" onkeypress="return event.keyCode != 13;">                
                 <p:growl id="messages" showDetail="true"/>
 
-                <!--****************************************************************
-               *  Dialog for confirmation
-               *************************************************************-->            
+                <!-- Confirmation -->            
                 <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">  
                     <p:commandButton value="#{bundle.Yes}" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>  
                     <p:commandButton value="#{bundle.No}" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>       
                 </p:confirmDialog>  
             </h:form>
 
-
-            <h:form id="contactForm" onkeypress="return event.keyCode != 13;">
-                <!--****************************************************************
-                    *  Dialog to create contact
-                    *************************************************************-->            
+            <!-- Create contact -->            
+            <h:form id="createContactForm" onkeypress="return event.keyCode != 13;">
                 <p:dialog id="iDlgContact" header="#{bundle.Contact_NewContact}" widgetVar="wDlgContact">                    
                     <h:panelGrid columns="2" cellpadding="5">  
                         <h:outputLabel value="#{bundle.Contact_Name}" />  
@@ -93,14 +83,14 @@
                         <h:outputLabel value="#{bundle.Contact_MoreInfo}" />  
                         <p:inputText value="#{contactController.newContact.moreInfo}" />  
 
-                        <p:commandButton value="#{bundle.Save}" actionListener="#{contactController.createContact}" update="iDlgContact, iContactTable, :mainForm:messages" 
-                                         oncomplete="wDlgContact.hide()" process="@this, iDlgContact, iContactTable" />  
+                        <p:commandButton value="#{bundle.Save}" actionListener="#{contactController.createContact}" update="iDlgContact, :ContactListForm:iContactTable, :mainForm:messages" 
+                                         oncomplete="wDlgContact.hide()" process="@this, iDlgContact, :ContactListForm:iContactTable" />  
                     </h:panelGrid>  
                 </p:dialog>
+            </h:form>
 
-                <!--****************************************************************
-               *  Dialog for contact list
-               *************************************************************-->            
+            <!-- Contact list -->            
+            <h:form id="ContactListForm" onkeypress="return event.keyCode != 13;">
                 <p:dialog header="#{bundle.Contact_ContactList}" widgetVar="wDlgContactList" position="bottom">
                     <p:dataTable id="iContactTable" var="item" value="#{contactController.list}" editable="true"
                                  widgetVar="wContactTable" rowKey="#{item.contactId}" scrollable="true" scrollHeight="400"
@@ -224,10 +214,8 @@
                 </p:dialog>
             </h:form>
 
-            <h:form id="productForm" onkeypress="return event.keyCode != 13;">
-                <!--****************************************************************
-                    *  Dialog to create product
-                    *************************************************************-->            
+            <!-- Create product -->            
+            <h:form id="createProductForm" onkeypress="return event.keyCode != 13;">
                 <p:dialog id="iDlgProduct" header="#{bundle.Product_NewProduct}" widgetVar="wDlgProduct">                    
                     <h:panelGrid columns="2" cellpadding="5">  
                         <h:outputLabel value="#{bundle.Product_Name}" />  
@@ -239,16 +227,15 @@
                         <h:outputLabel value="#{bundle.Product_Unit}" />  
                         <p:inputText value="#{productController.newProduct.unit}" />  
 
-                        <p:commandButton value="#{bundle.Save}" actionListener="#{productController.createProduct}" update="iDlgProduct, iProductTable, :mainForm:messages" 
-                                         oncomplete="wDlgContact.hide()" process="@this, iDlgProduct, iProductTable" />  
+                        <p:commandButton value="#{bundle.Save}" actionListener="#{productController.createProduct}" update="iDlgProduct, :productListForm:iProductTable, :mainForm:messages" 
+                                         oncomplete="wDlgContact.hide()" process="@this, iDlgProduct, :productListForm:iProductTable" />  
                     </h:panelGrid>  
                 </p:dialog>                
-                
-                <!--****************************************************************
-                    *  Dialog for product list
-                    *************************************************************-->            
-                <p:dialog header="#{bundle.Product_ProductList}" widgetVar="wDlgProductList" position="bottom" >
-                    
+            </h:form>
+
+            <!-- Product list -->            
+            <h:form id="productListForm" onkeypress="return event.keyCode != 13;">
+                <p:dialog header="#{bundle.Product_ProductList}" widgetVar="wDlgProductList" position="bottom" >                    
                     <p:dataTable id="iProductTable" var="item" value="#{productController.list}" editable="true"
                                  widgetVar="wProductTable" rowKey="#{item.productId}" scrollable="true" scrollHeight="400"
                                  emptyMessage="No product found with given criteria" editMode="cell" 
@@ -314,17 +301,13 @@
                                     <p:inputText value="#{item.unit}" />  
                                 </f:facet>  
                             </p:cellEditor>                             
-                        
+
                         </p:column> 
-                        
                     </p:dataTable>  
-                    
                 </p:dialog>  
-                
             </h:form>
 
-        </h:body>
-    </ui:composition>    
-
+        </h:body>        
+    </ui:composition>        
 </html>
 
