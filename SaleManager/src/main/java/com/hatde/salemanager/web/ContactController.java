@@ -17,6 +17,7 @@ import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 import javax.inject.Named;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.event.CellEditEvent;
@@ -33,6 +34,9 @@ public class ContactController implements Serializable {
 
     @EJB
     private ContactFacadeREST bean;
+    
+    @Inject
+    private BundleBean bundleBean;
 
     private List<Contact> list;
     private List<Contact> filterList;
@@ -43,7 +47,7 @@ public class ContactController implements Serializable {
     @PostConstruct
     public void init() {
         initListandNewContact();
-        bundle = ResourceBundle.getBundle("lang", FacesContext.getCurrentInstance().getViewRoot().getLocale());
+        bundle = bundleBean.getBundle();
     }
 
     public void initListandNewContact() {
@@ -88,9 +92,9 @@ public class ContactController implements Serializable {
             Contact c = (Contact) ((DataTable) event.getSource()).getRowData();
             try {
                 bean.edit(c);
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Customer edited", "name = " + c.getName()));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, bundle.getString("Edit_Success"), "name = " + c.getName()));
             } catch (Exception e) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cannot edit this customer", "name = " + c.getName()));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getString("Edit_Failed_Message"), "name = " + c.getName()));
             }
         }
     }
@@ -104,7 +108,7 @@ public class ContactController implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, bundle.getString("Delete_Success"), ""));
             initDataList();
         } catch (Exception e) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cannot delete this contact!", "name = " + selectedContact.getName()));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getString("Delete_Failed_Message"), "name = " + selectedContact.getName()));
         }
     }
 
@@ -112,13 +116,11 @@ public class ContactController implements Serializable {
         System.out.println("============== createContact ============= " + newContact.getName());
         try {
             bean.create(newContact);
-            initListandNewContact();
-            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Contact is created successfully", "");
-            FacesContext.getCurrentInstance().addMessage(null, msg);
+            initListandNewContact();            
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, bundle.getString("Create_Success"), ""));
 
-        } catch (Exception e) {
-            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cannot create this contact", "");
-            FacesContext.getCurrentInstance().addMessage(null, msg);
+        } catch (Exception e) {            
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getString("Create_Failed_Message"), ""));
         }
 
     }

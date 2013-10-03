@@ -82,7 +82,7 @@
                         <h:outputLabel value="#{bundle.Contact_MoreInfo}" />  
                         <p:inputText value="#{contactController.newContact.moreInfo}" />  
 
-                        <p:commandButton value="#{bundle.Save}" actionListener="#{contactController.createContact}" update="iDlgContact, dataTable" 
+                        <p:commandButton value="#{bundle.Save}" actionListener="#{contactController.createContact}" update="iDlgContact, dataTable, :mainForm:messages" 
                                          oncomplete="wDlgContact.hide()"/>  
                     </h:panelGrid>  
                 </p:dialog>
