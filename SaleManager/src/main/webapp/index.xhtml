@@ -104,9 +104,11 @@
 
                         <f:facet name="header">  
                             <p:outputPanel style="text-align:left"> 
+                                <p:commandButton id="refreshButton" update="iContactTable" action="#{contactController.refreshList}" icon="ui-icon-refresh" title="#{bundle.Reresh}" />
+                                <p:spacer width="20"/>
                                 <h:outputText value="#{bundle.Search}" />
-                                <p:inputText id="globalFilter" onkeyup="wContactTable.filter()" style="width:150px" />                            
-                                <p:commandButton id="refreshButton" update="iContactTable" action="#{contactController.refreshList}" icon="ui-icon-refresh" title="#{bundle.Reresh}" />  
+                                <p:spacer width="5"/>
+                                <p:inputText id="globalFilter" onkeyup="wContactTable.filter()" style="width:150px" />                                                            
                             </p:outputPanel>
                         </f:facet>
 
@@ -251,9 +253,11 @@
 
                         <f:facet name="header">  
                             <p:outputPanel style="text-align:left"> 
-                                <h:outputText value="#{bundle.Search}" />
-                                <p:inputText id="globalFilter" onkeyup="wProductTable.filter()" style="width:150px" />                            
                                 <p:commandButton id="refreshButton" update="iProductTable" action="#{productController.refreshList}" icon="ui-icon-refresh" title="#{bundle.Reresh}" />  
+                                <p:spacer width="20"/>
+                                <h:outputText value="#{bundle.Search}" />
+                                <p:spacer width="5"/>
+                                <p:inputText id="globalFilter" onkeyup="wProductTable.filter()" style="width:150px" />                            
                             </p:outputPanel>
                         </f:facet>
 
