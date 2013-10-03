@@ -8,7 +8,7 @@
        xmlns:fn="http://java.sun.com/jsp/jstl/functions">
 
     <ui:composition>
-        
+
         <h:head>
             <title>#{bundle.App}</title>                
         </h:head>
@@ -83,8 +83,12 @@
                         <h:outputLabel value="#{bundle.Contact_MoreInfo}" />  
                         <p:inputText value="#{contactController.newContact.moreInfo}" />  
 
-                        <p:commandButton value="#{bundle.Save}" actionListener="#{contactController.createContact}" update="iDlgContact, :ContactListForm:iContactTable, :mainForm:messages" 
-                                         oncomplete="wDlgContact.hide()" />  
+                        <p:commandButton widgetVar="saveContactButton" value="#{bundle.Save}" 
+                                         onclick="saveContactButton.disable()"
+                                         actionListener="#{contactController.createContact}" 
+                                         update="iDlgContact, :ContactListForm:iContactTable, :mainForm:messages" 
+                                         oncomplete="saveContactButton.enable(); wDlgContact.hide()" />  
+
                     </h:panelGrid>  
                 </p:dialog>
             </h:form>
@@ -227,8 +231,11 @@
                         <h:outputLabel value="#{bundle.Product_Unit}" />  
                         <p:inputText value="#{productController.newProduct.unit}" />  
 
-                        <p:commandButton value="#{bundle.Save}" actionListener="#{productController.createProduct}" update="iDlgProduct, :productListForm:iProductTable, :mainForm:messages" 
-                                         oncomplete="wDlgContact.hide()" />  
+                        <p:commandButton widgetVar="saveProductButton" value="#{bundle.Save}" 
+                                         onclick="saveProductButton.disable()"
+                                         actionListener="#{productController.createProduct}" 
+                                         update="iDlgProduct, :productListForm:iProductTable, :mainForm:messages" 
+                                         oncomplete="saveProductButton.enable(); wDlgContact.hide()" />  
                     </h:panelGrid>  
                 </p:dialog>                
             </h:form>
