@@ -16,7 +16,7 @@ public class Product implements java.io.Serializable {
     private String manufacturer;
     private String unit;
     /*private Collection<ProductTag> listOfProductTag = new ArrayList<>();
-    private Collection<Unit> listOfUnit = new ArrayList<>();*/
+     private Collection<Unit> listOfUnit = new ArrayList<>();*/
 
     public Product() {
     }
@@ -65,26 +65,51 @@ public class Product implements java.io.Serializable {
     }
 
     /*@ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "product_productTag", joinColumns = {
-        @JoinColumn(name = "productId")}, inverseJoinColumns = {
-        @JoinColumn(name = "productTagId")})
-    public Collection<ProductTag> getListOfProductTag() {
-        return listOfProductTag;
+     @JoinTable(name = "product_productTag", joinColumns = {
+     @JoinColumn(name = "productId")}, inverseJoinColumns = {
+     @JoinColumn(name = "productTagId")})
+     public Collection<ProductTag> getListOfProductTag() {
+     return listOfProductTag;
+     }
+
+     public void setListOfProductTag(Collection<ProductTag> listOfProductTag) {
+     this.listOfProductTag = listOfProductTag;
+     }
+
+     @ManyToMany(cascade = CascadeType.ALL)
+     @JoinTable(name = "product_unit", joinColumns = {
+     @JoinColumn(name = "productId")}, inverseJoinColumns = {
+     @JoinColumn(name = "unitId")})
+     public Collection<Unit> getListOfUnit() {
+     return listOfUnit;
+     }
+
+     public void setListOfUnit(Collection<Unit> listOfUnit) {
+     this.listOfUnit = listOfUnit;
+     }*/
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (int) productId;
+        return hash;
     }
 
-    public void setListOfProductTag(Collection<ProductTag> listOfProductTag) {
-        this.listOfProductTag = listOfProductTag;
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Product)) {
+            return false;
+        }
+
+        Product other = (Product) object;
+        return this.productId == other.productId
+                && this.name.equals(other.name)
+                && this.manufacturer.equals(other.manufacturer)
+                && this.unit.equals(other.unit);
     }
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "product_unit", joinColumns = {
-        @JoinColumn(name = "productId")}, inverseJoinColumns = {
-        @JoinColumn(name = "unitId")})
-    public Collection<Unit> getListOfUnit() {
-        return listOfUnit;
+    @Override
+    public String toString() {
+        return "com.hatde.salemanager.entities.Product[ id=" + productId + " ]";
     }
-
-    public void setListOfUnit(Collection<Unit> listOfUnit) {
-        this.listOfUnit = listOfUnit;
-    }*/
 }

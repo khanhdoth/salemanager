@@ -14,7 +14,7 @@ public class SaleItem implements java.io.Serializable {
     private int saleItemId;
     private Product product;
     private float quantity;
-    private float price;    
+    private float price;
     private float discount;
 
     public SaleItem() {
@@ -88,5 +88,36 @@ public class SaleItem implements java.io.Serializable {
 
     public void setPrice(float price) {
         this.price = price;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (int) saleItemId;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof SaleItem)) {
+            return false;
+        }
+
+        SaleItem other = (SaleItem) object;
+        return this.saleItemId == other.saleItemId
+                && this.quantity == (other.quantity)
+                && this.price == (other.price)
+                && this.discount == (other.discount);
+
+    }
+
+    @Override
+    public String toString() {
+        String myInfo = "";
+        myInfo += "        = com.hatde.salemanager.entities.SaleItem[ id=" + saleItemId + " ] =\n";
+        myInfo += "          product: " + product.getName() + "  quantity: " + quantity + "  price: " + price + "  discount: " + discount + "\n";
+
+        return myInfo;
     }
 }

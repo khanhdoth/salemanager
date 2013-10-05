@@ -249,4 +249,45 @@ public class Contact implements java.io.Serializable {
     public double gBalance() {
         return (gCredit() - gDebit());
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (int) contactId;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Contact)) {
+            return false;
+        }
+
+        Contact other = (Contact) object;
+        return this.contactId == other.contactId
+                && this.name.equals(other.name)
+                && this.address.equals(other.address)
+                && this.district.equals(other.district)
+                && this.city.equals(other.city)
+                && this.country.equals(other.country)
+                && this.postcode.equals(other.postcode)
+                && this.moreInfo.equals(other.moreInfo);
+    }
+
+    @Override
+    public String toString() {
+        String myInfo = "";
+        myInfo += "============= com.hatde.salemanager.entities.Contact[ id=" + contactId + " ] =============\n";
+        myInfo += "name: " + name + "  address: " + address + "  district: " + district + "  city: " + city + "  country: " + country + "  postcode: " + postcode + "  moreInfo: " + moreInfo + "\n";
+        myInfo += "+ listOfBuy has " + listOfBuy.size() +" items:" +"\n";
+        
+        for(Sale sale : listOfBuy){
+            myInfo += sale.toString();
+        }
+        
+        myInfo += "==========================================================================================\n";
+        
+        return myInfo;
+    }
 }

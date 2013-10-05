@@ -27,9 +27,9 @@ public class ProductTransaction implements java.io.Serializable {
     private int productTransactionId;
     private Date date;
     private Collection<SaleItem> listOfSaleItem = new ArrayList<>();
-    private PaymentTransaction payment;    
+    private PaymentTransaction payment;
     private float discount;
-    
+
     private float VAT;
 
     public ProductTransaction() {
@@ -139,5 +139,39 @@ public class ProductTransaction implements java.io.Serializable {
             amount -= payment.getAmount();
         }
         return amount;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (int) productTransactionId;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof ProductTransaction)) {
+            return false;
+        }
+
+        ProductTransaction other = (ProductTransaction) object;
+        return this.productTransactionId == other.productTransactionId
+                && this.date.equals(other.date)
+                && this.discount == other.discount;
+    }
+
+    @Override
+    public String toString() {
+        String myInfo = "";
+        myInfo += "  == com.hatde.salemanager.entities.ProductTransaction[ id=" + productTransactionId + " ] ==\n";
+        myInfo += "     date: " + date.toString() + "  discount: " + discount + "  payment: " + payment.getAmount() + "\n";
+        myInfo += "     + listOfSaleItem has " + listOfSaleItem.size() + " items:" + "\n";
+
+        for (SaleItem saleItem : listOfSaleItem) {
+            myInfo += saleItem.toString();
+        }
+
+        return myInfo;
     }
 }

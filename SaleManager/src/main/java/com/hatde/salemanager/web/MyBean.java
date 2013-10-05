@@ -6,7 +6,12 @@
 
 package com.hatde.salemanager.web;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.annotation.Resource;
 import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 /**
  *
@@ -14,6 +19,9 @@ import javax.ejb.Stateless;
  */
 @Stateless
 public class MyBean {
+    @PersistenceContext(unitName = "com.hatde_SaleManager")
+    private EntityManager em;
+    
     public int add(int a, int b){
         return a+b;
     }
