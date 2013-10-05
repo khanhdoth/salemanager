@@ -19,13 +19,7 @@ import org.primefaces.event.CellEditEvent;
  */
 public abstract class FacadeController<T> {
     private Class<T> entityClass;
-
-    //@EJB
-    //private ContactFacadeREST bean;
-    //@Inject
-    //private BundleBean bundleBean;
     protected abstract AbstractFacade<T> getBean();
-
     protected abstract BundleBean getBundleBean();
 
     private List<T> list;
@@ -34,7 +28,6 @@ public abstract class FacadeController<T> {
     private T newT;
     private ResourceBundle bundle;
 
-    
      //@PostConstruct
      public void init(Class<T> entityClass) {
         this.entityClass = entityClass;
@@ -42,13 +35,11 @@ public abstract class FacadeController<T> {
         bundle = getBundleBean().getBundle();
      }    
     
-    //public void initFirstListandNewContact() {
     public void initFirstListandNewT() {
         list = new ArrayList();
         initNewT();
     }
 
-    //public void initListandNewContact() {
     public void initListandNewT() {
         initDataList();
         initNewT();
@@ -59,7 +50,6 @@ public abstract class FacadeController<T> {
         list = getBean().findAll();
     }
 
-    //public void initNewContact() {
     public void initNewT() {        
         try{
             newT = entityClass.newInstance();
@@ -86,8 +76,7 @@ public abstract class FacadeController<T> {
     }
 
     public void delete() {
-        System.out.println("============== delete =============");
-
+        System.out.println("----delete----" + this.toString());
         try {
             getBean().remove(selectedT);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, bundle.getString("Delete_Success"), ""));
@@ -97,9 +86,8 @@ public abstract class FacadeController<T> {
         }
     }
 
-    //public void createContact() {
-    public void create() {
-        System.out.println("============== create ============= ");
+    public void create() {        
+        System.out.println("----create----" + this.toString());
         try {
             getBean().create(newT);
             initListandNewT();
@@ -119,36 +107,9 @@ public abstract class FacadeController<T> {
      * getter and setter
      *--------------------------------------------------------------------------
      */
-   
-    /*
-    public Contact getSelectedContact() {
-    return selectedT;
-    }
-    public void setSelectedContact(Contact selectedContact) {
-    this.selectedT = selectedContact;
-    }
-    public Contact getNewContact() {
-    return newT;
-    }
-    public void setNewContact(Contact newContact) {
-    this.newT = newContact;
-    }
-    public List<Contact> getList() {
-    System.out.println("----ContactController.getList----");
-    return list;
-    }
-    public void setList(List<Contact> list) {
-    this.list = list;
-    }
-    public List<Contact> getFilterList() {
-    return filterList;
-    }
-    public void setFilterList(List<Contact> filterList) {
-    this.filterList = filterList;
-    }
-     */
     
     public List<T> getList() {
+        System.out.println("----getList----" + this.toString());
         return list;
     }
 

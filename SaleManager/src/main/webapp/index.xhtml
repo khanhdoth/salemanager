@@ -28,7 +28,27 @@
 
             <!-- menu -->            
             <h:form id="menuForm" onkeypress="return event.keyCode != 13;">
-                <p:menubar autoDisplay="false">  
+                <p:menubar autoDisplay="false">                      
+                    <p:submenu label="#{bundle.ModuleStockOut}">  
+                        <p:menuitem value="#{bundle.StockOut_NewStockOut}" icon="ui-icon-document" onclick="wDlgSale.show()" /> 
+                        <p:menuitem value="#{bundle.StockOut_StockOutList}" icon="ui-icon-document" onclick="wDlgSaleList.show()" /> 
+                    </p:submenu>  
+
+                    <p:submenu label="#{bundle.ModuleStockIn}">  
+                        <p:menuitem value="#{bundle.StockIn_NewStockIn}" icon="ui-icon-document" onclick="wDlgBuy.show()" /> 
+                        <p:menuitem value="#{bundle.StockIn_StockInList}" icon="ui-icon-document" onclick="wDlgBuyList.show()" /> 
+                    </p:submenu>  
+
+                    <p:submenu label="#{bundle.ModuleReceipt}">  
+                        <p:menuitem value="#{bundle.Receip_NewReceipt}" icon="ui-icon-document" onclick="wDlgPaymentReceive.show()" /> 
+                        <p:menuitem value="#{bundle.Receip_ReceiptList}" icon="ui-icon-document" onclick="wDlgPaymentReceiveList.show()" /> 
+                    </p:submenu>  
+
+                    <p:submenu label="#{bundle.ModulePayment}">  
+                        <p:menuitem value="#{bundle.Payment_NewPayment}" icon="ui-icon-document" onclick="wDlgPaymentSent.show()" /> 
+                        <p:menuitem value="#{bundle.Payment_PaymentList}" icon="ui-icon-document" onclick="wDlgPaymentSentList.show()" /> 
+                    </p:submenu>  
+
                     <p:submenu label="#{bundle.ModuleContact}" >  
                         <p:menuitem value="#{bundle.Contact_NewContact}" icon="ui-icon-document" onclick="wDlgContact.show()" />  
                         <p:menuitem value="#{bundle.Contact_ContactList}" icon="ui-icon-document" 
@@ -43,26 +63,6 @@
                                     update=":productListForm:iProductTable" /> 
                     </p:submenu>  
 
-                    <p:submenu label="Sale">  
-                        <p:menuitem value="New sale" icon="ui-icon-document" onclick="wDlgSale.show()" /> 
-                        <p:menuitem value="Sale list" icon="ui-icon-document" onclick="wDlgSaleList.show()" /> 
-                    </p:submenu>  
-
-                    <p:submenu label="Buy">  
-                        <p:menuitem value="New buy" icon="ui-icon-document" onclick="wDlgBuy.show()" /> 
-                        <p:menuitem value="Buy list" icon="ui-icon-document" onclick="wDlgBuyList.show()" /> 
-                    </p:submenu>  
-
-                    <p:submenu label="Payment sent">  
-                        <p:menuitem value="New payment sent" icon="ui-icon-document" onclick="wDlgPaymentSent.show()" /> 
-                        <p:menuitem value="Payment sent list" icon="ui-icon-document" onclick="wDlgPaymentSentList.show()" /> 
-                    </p:submenu>  
-
-                    <p:submenu label="Payment received">  
-                        <p:menuitem value="New payment received" icon="ui-icon-document" onclick="wDlgPaymentReceive.show()" /> 
-                        <p:menuitem value="Payment received list" icon="ui-icon-document" onclick="wDlgPaymentReceiveList.show()" /> 
-                    </p:submenu>  
-                    
                     <p:menuitem value="#{bundle.Quit}" url="http://vannga.com" />  
 
                     <f:facet name="options">  
@@ -250,17 +250,17 @@
                 <p:dialog id="iDlgProduct" header="#{bundle.Product_NewProduct}" widgetVar="wDlgProduct">                    
                     <h:panelGrid columns="2" cellpadding="5">  
                         <h:outputLabel value="#{bundle.Product_Name}" />  
-                        <p:inputText value="#{productController.newProduct.name}" />  
+                        <p:inputText value="#{productController.newT.name}" />  
 
                         <h:outputLabel value="#{bundle.Product_Manufacturer}" />  
-                        <p:inputText value="#{productController.newProduct.manufacturer}" />  
+                        <p:inputText value="#{productController.newT.manufacturer}" />  
 
                         <h:outputLabel value="#{bundle.Product_Unit}" />  
-                        <p:inputText value="#{productController.newProduct.unit}" />  
+                        <p:inputText value="#{productController.newT.unit}" />  
 
                         <p:commandButton widgetVar="saveProductButton" value="#{bundle.Save}" 
                                          onclick="saveProductButton.disable()"
-                                         actionListener="#{productController.createProduct}" 
+                                         actionListener="#{productController.create}" 
                                          update="iDlgProduct, :productListForm:iProductTable, :mainForm:messages" 
                                          oncomplete="saveProductButton.enable(); wDlgContact.hide()" />  
                     </h:panelGrid>  
@@ -291,7 +291,7 @@
                         <p:column style="width:5%">  
                             <p:commandButton id="deleteButton" update="iProductTable, :mainForm:messages" action="#{productController.delete}" icon="ui-icon-trash" title="#{bundle.Delete}" >  
                                 <p:confirm header="#{bundle.Confirmation}" message="#{bundle.Delete_Confirm_Message}" icon="ui-icon-alert" />  
-                                <f:setPropertyActionListener value="#{item}" target="#{productController.selectedProduct}" />  
+                                <f:setPropertyActionListener value="#{item}" target="#{productController.selectedT}" />  
                             </p:commandButton> 
                         </p:column> 
 
@@ -343,55 +343,54 @@
                 </p:dialog>  
             </h:form>
 
-            <!-- Create Sale -->            
+            <!-- Create stock-out -->            
             <h:form id="createSaleForm" onkeypress="return event.keyCode != 13;">
-                <p:dialog id="iDlgSale" header="New sale" widgetVar="wDlgSale">                    
+                <p:dialog id="iDlgSale" header="#{bundle.StockOut_NewStockOut}" widgetVar="wDlgSale">                    
                 </p:dialog>                
             </h:form>
 
-            <!-- Sale list -->            
+            <!-- stock-out list -->            
             <h:form id="saleListForm" onkeypress="return event.keyCode != 13;">
-                <p:dialog id="iDlgSaleList" header="Sale list" widgetVar="wDlgSaleList" position="bottom" >
+                <p:dialog id="iDlgSaleList" header="#{bundle.StockOut_StockOutList}" widgetVar="wDlgSaleList" position="bottom" >
                 </p:dialog>  
             </h:form>            
-            
-            <!-- Create Buy -->            
+
+            <!-- Create stock-in -->            
             <h:form id="createBuyForm" onkeypress="return event.keyCode != 13;">
-                <p:dialog id="iDlgBuy" header="New buy" widgetVar="wDlgBuy">                    
+                <p:dialog id="iDlgBuy" header="#{bundle.StockIn_NewStockIn}" widgetVar="wDlgBuy">                    
                 </p:dialog>                
             </h:form>
 
-            <!-- Buy list -->            
+            <!-- stock-in list -->            
             <h:form id="buyListForm" onkeypress="return event.keyCode != 13;">
-                <p:dialog id="iDlgBuyList" header="Buy list" widgetVar="wDlgBuyList" position="bottom" >
+                <p:dialog id="iDlgBuyList" header="#{bundle.StockIn_StockInList}" widgetVar="wDlgBuyList" position="bottom" >
                 </p:dialog>  
             </h:form>            
 
-            <!-- Create payment receive -->            
+            <!-- Create Receipt -->            
             <h:form id="createPaymentReceiveForm" onkeypress="return event.keyCode != 13;">
-                <p:dialog id="iDlgPaymentReceive" header="New payment receive" widgetVar="wDlgPaymentReceive">                    
+                <p:dialog id="iDlgPaymentReceive" header="#{bundle.Receip_NewReceipt}" widgetVar="wDlgPaymentReceive">                    
                 </p:dialog>                
             </h:form>
 
-            <!-- payment receive  list -->            
+            <!-- Receipt list -->            
             <h:form id="paymentReceiveListForm" onkeypress="return event.keyCode != 13;">
-                <p:dialog id="iDlgPaymentReceiveList" header="Payment receive list" widgetVar="wDlgPaymentReceiveList" position="bottom" >
+                <p:dialog id="iDlgPaymentReceiveList" header="#{bundle.Receip_ReceiptList}" widgetVar="wDlgPaymentReceiveList" position="bottom" >
                 </p:dialog>  
             </h:form>            
 
-            <!-- Create payment sent -->            
+            <!-- Create payment -->            
             <h:form id="createPaymentSentForm" onkeypress="return event.keyCode != 13;">
-                <p:dialog id="iDlgPaymentSent" header="New payment sent" widgetVar="wDlgPaymentSent">                    
+                <p:dialog id="iDlgPaymentSent" header="#{bundle.Payment_NewPayment}" widgetVar="wDlgPaymentSent">                    
                 </p:dialog>                
             </h:form>
 
-            <!-- payment sent list -->            
+            <!-- payment list -->            
             <h:form id="paymentSentListForm" onkeypress="return event.keyCode != 13;">
-                <p:dialog id="iDlgPaymentSentList" header="Payment sent list" widgetVar="wDlgPaymentSentList" position="bottom" >
+                <p:dialog id="iDlgPaymentSentList" header="#{bundle.Payment_PaymentList}" widgetVar="wDlgPaymentSentList" position="bottom" >
                 </p:dialog>  
             </h:form>                
-            
+
         </h:body>        
     </ui:composition>        
 </html>
-
