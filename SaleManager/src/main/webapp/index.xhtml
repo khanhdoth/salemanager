@@ -42,6 +42,27 @@
                                     action="#{productController.refreshList}" 
                                     update=":productListForm:iProductTable" /> 
                     </p:submenu>  
+
+                    <p:submenu label="Sale">  
+                        <p:menuitem value="New sale" icon="ui-icon-document" onclick="wDlgSale.show()" /> 
+                        <p:menuitem value="Sale list" icon="ui-icon-document" onclick="wDlgSaleList.show()" /> 
+                    </p:submenu>  
+
+                    <p:submenu label="Buy">  
+                        <p:menuitem value="New buy" icon="ui-icon-document" onclick="wDlgBuy.show()" /> 
+                        <p:menuitem value="Buy list" icon="ui-icon-document" onclick="wDlgBuyList.show()" /> 
+                    </p:submenu>  
+
+                    <p:submenu label="Payment sent">  
+                        <p:menuitem value="New payment sent" icon="ui-icon-document" onclick="wDlgPaymentSent.show()" /> 
+                        <p:menuitem value="Payment sent list" icon="ui-icon-document" onclick="wDlgPaymentSentList.show()" /> 
+                    </p:submenu>  
+
+                    <p:submenu label="Payment received">  
+                        <p:menuitem value="New payment received" icon="ui-icon-document" onclick="wDlgPaymentReceive.show()" /> 
+                        <p:menuitem value="Payment received list" icon="ui-icon-document" onclick="wDlgPaymentReceiveList.show()" /> 
+                    </p:submenu>  
+                    
                     <p:menuitem value="#{bundle.Quit}" url="http://vannga.com" />  
 
                     <f:facet name="options">  
@@ -99,7 +120,7 @@
 
             <!-- Contact list -->            
             <h:form id="ContactListForm" onkeypress="return event.keyCode != 13;">
-                <p:dialog header="#{bundle.Contact_ContactList}" widgetVar="wDlgContactList" position="bottom">
+                <p:dialog id="iDlgContactList" header="#{bundle.Contact_ContactList}" widgetVar="wDlgContactList" position="bottom">
                     <p:dataTable id="iContactTable" var="item" value="#{contactController.list}" editable="true"
                                  widgetVar="wContactTable" rowKey="#{item.contactId}" scrollable="true" scrollHeight="400"
                                  emptyMessage="No contact found with given criteria" editMode="cell" 
@@ -248,7 +269,7 @@
 
             <!-- Product list -->            
             <h:form id="productListForm" onkeypress="return event.keyCode != 13;">
-                <p:dialog header="#{bundle.Product_ProductList}" widgetVar="wDlgProductList" position="bottom" >                    
+                <p:dialog id="iDlgProductList" header="#{bundle.Product_ProductList}" widgetVar="wDlgProductList" position="bottom" >                    
                     <p:dataTable id="iProductTable" var="item" value="#{productController.list}" editable="true"
                                  widgetVar="wProductTable" rowKey="#{item.productId}" scrollable="true" scrollHeight="400"
                                  emptyMessage="No product found with given criteria" editMode="cell" 
@@ -322,6 +343,54 @@
                 </p:dialog>  
             </h:form>
 
+            <!-- Create Sale -->            
+            <h:form id="createSaleForm" onkeypress="return event.keyCode != 13;">
+                <p:dialog id="iDlgSale" header="New sale" widgetVar="wDlgSale">                    
+                </p:dialog>                
+            </h:form>
+
+            <!-- Sale list -->            
+            <h:form id="saleListForm" onkeypress="return event.keyCode != 13;">
+                <p:dialog id="iDlgSaleList" header="Sale list" widgetVar="wDlgSaleList" position="bottom" >
+                </p:dialog>  
+            </h:form>            
+            
+            <!-- Create Buy -->            
+            <h:form id="createBuyForm" onkeypress="return event.keyCode != 13;">
+                <p:dialog id="iDlgBuy" header="New buy" widgetVar="wDlgBuy">                    
+                </p:dialog>                
+            </h:form>
+
+            <!-- Buy list -->            
+            <h:form id="buyListForm" onkeypress="return event.keyCode != 13;">
+                <p:dialog id="iDlgBuyList" header="Buy list" widgetVar="wDlgBuyList" position="bottom" >
+                </p:dialog>  
+            </h:form>            
+
+            <!-- Create payment receive -->            
+            <h:form id="createPaymentReceiveForm" onkeypress="return event.keyCode != 13;">
+                <p:dialog id="iDlgPaymentReceive" header="New payment receive" widgetVar="wDlgPaymentReceive">                    
+                </p:dialog>                
+            </h:form>
+
+            <!-- payment receive  list -->            
+            <h:form id="paymentReceiveListForm" onkeypress="return event.keyCode != 13;">
+                <p:dialog id="iDlgPaymentReceiveList" header="Payment receive list" widgetVar="wDlgPaymentReceiveList" position="bottom" >
+                </p:dialog>  
+            </h:form>            
+
+            <!-- Create payment sent -->            
+            <h:form id="createPaymentSentForm" onkeypress="return event.keyCode != 13;">
+                <p:dialog id="iDlgPaymentSent" header="New payment sent" widgetVar="wDlgPaymentSent">                    
+                </p:dialog>                
+            </h:form>
+
+            <!-- payment sent list -->            
+            <h:form id="paymentSentListForm" onkeypress="return event.keyCode != 13;">
+                <p:dialog id="iDlgPaymentSentList" header="Payment sent list" widgetVar="wDlgPaymentSentList" position="bottom" >
+                </p:dialog>  
+            </h:form>                
+            
         </h:body>        
     </ui:composition>        
 </html>
