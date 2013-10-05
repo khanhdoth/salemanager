@@ -88,29 +88,29 @@
                 <p:dialog id="iDlgContact" header="#{bundle.Contact_NewContact}" widgetVar="wDlgContact">                    
                     <h:panelGrid columns="2" cellpadding="5">  
                         <h:outputLabel value="#{bundle.Contact_Name}" />  
-                        <p:inputText value="#{contactController.newContact.name}" />  
+                        <p:inputText value="#{contactController.newT.name}" />  
 
                         <h:outputLabel value="#{bundle.Contact_Address}" />  
-                        <p:inputText value="#{contactController.newContact.address}" />  
+                        <p:inputText value="#{contactController.newT.address}" />  
 
                         <h:outputLabel value="#{bundle.Contact_District}" />  
-                        <p:inputText value="#{contactController.newContact.district}" />  
+                        <p:inputText value="#{contactController.newT.district}" />  
 
                         <h:outputLabel value="#{bundle.Contact_City}" />  
-                        <p:inputText value="#{contactController.newContact.city}" />  
+                        <p:inputText value="#{contactController.newT.city}" />  
 
                         <h:outputLabel value="#{bundle.Contact_Postcode}" />  
-                        <p:inputText value="#{contactController.newContact.postcode}" />  
+                        <p:inputText value="#{contactController.newT.postcode}" />  
 
                         <h:outputLabel value="#{bundle.Contact_Country}" />  
-                        <p:inputText value="#{contactController.newContact.country}" />  
+                        <p:inputText value="#{contactController.newT.country}" />  
 
                         <h:outputLabel value="#{bundle.Contact_MoreInfo}" />  
-                        <p:inputText value="#{contactController.newContact.moreInfo}" />  
+                        <p:inputText value="#{contactController.newT.moreInfo}" />  
 
                         <p:commandButton widgetVar="saveContactButton" value="#{bundle.Save}" 
                                          onclick="saveContactButton.disable()"
-                                         actionListener="#{contactController.createContact}" 
+                                         actionListener="#{contactController.create}" 
                                          update="iDlgContact, :ContactListForm:iContactTable, :mainForm:messages" 
                                          oncomplete="saveContactButton.enable(); wDlgContact.hide()" />  
 
@@ -142,7 +142,7 @@
                         <p:column style="width:5%">  
                             <p:commandButton id="deleteButton" update="iContactTable, :mainForm:messages" action="#{contactController.delete}" icon="ui-icon-trash" title="#{bundle.Delete}" >  
                                 <p:confirm header="#{bundle.Confirmation}" message="#{bundle.Delete_Confirm_Message}" icon="ui-icon-alert" />  
-                                <f:setPropertyActionListener value="#{item}" target="#{contactController.selectedContact}" />  
+                                <f:setPropertyActionListener value="#{item}" target="#{contactController.selectedT}" />  
                             </p:commandButton> 
                         </p:column> 
 

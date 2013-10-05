@@ -1,6 +1,7 @@
 package com.hatde.salemanager.web;
 
 import com.hatde.salemanager.entities.Contact;
+import com.hatde.salemanager.services.AbstractFacade;
 import com.hatde.salemanager.services.ContactFacadeREST;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -22,26 +23,40 @@ import org.primefaces.event.CellEditEvent;
  */
 @Named(value = "contactController")
 @SessionScoped
-public class ContactController implements Serializable {
-
+public class ContactController extends FacadeController<Contact> implements Serializable {
     @EJB
     private ContactFacadeREST bean;
 
     @Inject
     private BundleBean bundleBean;
 
+    /*
     private List<Contact> list;
     private List<Contact> filterList;
     private Contact selectedContact;
     private Contact newContact;
     private ResourceBundle bundle;
-
+    */
+    
     @PostConstruct
     public void init() {
-        initFirstListandNewContact();        
-        bundle = bundleBean.getBundle();
+        super.init(Contact.class);
     }
 
+    public ContactController() {        
+    }
+
+    @Override
+    protected AbstractFacade getBean() {
+        return bean;
+    }
+
+    @Override
+    protected BundleBean getBundleBean() {
+        return bundleBean;
+    }
+    
+    /*
     public void initFirstListandNewContact() {
         list = new ArrayList();;
         initNewContact();
@@ -61,8 +76,6 @@ public class ContactController implements Serializable {
         newContact = new Contact();
     }
 
-    public ContactController() {
-    }
 
     public List<Contact> getList() {
         System.out.println("----ContactController.getList----");
@@ -140,4 +153,7 @@ public class ContactController implements Serializable {
     public void refreshList() {
         initDataList();
     }
+    */
+    
+    
 }
