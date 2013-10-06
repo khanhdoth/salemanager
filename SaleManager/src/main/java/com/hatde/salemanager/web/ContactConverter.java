@@ -13,7 +13,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 @Named
-@FacesConverter("contact")
+@FacesConverter("contactConverter")
 public class ContactConverter implements Converter {
 
     @Inject
