@@ -6,7 +6,7 @@
 
 package com.hatde.salemanager.services;
 
-import com.hatde.salemanager.entities.PaymentTransaction;
+import com.hatde.salemanager.entities.PaymentReceived;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -25,26 +25,26 @@ import javax.ws.rs.Produces;
  * @author Khanh
  */
 @Stateless
-@Path("paymenttransaction")
-public class PaymentTransactionFacadeREST extends AbstractFacade<PaymentTransaction> {
+@Path("paymentreceived")
+public class PaymentReceivedFacadeREST extends AbstractFacade<PaymentReceived> {
     @PersistenceContext(unitName = "com.hatde_SaleManager")
     private EntityManager em;
 
-    public PaymentTransactionFacadeREST() {
-        super(PaymentTransaction.class);
+    public PaymentReceivedFacadeREST() {
+        super(PaymentReceived.class);
     }
 
     @POST
     @Override
     @Consumes({"application/xml", "application/json"})
-    public void create(PaymentTransaction entity) {
+    public void create(PaymentReceived entity) {
         super.create(entity);
     }
 
     @PUT
     @Path("{id}")
     @Consumes({"application/xml", "application/json"})
-    public void edit(@PathParam("id") Integer id, PaymentTransaction entity) {
+    public void edit(@PathParam("id") Integer id, PaymentReceived entity) {
         super.edit(entity);
     }
 
@@ -57,21 +57,21 @@ public class PaymentTransactionFacadeREST extends AbstractFacade<PaymentTransact
     @GET
     @Path("{id}")
     @Produces({"application/xml", "application/json"})
-    public PaymentTransaction find(@PathParam("id") Integer id) {
+    public PaymentReceived find(@PathParam("id") Integer id) {
         return super.find(id);
     }
 
     @GET
     @Override
     @Produces({"application/xml", "application/json"})
-    public List<PaymentTransaction> findAll() {
+    public List<PaymentReceived> findAll() {
         return super.findAll();
     }
 
     @GET
     @Path("{from}/{to}")
     @Produces({"application/xml", "application/json"})
-    public List<PaymentTransaction> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
+    public List<PaymentReceived> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
         return super.findRange(new int[]{from, to});
     }
 
@@ -83,7 +83,7 @@ public class PaymentTransactionFacadeREST extends AbstractFacade<PaymentTransact
     }
 
     @Override
-    public EntityManager getEntityManager() {
+    protected EntityManager getEntityManager() {
         return em;
     }
     

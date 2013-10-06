@@ -34,7 +34,7 @@ public class IntegrationProductTransactionTest {
     private Product p2;
     private static ContactFacadeREST iContact;
     private static ProductFacadeREST iProduct;
-    private static PaymentTransactionFacadeREST iPayment;
+    private static PaymentReceivedFacadeREST iPayment;
     
     
 
@@ -67,7 +67,7 @@ public class IntegrationProductTransactionTest {
         container = EContainer.INSTANCE.getContainer();
         iContact = (ContactFacadeREST) container.getContext().lookup("java:global/classes/ContactFacadeREST");
         iProduct = (ProductFacadeREST) container.getContext().lookup("java:global/classes/ProductFacadeREST");
-        iPayment = (PaymentTransactionFacadeREST) container.getContext().lookup("java:global/classes/PaymentTransactionFacadeREST");
+        iPayment = (PaymentReceivedFacadeREST) container.getContext().lookup("java:global/classes/PaymentTransactionFacadeREST");
         factory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
     }
 

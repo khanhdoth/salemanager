@@ -45,8 +45,8 @@
                     </p:submenu>  
 
                     <p:submenu label="#{bundle.ModulePayment}">  
-                        <p:menuitem value="#{bundle.Payment_NewPayment}" icon="ui-icon-document" onclick="wDlgPaymentSent.show()" /> 
-                        <p:menuitem value="#{bundle.Payment_PaymentList}" icon="ui-icon-document" onclick="wDlgPaymentSentList.show()" /> 
+                        <p:menuitem value="#{bundle.Payment_NewPayment}" icon="ui-icon-document" onclick="wDlgPayment.show()" /> 
+                        <p:menuitem value="#{bundle.Payment_PaymentList}" icon="ui-icon-document" onclick="wDlgPaymentList.show()" /> 
                     </p:submenu>  
 
                     <p:submenu label="#{bundle.ModuleContact}" >  
@@ -380,14 +380,98 @@
             </h:form>            
 
             <!-- Create payment -->            
-            <h:form id="createPaymentSentForm" onkeypress="return event.keyCode != 13;">
-                <p:dialog id="iDlgPaymentSent" header="#{bundle.Payment_NewPayment}" widgetVar="wDlgPaymentSent">                    
+            <h:form id="createPaymentForm" onkeypress="return event.keyCode != 13;">
+                <p:dialog id="iDlgPayment" header="#{bundle.Payment_NewPayment}" widgetVar="wDlgPayment">                    
                 </p:dialog>                
             </h:form>
 
             <!-- payment list -->            
-            <h:form id="paymentSentListForm" onkeypress="return event.keyCode != 13;">
-                <p:dialog id="iDlgPaymentSentList" header="#{bundle.Payment_PaymentList}" widgetVar="wDlgPaymentSentList" position="bottom" >
+            <h:form id="paymentListForm" onkeypress="return event.keyCode != 13;">
+                <p:dialog id="iDlgPaymentList" header="#{bundle.Payment_PaymentList}" widgetVar="wDlgPaymentList" position="bottom" >
+                    <p:dataTable id="iPaymentTable" var="item" value="#{paymentController.list}" editable="true"
+                                 widgetVar="wPaymentTable" rowKey="#{item.paymentTransactionId}" scrollable="true" scrollHeight="400"
+                                 emptyMessage="No payment found with given criteria" editMode="cell" 
+                                 filteredValue="#{paymentController.filterList}"                                 
+                                 resizableColumns="true" liveResize="true" >   
+
+                        <f:facet name="header">  
+                            <p:outputPanel style="text-align:left"> 
+                                <p:commandButton id="refreshButton" update="iPaymentTable" action="#{paymentController.refreshList}" icon="ui-icon-refresh" title="#{bundle.Reresh}" />  
+                                <p:spacer width="20"/>
+                                <h:outputText value="#{bundle.Search}" />
+                                <p:spacer width="5"/>
+                                <p:inputText id="globalFilter" onkeyup="wPaymentTable.filter()" style="width:150px" />                            
+                            </p:outputPanel>
+                        </f:facet>
+
+                        <p:ajax event="cellEdit" listener="#{paymentController.onCellEdit}" update=":mainForm:messages" /> 
+
+                        <p:column style="width:5%">  
+                            <p:commandButton id="deleteButton" update="iPaymentTable, :mainForm:messages" action="#{paymentController.delete}" icon="ui-icon-trash" title="#{bundle.Delete}" >  
+                                <p:confirm header="#{bundle.Confirmation}" message="#{bundle.Delete_Confirm_Message}" icon="ui-icon-alert" />  
+                                <f:setPropertyActionListener value="#{item}" target="#{paymentController.selectedT}" />  
+                            </p:commandButton> 
+                        </p:column> 
+
+                        <p:column id="paymentTransactionIdColumn" sortBy="paymentTransactionId" filterBy="paymentTransactionId"   
+                                  headerText="#{bundle.ID}" filterMatchMode="contains">  
+                            <h:outputText value="#{item.paymentTransactionId}" />  
+                        </p:column>  
+
+                        <p:column id="dateColumn" sortBy="date" filterBy="date"   
+                                  headerText="#{bundle.Date}"
+                                  filterMatchMode="contains">                                    
+                            <p:cellEditor>  
+                                <f:facet name="output">  
+                                    <h:outputText value="#{item.Date}" />  
+                                </f:facet>  
+                                <f:facet name="input">  
+                                    <p:inputText value="#{item.Date}" />  
+                                </f:facet>  
+                            </p:cellEditor>                             
+                        </p:column>  
+
+                        <p:column id="amountColumn" sortBy="amount" filterBy="amount"   
+                                  headerText="#{bundle.Amount}"
+                                  filterMatchMode="contains">  
+                            <p:cellEditor>  
+                                <f:facet name="output">  
+                                    <h:outputText value="#{item.amount}" />  
+                                </f:facet>  
+                                <f:facet name="input">  
+                                    <p:inputText value="#{item.amount}" />  
+                                </f:facet>  
+                            </p:cellEditor>                             
+                        </p:column>  
+
+                        <p:column id="paymentReasonColumn" sortBy="paymentReason" filterBy="paymentReason"   
+                                  headerText="#{bundle.Reason}"
+                                  filterMatchMode="contains">  
+                            <p:cellEditor>  
+                                <f:facet name="output">  
+                                    <h:outputText value="#{item.paymentReason}" />  
+                                </f:facet>  
+                                <f:facet name="input">  
+                                    <p:inputText value="#{item.paymentReason}" />  
+                                </f:facet>  
+                            </p:cellEditor>                             
+
+                        </p:column> 
+                        
+                        <p:column id="contactColumn" sortBy="contact" filterBy="contact"   
+                                  headerText="#{bundle.ModuleContact}"
+                                  filterMatchMode="contains">  
+                            <p:cellEditor>  
+                                <f:facet name="output">  
+                                    <h:outputText value="#{item.contact.name}" />  
+                                </f:facet>  
+                                <f:facet name="input">  
+                                    <p:inputText value="#{item.contact.name}" />  
+                                </f:facet>  
+                            </p:cellEditor>                             
+                        </p:column> 
+                        
+                    </p:dataTable>  
                 </p:dialog>  
             </h:form>                
 
