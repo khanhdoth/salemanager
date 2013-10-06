@@ -1,3 +1,8 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package com.hatde.salemanager.web;
 
 import com.hatde.salemanager.entities.Product;
@@ -6,17 +11,17 @@ import com.hatde.salemanager.services.ProductFacadeREST;
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
-import javax.inject.Named;
 
 /**
  *
- * @author Do
+ * @author Khanh
  */
-@Named(value = "productController")
+@Named(value = "paymentController")
 @SessionScoped
-public class ProductController extends FacadeController<Product> implements Serializable {
+public class PaymentController extends FacadeController<Product> implements Serializable {
 
     @EJB
     private ProductFacadeREST bean;
@@ -29,7 +34,7 @@ public class ProductController extends FacadeController<Product> implements Seri
         super.init(Product.class);
     }
 
-    public ProductController() {
+    public PaymentController() {
     }
 
     @Override

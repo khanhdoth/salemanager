@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 
@@ -21,6 +22,7 @@ public class PaymentTransaction implements java.io.Serializable {
     private Date date;
     private double amount;
     private String paymentReason;
+    private Contact contact;
 
     public PaymentTransaction() {
     }
@@ -67,6 +69,17 @@ public class PaymentTransaction implements java.io.Serializable {
 
     public void setPaymentReason(String paymentReason) {
         this.paymentReason = paymentReason;
+    }
+
+    //@OneToOne
+    //@JoinColumn(name = "contactId")
+    @JoinColumn(name="contactId")
+    public Contact getContact() {
+        return contact;
+    }
+
+    public void setContact(Contact contact) {
+        this.contact = contact;
     }
 
     public String printInfo() {

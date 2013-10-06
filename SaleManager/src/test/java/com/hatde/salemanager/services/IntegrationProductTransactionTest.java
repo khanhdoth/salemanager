@@ -100,14 +100,16 @@ public class IntegrationProductTransactionTest {
         pc1.setDate(df.parse("02.11.2013"));
         pc1.setAmount(400000);
         pc1.setPaymentReason("Tra tien lalala");
+        pc1.setContact(c);
         
         Sale sale1 = new Sale();
         sale1.setDate(df.parse("02.11.2013"));
         sale1.getListOfSaleItem().add(si1);
         sale1.getListOfSaleItem().add(si2);
         sale1.setPayment(pc1);
-        sale1.setVAT(0.1f);
         
+        //iContact.getEntityManager().merge(sale1);
+
         c.getListOfBuy().add(sale1);
         
         iContact.edit(c);

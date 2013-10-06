@@ -101,10 +101,12 @@ public class Contact implements java.io.Serializable {
         this.moreInfo = moreInfo;
     }
 
-    @OneToMany(cascade = CascadeType.ALL)
+    /*@OneToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "contact_paymentsent", joinColumns = {
         @JoinColumn(name = "contactId")}, inverseJoinColumns = {
-        @JoinColumn(name = "paymentSentId")})
+        @JoinColumn(name = "paymentSentId")})*/
+    
+    @OneToMany(mappedBy="contact")
     @XmlTransient
     public Collection<PaymentSent> getListOfPaymentReceived() {
         return listOfPaymentReceived;
@@ -115,10 +117,12 @@ public class Contact implements java.io.Serializable {
         this.listOfPaymentReceived = listOfPaymentReceived;
     }
 
-    @OneToMany(cascade = CascadeType.ALL)
+    /*@OneToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "contact_paymentreceived", joinColumns = {
         @JoinColumn(name = "contactId")}, inverseJoinColumns = {
-        @JoinColumn(name = "paymentReceivedId")})
+        @JoinColumn(name = "paymentReceivedId")})*/
+    
+    @OneToMany(mappedBy="contact")
     @XmlTransient
     public Collection<PaymentReceived> getListOfPaymentSent() {
         return listOfPaymentSent;
