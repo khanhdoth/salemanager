@@ -65,14 +65,6 @@ public class PaymentController extends FacadeContactController<PaymentSent> impl
     @Override
     public void create() {
         contact = contactBean.find(1);
-
-        DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
-        try {
-            ((PaymentSent) newT).setDate(df.parse("10.11.2013"));
-        } catch (ParseException ex) {
-            Logger.getLogger(PaymentController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
         newT.setContact(contact);
         contact.getListOfPaymentReceived().add(newT);
         super.create();

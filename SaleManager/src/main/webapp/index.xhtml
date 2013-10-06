@@ -385,6 +385,10 @@
             <h:form id="createPaymentForm" onkeypress="return event.keyCode != 13;">
                 <p:dialog id="iDlgPayment" header="#{bundle.Payment_NewPayment}" widgetVar="wDlgPayment">   
                     <h:panelGrid columns="2" cellpadding="5">  
+                        
+                        <h:outputLabel value="#{bundle.Date}" />  
+                        <p:calendar locale="de" showButtonPanel="true" navigator="true" value="#{paymentController.newT.date}" />                            
+                        
                         <h:outputLabel value="#{bundle.Amount}" />  
                         <p:inputText value="#{paymentController.newT.amount}" />  
 
