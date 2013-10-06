@@ -431,20 +431,20 @@
                             <h:outputText value="#{item.paymentTransactionId}" />  
                         </p:column>  
 
-                        <!--
+                        
                         <p:column id="dateColumn" sortBy="date" filterBy="date"   
                                   headerText="#{bundle.Date}"
                                   filterMatchMode="contains">                                    
                             <p:cellEditor>  
                                 <f:facet name="output">  
-                                    <h:outputText value="#{item.Date}" />  
+                                    <p:calendar locale="de" showButtonPanel="true" navigator="true" value="#{item.date}" />                                      
                                 </f:facet>  
                                 <f:facet name="input">  
-                                    <p:inputText value="#{item.Date}" />  
+                                    <p:calendar locale="de" showButtonPanel="true" navigator="true" value="#{item.date}" />  
                                 </f:facet>  
                             </p:cellEditor>                             
                         </p:column>  
-                        -->
+                        
                         
                         <p:column id="amountColumn" sortBy="amount" filterBy="amount"   
                                   headerText="#{bundle.Amount}"

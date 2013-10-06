@@ -75,5 +75,6 @@ public class PaymentController extends FacadeContactController<PaymentSent> impl
         newT.setContact(contact);
         contact.getListOfPaymentReceived().add(newT);
         super.create();
+        System.out.println(contact.toString());
     }
 }
