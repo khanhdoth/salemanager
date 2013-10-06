@@ -391,7 +391,7 @@
 
                         <h:outputLabel value="#{bundle.ModuleContact}" />                                                 
 
-                        <p:selectOneMenu id="soMenu" value="#{paymentController.contact}" converter="contactConverter" panelStyle="width:150px"  
+                        <p:selectOneMenu id="soMenu" value="#{paymentController.contact}" converter="contactConverter" panelStyle="width:500px"  
                                          effect="fade" var="p" style="width:160px"  filter="true" filterMatchMode="contains" >  
                             <f:selectItem itemLabel="#{bundle.SelectOne}" itemValue="" />  
                             <f:selectItems value="#{contactController.list}" var="c" itemLabel="#{c.name}" itemValue="#{c}"/>  
