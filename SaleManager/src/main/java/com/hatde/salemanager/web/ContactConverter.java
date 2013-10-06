@@ -19,16 +19,6 @@ public class ContactConverter implements Converter {
     @Inject
     private ContactFacadeREST bean;
 
-    /*@Override
-    public Object getAsObject(FacesContext facesContext, UIComponent component, String value) {
-        //return bean.getList().get(Integer.parseInt(value));
-        System.out.println("===========getAsObject==========");
-        System.out.println("value=" + value.toString());
-        Object o = bean.findAll().get(Integer.parseInt(value));
-        System.out.println("===========getAsObject======return: " + o.toString());
-        return o;
-    }*/
-    
     @Override
     public Object getAsObject(FacesContext facesContext, UIComponent component, String submittedValue) {
         System.out.println("===========getAsObject==========");
@@ -40,6 +30,7 @@ public class ContactConverter implements Converter {
                 List<Contact> contacts = bean.findAll();    
                 for (Contact c : contacts) {
                     if (c.getContactId() == number) {
+                        System.out.println("===========getAsObject mached:" + c.getName());
                         return c;
                     }
                 }
@@ -53,8 +44,9 @@ public class ContactConverter implements Converter {
 
     @Override
     public String getAsString(FacesContext facesContext, UIComponent component, Object value) {
-        System.out.println("===========getAsString==========" + value.toString());
+        System.out.println("===========getAsString==========");
         if (value instanceof Contact) {
+            System.out.println("===========getAsString mached:" + ((Contact) value).getName());
             return "" + ((Contact) value).getContactId();
         } else {
             return null;
