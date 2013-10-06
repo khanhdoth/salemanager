@@ -6,11 +6,15 @@
 package com.hatde.salemanager.web;
 
 import com.hatde.salemanager.entities.PaymentSent;
-import com.hatde.salemanager.entities.Product;
 import com.hatde.salemanager.services.AbstractFacade;
 import com.hatde.salemanager.services.ContactFacadeREST;
 import com.hatde.salemanager.services.PaymentSentFacadeREST;
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
@@ -55,5 +59,21 @@ public class PaymentController extends FacadeContactController<PaymentSent> impl
     @Override
     protected ContactFacadeREST getContactBean() {
         return contactBean;
+    }
+
+    @Override
+    public void create() {
+        contact = contactBean.find(1);
+
+        DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
+        try {
+            ((PaymentSent) newT).setDate(df.parse("10.11.2013"));
+        } catch (ParseException ex) {
+            Logger.getLogger(PaymentController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        newT.setContact(contact);
+        contact.getListOfPaymentReceived().add(newT);
+        super.create();
     }
 }

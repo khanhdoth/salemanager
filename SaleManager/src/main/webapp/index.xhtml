@@ -381,7 +381,20 @@
 
             <!-- Create payment -->            
             <h:form id="createPaymentForm" onkeypress="return event.keyCode != 13;">
-                <p:dialog id="iDlgPayment" header="#{bundle.Payment_NewPayment}" widgetVar="wDlgPayment">                    
+                <p:dialog id="iDlgPayment" header="#{bundle.Payment_NewPayment}" widgetVar="wDlgPayment">   
+                    <h:panelGrid columns="2" cellpadding="5">  
+                        <h:outputLabel value="#{bundle.Amount}" />  
+                        <p:inputText value="#{paymentController.newT.amount}" />  
+
+                        <h:outputLabel value="#{bundle.Reason}" />  
+                        <p:inputText value="#{paymentController.newT.paymentReason}" />  
+
+                        <p:commandButton widgetVar="savePaymentButton" value="#{bundle.Save}" 
+                                         onclick="savePaymentButton.disable()"
+                                         actionListener="#{paymentController.create}" 
+                                         update="iDlgPayment, :paymentListForm:iPaymentTable, :mainForm:messages" 
+                                         oncomplete="savePaymentButton.enable(); wDlgPayment.hide()" />  
+                    </h:panelGrid>  
                 </p:dialog>                
             </h:form>
 
@@ -418,6 +431,7 @@
                             <h:outputText value="#{item.paymentTransactionId}" />  
                         </p:column>  
 
+                        <!--
                         <p:column id="dateColumn" sortBy="date" filterBy="date"   
                                   headerText="#{bundle.Date}"
                                   filterMatchMode="contains">                                    
@@ -430,7 +444,8 @@
                                 </f:facet>  
                             </p:cellEditor>                             
                         </p:column>  
-
+                        -->
+                        
                         <p:column id="amountColumn" sortBy="amount" filterBy="amount"   
                                   headerText="#{bundle.Amount}"
                                   filterMatchMode="contains">  
@@ -457,20 +472,13 @@
                             </p:cellEditor>                             
 
                         </p:column> 
-                        
-                        <p:column id="contactColumn" sortBy="contact" filterBy="contact"   
+
+                        <p:column id="contactColumn" sortBy="contact.name" filterBy="contact.name"   
                                   headerText="#{bundle.ModuleContact}"
-                                  filterMatchMode="contains">  
-                            <p:cellEditor>  
-                                <f:facet name="output">  
-                                    <h:outputText value="#{item.contact.name}" />  
-                                </f:facet>  
-                                <f:facet name="input">  
-                                    <p:inputText value="#{item.contact.name}" />  
-                                </f:facet>  
-                            </p:cellEditor>                             
+                                  filterMatchMode="contains">                              
+                            <h:outputText value="#{item.contact.name}" />  
                         </p:column> 
-                        
+
                     </p:dataTable>  
                 </p:dialog>  
             </h:form>                
