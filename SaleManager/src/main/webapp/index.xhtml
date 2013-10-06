@@ -46,7 +46,9 @@
 
                     <p:submenu label="#{bundle.ModulePayment}">  
                         <p:menuitem value="#{bundle.Payment_NewPayment}" icon="ui-icon-document" onclick="wDlgPayment.show()" /> 
-                        <p:menuitem value="#{bundle.Payment_PaymentList}" icon="ui-icon-document" onclick="wDlgPaymentList.show()" /> 
+                        <p:menuitem value="#{bundle.Payment_PaymentList}" icon="ui-icon-document" 
+                                    onclick="wDlgPaymentList.show()" action="#{paymentController.refreshList}" 
+                                    update=":paymentListForm:iPaymentTable" /> 
                     </p:submenu>  
 
                     <p:submenu label="#{bundle.ModuleContact}" >  
