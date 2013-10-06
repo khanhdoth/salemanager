@@ -4,10 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.CascadeType;
 import javax.persistence.OneToMany;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -132,10 +129,12 @@ public class Contact implements java.io.Serializable {
         this.listOfPaymentSent = listOfPaymentSent;
     }
 
-    @OneToMany(cascade = CascadeType.ALL)
+    /*@OneToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "contact_sale", joinColumns = {
         @JoinColumn(name = "contactId")}, inverseJoinColumns = {
-        @JoinColumn(name = "saleId")})
+        @JoinColumn(name = "saleId")})*/
+    
+    @OneToMany(mappedBy="contact")
     @XmlTransient
     public Collection<Sale> getListOfBuy() {
         return listOfBuy;
@@ -163,10 +162,12 @@ public class Contact implements java.io.Serializable {
         this.postcode = postcode;
     }
 
-    @OneToMany(cascade = CascadeType.ALL)
+    /*@OneToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "contact_buy", joinColumns = {
         @JoinColumn(name = "contactId")}, inverseJoinColumns = {
-        @JoinColumn(name = "buyId")})
+        @JoinColumn(name = "buyId")})*/
+    
+    @OneToMany(mappedBy="contact")
     @XmlTransient
     public Collection<Buy> getListOfSale() {
         return listOfSale;

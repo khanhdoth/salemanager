@@ -29,8 +29,8 @@ public class ProductTransaction implements java.io.Serializable {
     private Collection<SaleItem> listOfSaleItem = new ArrayList<>();
     private PaymentTransaction payment;
     private float discount;
-
     private float VAT;
+    private Contact contact;
 
     public ProductTransaction() {
     }
@@ -106,6 +106,15 @@ public class ProductTransaction implements java.io.Serializable {
 
     public void setPayment(PaymentTransaction payment) {
         this.payment = payment;
+    }
+
+    @JoinColumn(name="contactId")    
+    public Contact getContact() {
+        return contact;
+    }
+
+    public void setContact(Contact contact) {
+        this.contact = contact;
     }
 
     public String printInfo() {

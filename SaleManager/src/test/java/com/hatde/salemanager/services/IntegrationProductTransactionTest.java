@@ -107,6 +107,7 @@ public class IntegrationProductTransactionTest {
         sale1.getListOfSaleItem().add(si1);
         sale1.getListOfSaleItem().add(si2);
         sale1.setPayment(pc1);
+        sale1.setContact(c);
         
         //iContact.getEntityManager().merge(sale1);
 
