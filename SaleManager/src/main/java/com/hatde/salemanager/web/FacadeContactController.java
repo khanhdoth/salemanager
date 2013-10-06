@@ -22,6 +22,7 @@ public abstract class FacadeContactController<T> extends FacadeController<T> {
     public FacadeContactController() {
     }
 
+    @Override
     public void create() {
         System.out.println("----create----" + this.toString());
         try {
@@ -31,6 +32,17 @@ public abstract class FacadeContactController<T> extends FacadeController<T> {
 
         } catch (Exception e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getString("Create_Failed_Message"), ""));
+        }
+    }
+
+    public void delete() {
+        System.out.println("----delete----" + this.toString());
+        try {
+            getContactBean().edit(contact);
+            super.delete();            
+            initDataList();
+        } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getString("Delete_Failed_Message"), ""));
         }
     }
 

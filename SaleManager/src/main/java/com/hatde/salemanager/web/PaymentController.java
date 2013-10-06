@@ -5,6 +5,7 @@
  */
 package com.hatde.salemanager.web;
 
+import com.hatde.salemanager.entities.Contact;
 import com.hatde.salemanager.entities.PaymentSent;
 import com.hatde.salemanager.services.AbstractFacade;
 import com.hatde.salemanager.services.ContactFacadeREST;
@@ -71,10 +72,22 @@ public class PaymentController extends FacadeContactController<PaymentSent> impl
         } catch (ParseException ex) {
             Logger.getLogger(PaymentController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         newT.setContact(contact);
         contact.getListOfPaymentReceived().add(newT);
         super.create();
-        System.out.println(contact.toString());
+
+        Contact contact2 = contactBean.find(1);
+        System.out.println(contact2.toString());
+    }
+
+    @Override
+    public void delete() {
+        contact = ((PaymentSent) selectedT).getContact();
+        contact.getListOfPaymentReceived().remove(selectedT);
+        super.delete();
+
+        Contact contact2 = contactBean.find(contact.getContactId());
+        System.out.println(contact2.toString());
     }
 }

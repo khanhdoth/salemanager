@@ -248,5 +248,5 @@ public class IntegrationProductTransactionTest {
         System.out.println(c2.toString());
         
         assertTrue(c.equals(c2));                 
-    }
+    }                
 }

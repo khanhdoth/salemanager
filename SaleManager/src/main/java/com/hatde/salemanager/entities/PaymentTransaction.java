@@ -105,11 +105,7 @@ public class PaymentTransaction implements java.io.Serializable {
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
         PaymentTransaction other = (PaymentTransaction) object;
-        return this.paymentTransactionId == other.paymentTransactionId
-                && this.date.equals(other.date)
-                && this.amount == other.amount
-                && this.paymentReason.equals(other.paymentReason)
-                && this.contact.equals(other.contact);
+        return this.paymentTransactionId == other.paymentTransactionId;
     }
 
     @Override
