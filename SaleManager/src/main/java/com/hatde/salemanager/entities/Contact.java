@@ -285,10 +285,25 @@ public class Contact implements java.io.Serializable {
         String myInfo = "";
         myInfo += "============= com.hatde.salemanager.entities.Contact[ id=" + contactId + " ] =============\n";
         myInfo += "name: " + name + "  address: " + address + "  district: " + district + "  city: " + city + "  country: " + country + "  postcode: " + postcode + "  moreInfo: " + moreInfo + "\n";
-        myInfo += "+ listOfBuy has " + listOfBuy.size() +" items:" +"\n";
         
+        myInfo += "\n+ listOfBuy has " + listOfBuy.size() +" items:" +"\n";        
         for(Sale sale : listOfBuy){
             myInfo += sale.toString();
+        }
+        
+        myInfo += "\n+ listOfSale has " + listOfSale.size() +" items:" +"\n";        
+        for(Buy buy : listOfSale){
+            myInfo += buy.toString();
+        }
+
+        myInfo += "\n+ listOfPaymentReceived has " + listOfPaymentReceived.size() +" items:" +"\n";        
+        for(PaymentSent ps : listOfPaymentReceived){
+            myInfo += ps.toString();
+        }
+        
+        myInfo += "\n+ listOfPaymentSent has " + listOfPaymentSent.size() +" items:" +"\n";        
+        for(PaymentReceived pr : listOfPaymentSent){
+            myInfo += pr.toString();
         }
         
         myInfo += "==========================================================================================\n";

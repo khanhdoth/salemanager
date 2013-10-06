@@ -12,10 +12,12 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
+import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
 @Table(name = "PaymentTransaction")
 @Inheritance(strategy = InheritanceType.JOINED)
+@XmlRootElement
 public class PaymentTransaction implements java.io.Serializable {
 
     private int paymentTransactionId;
@@ -89,6 +91,33 @@ public class PaymentTransaction implements java.io.Serializable {
         myInfo += date.toString() + "    Amount:" + amount + "\n";
         myInfo += paymentReason + "\n\n";
 
+        return myInfo;
+    }
+    
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (int) paymentTransactionId;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        PaymentTransaction other = (PaymentTransaction) object;
+        return this.paymentTransactionId == other.paymentTransactionId
+                && this.date.equals(other.date)
+                && this.amount == other.amount
+                && this.paymentReason.equals(other.paymentReason)
+                && this.contact.equals(other.contact);
+    }
+
+    @Override
+    public String toString() {
+        String myInfo = "";
+        myInfo += "============= com.hatde.salemanager.entities.[PaymentTransaction subclass][ id=" + paymentTransactionId + " ] =============\n";
+        myInfo += "contact: " + contact.getName() + "  date: " + date.toString() + "  amount: " + amount + "  paymentReason: " + paymentReason + "\n";
+        
         return myInfo;
     }
 }

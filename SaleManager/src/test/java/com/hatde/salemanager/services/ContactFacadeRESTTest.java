@@ -209,23 +209,6 @@ public class ContactFacadeRESTTest {
     }
 
     /**
-     * Test of getList method, of class ContactFacadeREST.
-     */
-    @Ignore
-    @Test
-    public void testGetList() throws Exception {
-        System.out.println("getList");
-        
-        ContactFacadeREST instance = (ContactFacadeREST) container.getContext().lookup("java:global/classes/ContactFacadeREST");
-        List<Contact> expResult = null;
-        List<Contact> result = instance.getList();
-        assertEquals(expResult, result);
-        
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
      * Test of findRange method, of class ContactFacadeREST.
      */
     @Ignore

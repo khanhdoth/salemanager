@@ -18,23 +18,26 @@ import org.primefaces.event.CellEditEvent;
  * @author Do
  */
 public abstract class FacadeController<T> {
-    private Class<T> entityClass;
+
+    protected Class<T> entityClass;
+
     protected abstract AbstractFacade<T> getBean();
+
     protected abstract BundleBean getBundleBean();
 
-    private List<T> list;
-    private List<T> filterList;
-    private T selectedT;
-    private T newT;
-    private ResourceBundle bundle;
+    protected List<T> list;
+    protected List<T> filterList;
+    protected T selectedT;
+    protected T newT;
+    protected ResourceBundle bundle;
 
-     //@PostConstruct
-     public void init(Class<T> entityClass) {
+    //@PostConstruct
+    public void init(Class<T> entityClass) {
         this.entityClass = entityClass;
-        initFirstListandNewT();        
+        initFirstListandNewT();
         bundle = getBundleBean().getBundle();
-     }    
-    
+    }
+
     public void initFirstListandNewT() {
         list = new ArrayList();
         initNewT();
@@ -50,16 +53,16 @@ public abstract class FacadeController<T> {
         list = getBean().findAll();
     }
 
-    public void initNewT() {        
-        try{
+    public void initNewT() {
+        try {
             newT = entityClass.newInstance();
-        } catch(Exception e){
+        } catch (Exception e) {
         }
     }
 
-    public FacadeController() {        
+    public FacadeController() {
     }
-    
+
     public void onCellEdit(CellEditEvent event) {
         Object oldValue = event.getOldValue();
         Object newValue = event.getNewValue();
@@ -68,7 +71,7 @@ public abstract class FacadeController<T> {
             T c = (T) ((DataTable) event.getSource()).getRowData();
             try {
                 getBean().edit(c);
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, bundle.getString("Edit_Success"), "" ));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, bundle.getString("Edit_Success"), ""));
             } catch (Exception e) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getString("Edit_Failed_Message"), ""));
             }
@@ -86,7 +89,7 @@ public abstract class FacadeController<T> {
         }
     }
 
-    public void create() {        
+    public void create() {
         System.out.println("----create----" + this.toString());
         try {
             getBean().create(newT);
@@ -107,7 +110,6 @@ public abstract class FacadeController<T> {
      * getter and setter
      *--------------------------------------------------------------------------
      */
-    
     public List<T> getList() {
         System.out.println("----getList----" + this.toString());
         return list;
@@ -139,5 +141,5 @@ public abstract class FacadeController<T> {
 
     public void setNewT(T newT) {
         this.newT = newT;
-    }    
+    }
 }

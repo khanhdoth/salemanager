@@ -6,7 +6,7 @@
 
 package com.hatde.salemanager.services;
 
-import com.hatde.salemanager.entities.Contact;
+import com.hatde.salemanager.entities.PaymentTransaction;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -25,26 +25,26 @@ import javax.ws.rs.Produces;
  * @author Khanh
  */
 @Stateless
-@Path("contact")
-public class ContactFacadeREST extends AbstractFacade<Contact> {
+@Path("paymenttransaction")
+public class PaymentTransactionFacadeREST extends AbstractFacade<PaymentTransaction> {
     @PersistenceContext(unitName = "com.hatde_SaleManager")
     private EntityManager em;
 
-    public ContactFacadeREST() {
-        super(Contact.class);
+    public PaymentTransactionFacadeREST() {
+        super(PaymentTransaction.class);
     }
 
     @POST
     @Override
     @Consumes({"application/xml", "application/json"})
-    public void create(Contact entity) {
+    public void create(PaymentTransaction entity) {
         super.create(entity);
     }
 
     @PUT
     @Path("{id}")
     @Consumes({"application/xml", "application/json"})
-    public void edit(@PathParam("id") Integer id, Contact entity) {
+    public void edit(@PathParam("id") Integer id, PaymentTransaction entity) {
         super.edit(entity);
     }
 
@@ -57,21 +57,21 @@ public class ContactFacadeREST extends AbstractFacade<Contact> {
     @GET
     @Path("{id}")
     @Produces({"application/xml", "application/json"})
-    public Contact find(@PathParam("id") Integer id) {
+    public PaymentTransaction find(@PathParam("id") Integer id) {
         return super.find(id);
     }
 
     @GET
     @Override
     @Produces({"application/xml", "application/json"})
-    public List<Contact> findAll() {
+    public List<PaymentTransaction> findAll() {
         return super.findAll();
     }
 
     @GET
     @Path("{from}/{to}")
     @Produces({"application/xml", "application/json"})
-    public List<Contact> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
+    public List<PaymentTransaction> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
         return super.findRange(new int[]{from, to});
     }
 
@@ -83,7 +83,7 @@ public class ContactFacadeREST extends AbstractFacade<Contact> {
     }
 
     @Override
-    protected EntityManager getEntityManager() {
+    public EntityManager getEntityManager() {
         return em;
     }
     

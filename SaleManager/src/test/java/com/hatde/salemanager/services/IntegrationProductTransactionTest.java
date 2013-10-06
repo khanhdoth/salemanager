@@ -9,6 +9,9 @@ import com.hatde.salemanager.entities.SaleItem;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import javax.ejb.embeddable.EJBContainer;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import org.junit.After;
 import org.junit.AfterClass;
 import static org.junit.Assert.assertEquals;
@@ -22,13 +25,18 @@ import org.junit.Test;
  * @author Khanh
  */
 public class IntegrationProductTransactionTest {
-
+    private static final String PERSISTENCE_UNIT_NAME = "com.hatde_SaleManager";
+    private static EntityManagerFactory factory;
+    
     private static EJBContainer container;
     private Contact c;
     private Product p1;
     private Product p2;
     private static ContactFacadeREST iContact;
     private static ProductFacadeREST iProduct;
+    private static PaymentTransactionFacadeREST iPayment;
+    
+    
 
     public IntegrationProductTransactionTest() throws Exception {
         c = new Contact();        
@@ -59,6 +67,8 @@ public class IntegrationProductTransactionTest {
         container = EContainer.INSTANCE.getContainer();
         iContact = (ContactFacadeREST) container.getContext().lookup("java:global/classes/ContactFacadeREST");
         iProduct = (ProductFacadeREST) container.getContext().lookup("java:global/classes/ProductFacadeREST");
+        iPayment = (PaymentTransactionFacadeREST) container.getContext().lookup("java:global/classes/PaymentTransactionFacadeREST");
+        factory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
     }
 
     @AfterClass
@@ -120,5 +130,123 @@ public class IntegrationProductTransactionTest {
                 
         assertTrue(c.equals(c2));
         assertEquals(1, c.getListOfBuy().size());
+    }
+    
+    /**
+     * Test of create method, of class ContactFacadeREST.
+     * @throws java.lang.Exception
+     */
+    @Test
+    public void testCreatePaymentReceived() throws Exception {
+        EntityManager em = factory.createEntityManager();
+        
+        System.out.println("Create Sale2");
+        DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
+        
+        em.getTransaction().begin();
+        
+        System.out.println(c.toString());        
+        PaymentReceived pc1 = new PaymentReceived();
+        pc1.setDate(df.parse("04.11.2013"));
+        pc1.setAmount(500000);
+        pc1.setPaymentReason("hallooeeee");
+        pc1.setContact(c);
+        
+        c.getListOfPaymentSent().add(pc1);
+        
+        em.persist(pc1);
+        //em.merge(c);
+        em.getTransaction().commit();
+        
+        PaymentReceived pc2 = (PaymentReceived) em.find(PaymentReceived.class, pc1.getPaymentTransactionId());
+        System.out.println(pc2.toString());
+        assertTrue(pc1.equals(pc2));
+        
+        //c.getListOfPaymentSent().add(pc1);
+        //iPayment.create(pc1);
+        //iContact.edit(c);
+        
+        System.out.println(pc1.toString());
+        //PaymentReceived pc2 = (PaymentReceived) iPayment.find(pc1.getPaymentTransactionId());
+        //System.out.println(pc2.toString());
+        //assertTrue(pc1.equals(pc2));
+        
+        Contact c2 = (Contact) em.find(Contact.class, c.getContactId());        
+        System.out.println(c2.toString());
+        
+        assertTrue(c.equals(c2));         
+        em.close();
+    }
+    
+    @Test
+    public void testCreatePaymentReceived3() throws Exception {
+        System.out.println("Create Sale3");
+        DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
+        
+        
+        System.out.println(c.toString());        
+        PaymentReceived pc1 = new PaymentReceived();
+        pc1.setDate(df.parse("04.11.2013"));
+        pc1.setAmount(500000);
+        pc1.setPaymentReason("hallooeeee");
+        pc1.setContact(c);
+        
+        c.getListOfPaymentSent().add(pc1);
+        
+        iPayment.create(pc1);
+        
+        PaymentReceived pc2 = (PaymentReceived) iPayment.find(pc1.getPaymentTransactionId());
+        System.out.println(pc2.toString());
+        assertTrue(pc1.equals(pc2));
+        
+        //c.getListOfPaymentSent().add(pc1);
+        //iPayment.create(pc1);
+        //iContact.edit(c);
+        
+        System.out.println(pc1.toString());
+        //PaymentReceived pc2 = (PaymentReceived) iPayment.find(pc1.getPaymentTransactionId());
+        //System.out.println(pc2.toString());
+        //assertTrue(pc1.equals(pc2));
+        
+        Contact c2 = (Contact) iContact.find(c.getContactId());        
+        System.out.println(c2.toString());
+        
+        assertTrue(c.equals(c2));                 
+    }
+    
+    @Test
+    public void testCreatePaymentReceived4() throws Exception {
+        System.out.println("Create Sale4");
+        DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
+        
+        
+        System.out.println(c.toString());        
+        PaymentReceived pc1 = new PaymentReceived();
+        pc1.setDate(df.parse("04.11.2013"));
+        pc1.setAmount(500000);
+        pc1.setPaymentReason("hallooeeee");
+        pc1.setContact(c);
+        
+        c.getListOfPaymentSent().add(pc1);
+        
+        iContact.edit(c);
+        
+        //PaymentReceived pc2 = (PaymentReceived) iPayment.find(pc1.getPaymentTransactionId());
+        //System.out.println(pc2.toString());
+        //assertTrue(pc1.equals(pc2));
+        
+        //c.getListOfPaymentSent().add(pc1);
+        //iPayment.create(pc1);
+        //iContact.edit(c);
+        
+        System.out.println(pc1.toString());
+        //PaymentReceived pc2 = (PaymentReceived) iPayment.find(pc1.getPaymentTransactionId());
+        //System.out.println(pc2.toString());
+        //assertTrue(pc1.equals(pc2));
+        
+        Contact c2 = (Contact) iContact.find(c.getContactId());        
+        System.out.println(c2.toString());
+        
+        assertTrue(c.equals(c2));                 
     }
 }
