@@ -43,9 +43,12 @@
                         <p:menuitem value="#{bundle.Receip_NewReceipt}" icon="ui-icon-document" onclick="wDlgPaymentReceive.show()" /> 
                         <p:menuitem value="#{bundle.Receip_ReceiptList}" icon="ui-icon-document" onclick="wDlgPaymentReceiveList.show()" /> 
                     </p:submenu>  
-
+                    
                     <p:submenu label="#{bundle.ModulePayment}">  
-                        <p:menuitem value="#{bundle.Payment_NewPayment}" icon="ui-icon-document" onclick="wDlgPayment.show()" /> 
+                        <p:menuitem value="#{bundle.Payment_NewPayment}" icon="ui-icon-document" 
+                                    onclick="wDlgPayment.show()" action="#{contactController.refreshList}" 
+                                    /> 
+                        
                         <p:menuitem value="#{bundle.Payment_PaymentList}" icon="ui-icon-document" 
                                     onclick="wDlgPaymentList.show()" action="#{paymentController.refreshList}" 
                                     update=":paymentListForm:iPaymentTable" /> 
@@ -386,9 +389,22 @@
                 <p:dialog id="iDlgPayment" header="#{bundle.Payment_NewPayment}" widgetVar="wDlgPayment">   
                     <h:panelGrid columns="2" cellpadding="5">  
                         
+                        <h:outputLabel value="#{bundle.ModuleContact}" />                          
+                        <p:selectOneMenu value="#{paymentController.contact}" converter="contact" panelStyle="width:150px"  
+                                         effect="fade" var="p" style="width:160px"  filter="true" filterMatchMode="contains">  
+                            <f:selectItem itemLabel="#{bundle.SelectOne}" itemValue="" />  
+                            <f:selectItems value="#{contactController.list}" var="contact" itemLabel="#{contact.contactId}" itemValue="#{contact}"/>  
+
+                            <p:column> #{p.name} </p:column>
+                            <p:column> #{p.address} </p:column>
+                            <p:column> #{p.city} </p:column>
+                            <p:column> #{p.country} </p:column>
+                            
+                        </p:selectOneMenu>  
+                        
                         <h:outputLabel value="#{bundle.Date}" />  
                         <p:calendar locale="de" showButtonPanel="true" navigator="true" value="#{paymentController.newT.date}" />                            
-                        
+
                         <h:outputLabel value="#{bundle.Amount}" />  
                         <p:inputText value="#{paymentController.newT.amount}" />  
 
@@ -437,7 +453,7 @@
                             <h:outputText value="#{item.paymentTransactionId}" />  
                         </p:column>  
 
-                        
+
                         <p:column id="dateColumn" sortBy="date" filterBy="date"   
                                   headerText="#{bundle.Date}"
                                   filterMatchMode="contains">                                    
@@ -450,8 +466,8 @@
                                 </f:facet>  
                             </p:cellEditor>                             
                         </p:column>  
-                        
-                        
+
+
                         <p:column id="amountColumn" sortBy="amount" filterBy="amount"   
                                   headerText="#{bundle.Amount}"
                                   filterMatchMode="contains">  

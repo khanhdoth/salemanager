@@ -64,7 +64,8 @@ public class PaymentController extends FacadeContactController<PaymentSent> impl
 
     @Override
     public void create() {
-        contact = contactBean.find(1);
+        //contact = contactBean.find(1);
+        System.out.println("---create ---- " + contact.getName());
         newT.setContact(contact);
         contact.getListOfPaymentReceived().add(newT);
         super.create();
