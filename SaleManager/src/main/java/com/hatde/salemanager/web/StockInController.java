@@ -3,10 +3,9 @@ package com.hatde.salemanager.web;
 import com.hatde.salemanager.entities.Buy;
 import com.hatde.salemanager.entities.Contact;
 import com.hatde.salemanager.entities.PaymentSent;
-import com.hatde.salemanager.entities.PaymentTransaction;
 import com.hatde.salemanager.services.AbstractFacade;
+import com.hatde.salemanager.services.BuyFacadeREST;
 import com.hatde.salemanager.services.ContactFacadeREST;
-import com.hatde.salemanager.services.PaymentSentFacadeREST;
 import java.io.Serializable;
 import java.util.Date;
 import javax.annotation.PostConstruct;
@@ -24,7 +23,7 @@ import javax.inject.Inject;
 public class StockInController extends FacadeContactController<Buy> implements Serializable {
 
     @EJB
-    private PaymentSentFacadeREST bean;
+    private BuyFacadeREST bean;
 
     @EJB
     private ContactFacadeREST contactBean;

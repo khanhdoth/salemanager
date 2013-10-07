@@ -38,7 +38,9 @@
                         <p:menuitem value="#{bundle.StockIn_NewStockIn}" icon="ui-icon-document" 
                                     onclick="wDlgBuy.show()"  action="#{contactController.refreshList}" 
                                     update=":createBuyForm:soContactMenu" /> 
-                        <p:menuitem value="#{bundle.StockIn_StockInList}" icon="ui-icon-document" onclick="wDlgBuyList.show()" /> 
+                        <p:menuitem value="#{bundle.StockIn_StockInList}" icon="ui-icon-document" 
+                                    onclick="wDlgBuyList.show()" action="#{stockInController.refreshList}" 
+                                    update=":buyListForm:iStockInTable" /> 
                     </p:submenu>  
 
                     <p:submenu label="#{bundle.ModuleReceipt}">  
@@ -420,10 +422,9 @@
                         <p:commandButton widgetVar="saveStockInButton" value="#{bundle.Save}" 
                                          onclick="saveStockInButton.disable()"
                                          actionListener="#{stockInController.create}" 
-                                         update="iDlgBuy, :mainForm:messages" 
+                                         update="iDlgBuy, :buyListForm:iStockInTable, :mainForm:messages" 
                                          oncomplete="saveStockInButton.enable(); wDlgBuy.hide()" 
-                                         validateClient="true" style="margin-right:10px" />  
-                        <!-- :receiptListForm:iReceiptTable, --> 
+                                         validateClient="true" style="margin-right:10px" />                          
                     </h:panelGrid>                        
                 </p:dialog>                
             </h:form>
@@ -431,6 +432,117 @@
             <!-- stock-in list -->            
             <h:form id="buyListForm" onkeypress="return event.keyCode != 13;">
                 <p:dialog id="iDlgBuyList" header="#{bundle.StockIn_StockInList}" widgetVar="wDlgBuyList" position="bottom" >
+                    <p:dataTable id="iStockInTable" var="item" value="#{stockInController.list}" editable="true"
+                                 widgetVar="wStockInTable" rowKey="#{item.productTransactionId}" scrollable="true" scrollHeight="400"
+                                 emptyMessage="No stockIn found with given criteria" editMode="cell" 
+                                 filteredValue="#{stockInController.filterList}"                                 
+                                 resizableColumns="true" liveResize="true" >   
+
+                        <f:facet name="header">  
+                            <p:outputPanel style="text-align:left"> 
+                                <p:commandButton id="refreshButton" update="iStockInTable" action="#{stockInController.refreshList}" icon="ui-icon-refresh" title="#{bundle.Reresh}" />  
+                                <p:spacer width="20"/>
+                                <h:outputText value="#{bundle.Search}" />
+                                <p:spacer width="5"/>
+                                <p:inputText id="globalFilter" onkeyup="wStockInTable.filter()" style="width:150px" />                            
+                            </p:outputPanel>
+                        </f:facet>
+
+                        <p:ajax event="cellEdit" listener="#{stockInController.onCellEdit}" update=":mainForm:messages" /> 
+
+                        <p:column style="width:5%">  
+                            <p:commandButton id="deleteButton" update="iStockInTable, :mainForm:messages" action="#{stockInController.delete}" icon="ui-icon-trash" title="#{bundle.Delete}" >  
+                                <p:confirm header="#{bundle.Confirmation}" message="#{bundle.Delete_Confirm_Message}" icon="ui-icon-alert" />  
+                                <f:setPropertyActionListener value="#{item}" target="#{stockInController.selectedT}" />  
+                            </p:commandButton> 
+                        </p:column> 
+
+                        <p:column id="productTransactionIdColumn" sortBy="productTransactionId" filterBy="productTransactionId"   
+                                  headerText="#{bundle.ID}" filterMatchMode="contains">  
+                            <h:outputText value="#{item.productTransactionId}" />  
+                        </p:column>  
+
+                        <p:column id="contactColumn" sortBy="contact.name" filterBy="contact.name"   
+                                  headerText="#{bundle.ModuleContact}"
+                                  filterMatchMode="contains">                              
+                            <h:outputText value="#{item.contact.contactId} - #{item.contact.name}" />  
+                        </p:column> 
+
+                        <p:column id="dateColumn" sortBy="date" filterBy="date"   
+                                  headerText="#{bundle.Date}"
+                                  filterMatchMode="contains">                                    
+                            <p:cellEditor>  
+                                <f:facet name="output">  
+                                    <p:calendar locale="de" showButtonPanel="true" navigator="true" value="#{item.date}" />                                      
+                                </f:facet>  
+                                <f:facet name="input">  
+                                    <p:calendar locale="de" showButtonPanel="true" navigator="true" value="#{item.date}" />  
+                                </f:facet>  
+                            </p:cellEditor>                             
+                        </p:column>  
+
+                        <p:column id="discountColumn" sortBy="discount" filterBy="discount"   
+                                  headerText="#{bundle.Discount}"
+                                  filterMatchMode="contains" style="text-align:right">  
+                            <p:cellEditor>  
+                                <f:facet name="output">  
+                                    <h:outputText value="#{item.discount}" >
+                                        <f:convertNumber pattern="#.##" />
+                                    </h:outputText> 
+                                </f:facet>  
+                                <f:facet name="input">                                      
+                                    <p:inputText id="iDiscount" value="#{item.discount}" 
+                                                 immediate="true"  >  
+                                        <f:convertNumber pattern="#.##" maxFractionDigits="2" maxIntegerDigits="1" />
+                                        <f:validateDoubleRange minimum="0" maximum="1"/>
+                                        <p:ajax event="blur" update="iDiscount"/> 
+                                    </p:inputText>
+                                </f:facet>  
+                            </p:cellEditor>                             
+                        </p:column>  
+
+                        <p:column id="VATColumn" sortBy="VAT" filterBy="VAT"   
+                                  headerText="#{bundle.VAT}"
+                                  filterMatchMode="contains" style="text-align:right">  
+                            <p:cellEditor>  
+                                <f:facet name="output">  
+                                    <h:outputText value="#{item.VAT}" >
+                                        <f:convertNumber pattern="#.##" />
+                                    </h:outputText> 
+                                </f:facet>  
+                                <f:facet name="input">                                      
+                                    <p:inputText id="iVAT" value="#{item.VAT}" 
+                                                 immediate="true"  >  
+                                        <f:convertNumber pattern="#.##" maxFractionDigits="2" maxIntegerDigits="1" />
+                                        <f:validateDoubleRange minimum="0" maximum="1"/>
+                                        <p:ajax event="blur" update="iVAT"/> 
+                                    </p:inputText>
+                                </f:facet>  
+                            </p:cellEditor>                             
+                        </p:column>                          
+
+                        <p:column id="paymentColumn" sortBy="payment.amount" filterBy="payment.amount"   
+                                  headerText="#{bundle.Payment}"
+                                  filterMatchMode="contains" style="text-align:right">  
+                            <p:cellEditor>  
+                                <f:facet name="output">  
+                                    <h:outputText value="#{item.payment.amount}" >
+                                        <f:convertNumber pattern="#,##0" />
+                                    </h:outputText> 
+                                </f:facet>  
+                                <f:facet name="input">                                      
+                                    <p:inputText id="iAmount" value="#{item.payment.amount}" 
+                                                 immediate="true"  >  
+                                        <f:convertNumber pattern="#,##0" maxIntegerDigits="12" />
+                                        <f:validateDoubleRange minimum="1" />
+                                        <p:ajax event="blur" update="iAmount"/> 
+                                    </p:inputText>
+                                </f:facet>  
+                            </p:cellEditor>                             
+                        </p:column>  
+
+
+                    </p:dataTable>  
                 </p:dialog>  
             </h:form>            
 
