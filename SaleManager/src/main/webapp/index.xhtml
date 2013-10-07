@@ -430,11 +430,32 @@
                         <p:ajax event="cellEdit" listener="#{stockInController.onSICellEdit}" /> 
 
                         <p:column style="width:5%">  
-                            <p:commandButton id="deleteButton" update="iStockInTable, :mainForm:messages" action="#{stockInController.delete}" icon="ui-icon-trash" title="#{bundle.Delete}" >  
+                            <p:commandButton id="deleteButton" update="iSIInTable, :mainForm:messages" action="#{stockInController.setSelectedSI}" icon="ui-icon-trash" title="#{bundle.Delete}" >  
                                 <p:confirm header="#{bundle.Confirmation}" message="#{bundle.Delete_Confirm_Message}" icon="ui-icon-alert" />  
                                 <f:setPropertyActionListener value="#{item}" target="#{stockInController.selectedSI}" />  
                             </p:commandButton> 
                         </p:column> 
+
+                        <p:column id="productColumn" headerText="#{bundle.ModuleProduct}">  
+                            <p:cellEditor>  
+                                <f:facet name="output">  
+                                    <h:outputText value="#{item.product.productId} - #{item.product.name}" />
+                                </f:facet>  
+                                <f:facet name="input">                                      
+                                    <p:selectOneMenu id="soProductMenu" value="#{item.product}" converter="productConverter" 
+                                                     panelStyle="width:500px" effect="fade" var="p" style="width:160px"  
+                                                     filter="true" filterMatchMode="contains" required="true">                              
+                                        <f:selectItems value="#{productController.list}" var="pi" itemLabel="#{pi.productId} - #{pi.name}" itemValue="#{pi}"/>  
+
+                                        <p:column> #{pi.productId} </p:column>
+                                        <p:column> #{pi.name} </p:column>
+                                        <p:column> #{pi.manufacturer} </p:column>
+                                        <p:column> #{pi.unit} </p:column>                                        
+
+                                    </p:selectOneMenu>
+                                </f:facet>  
+                            </p:cellEditor>  
+                        </p:column>  
 
                         <p:column id="quantityColumn" headerText="#{bundle.Quantity}">  
                             <h:outputText value="#{item.quantity}" />  
@@ -448,7 +469,7 @@
                             <h:outputText value="#{item.discount}" />  
                         </p:column>  
                     </p:dataTable>  
-                    
+
                     <p:commandButton widgetVar="saveStockInButton" value="#{bundle.Save}" 
                                      onclick="saveStockInButton.disable()"
                                      actionListener="#{stockInController.create}" 

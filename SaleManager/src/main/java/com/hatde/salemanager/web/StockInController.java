@@ -61,6 +61,7 @@ public class StockInController extends FacadeContactController<Buy> implements S
         super.initNewT();
         newT.setDate(new Date());
         newT.setPayment(new PaymentSent());
+        newT.getListOfSaleItem().add(new SaleItem());
     }
 
     public void onSICellEdit() {
