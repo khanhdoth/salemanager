@@ -11,11 +11,11 @@ import com.hatde.salemanager.services.AbstractFacade;
 import com.hatde.salemanager.services.ContactFacadeREST;
 import com.hatde.salemanager.services.PaymentSentFacadeREST;
 import java.io.Serializable;
+import java.util.Date;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.event.ValueChangeEvent;
 import javax.inject.Inject;
 
 /**
@@ -80,8 +80,9 @@ public class PaymentController extends FacadeContactController<PaymentSent> impl
         System.out.println(contact2.toString());
     }
     
-    
-    public void contactSelected(ValueChangeEvent e) {
-        System.out.println("======contactSelected"); // + contact.toString());
+    @Override
+    public void initNewT() {
+        super.initNewT();
+        newT.setDate(new Date());
     }
 }
