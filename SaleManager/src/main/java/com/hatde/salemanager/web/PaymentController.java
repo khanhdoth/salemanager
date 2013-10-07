@@ -1,6 +1,5 @@
 package com.hatde.salemanager.web;
 
-import com.hatde.salemanager.entities.Contact;
 import com.hatde.salemanager.entities.PaymentSent;
 import com.hatde.salemanager.services.AbstractFacade;
 import com.hatde.salemanager.services.ContactFacadeREST;
@@ -47,24 +46,12 @@ public class PaymentController extends FacadeContactController<PaymentSent> impl
     protected BundleBean getBundleBean() {
         return bundleBean;
     }
+
+    @Override
+    protected ContactFacadeREST getContactBean() {
+        return contactBean;
+    }
     
-    @Override
-    public void doCreate() {
-        bean.create(newT, contact);
-        tempViewContact();
-    }
-
-    @Override
-    public void doDelete() {
-        super.doDelete();
-        tempViewContact();
-    }
-
-    public void tempViewContact() {
-        Contact contact2 = contactBean.find(contact.getContactId());
-        System.out.println(contact2.toString());
-    }
-
     @Override
     public void initNewT() {
         super.initNewT();

@@ -5,6 +5,7 @@
  */
 package com.hatde.salemanager.services;
 
+import com.hatde.salemanager.entities.Contact;
 import java.util.List;
 import javax.persistence.EntityManager;
 
@@ -24,7 +25,10 @@ public abstract class AbstractFacade<T> {
     public void create(T entity) {
         getEntityManager().persist(entity);
     }
-
+    
+    public void create(T entity, Contact c) {        
+    }
+    
     public void edit(T entity) {
         getEntityManager().merge(entity);
     }

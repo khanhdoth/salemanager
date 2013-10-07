@@ -7,8 +7,6 @@ package com.hatde.salemanager.web;
 
 import com.hatde.salemanager.entities.Contact;
 import com.hatde.salemanager.services.ContactFacadeREST;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 
 /**
  *
@@ -16,10 +14,28 @@ import javax.faces.context.FacesContext;
  */
 public abstract class FacadeContactController<T> extends FacadeController<T> {
     protected Contact contact;
-
+    
+    protected abstract ContactFacadeREST getContactBean();
+    
     public FacadeContactController() {
     }
     
+    @Override
+    public void doCreate() {
+        getBean().create(newT, contact);
+        tempViewContact();
+    }
+
+    @Override
+    public void doDelete() {
+        super.doDelete();
+        tempViewContact();
+    }
+
+    public void tempViewContact() {
+        Contact contact2 = getContactBean().find(contact.getContactId());
+        System.out.println(contact2.toString());
+    }
     public Contact getContact() {
         return contact;
     }
@@ -27,4 +43,5 @@ public abstract class FacadeContactController<T> extends FacadeController<T> {
     public void setContact(Contact contact) {
         this.contact = contact;
     }
+    
 }
