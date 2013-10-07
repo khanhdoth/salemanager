@@ -81,7 +81,7 @@ public abstract class FacadeController<T> {
     public void delete() {
         System.out.println("----delete----" + this.toString());
         try {
-            getBean().remove(selectedT);
+            doDelete();
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, bundle.getString("Delete_Success"), ""));
             initDataList();
         } catch (Exception e) {
@@ -89,10 +89,14 @@ public abstract class FacadeController<T> {
         }
     }
 
+    public void doDelete(){
+        getBean().remove(selectedT);
+    }
+    
     public void create() {
         System.out.println("----create----" + this.toString());
         try {
-            getBean().create(newT);
+            doCreate();
             initListandNewT();
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, bundle.getString("Create_Success"), ""));
 
@@ -101,7 +105,11 @@ public abstract class FacadeController<T> {
         }
 
     }
-
+    
+    public void doCreate(){
+        getBean().create(newT);
+    }
+    
     public void refreshList() {
         initDataList();
     }

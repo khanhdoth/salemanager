@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.hatde.salemanager.services;
 
+import com.hatde.salemanager.entities.Contact;
 import com.hatde.salemanager.entities.PaymentSent;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -14,7 +14,6 @@ import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -27,6 +26,7 @@ import javax.ws.rs.Produces;
 @Stateless
 @Path("paymentsent")
 public class PaymentSentFacadeREST extends AbstractFacade<PaymentSent> {
+
     @PersistenceContext(unitName = "com.hatde_SaleManager")
     private EntityManager em;
 
@@ -34,11 +34,12 @@ public class PaymentSentFacadeREST extends AbstractFacade<PaymentSent> {
         super(PaymentSent.class);
     }
 
-    @POST
-    @Override
-    @Consumes({"application/xml", "application/json"})
-    public void create(PaymentSent entity) {
-        super.create(entity);
+    public void create(PaymentSent entity, Contact contact) {
+        System.out.println("---create Payment---- " + contact.getName());
+        entity.setContact(contact);
+        contact.getListOfPaymentReceived().add(entity);
+        em.merge(contact);
+        em.persist(entity);
     }
 
     @PUT
@@ -52,6 +53,14 @@ public class PaymentSentFacadeREST extends AbstractFacade<PaymentSent> {
     @Path("{id}")
     public void remove(@PathParam("id") Integer id) {
         super.remove(super.find(id));
+    }
+
+    @Override
+    public void remove(PaymentSent entity) {
+        Contact contact = entity.getContact();
+        contact.getListOfPaymentReceived().remove(entity);
+        em.merge(contact);
+        em.remove(entity);
     }
 
     @GET
@@ -86,5 +95,5 @@ public class PaymentSentFacadeREST extends AbstractFacade<PaymentSent> {
     protected EntityManager getEntityManager() {
         return em;
     }
-    
+
 }
