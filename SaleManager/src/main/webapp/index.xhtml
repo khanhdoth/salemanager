@@ -35,13 +35,17 @@
                     </p:submenu>  
 
                     <p:submenu label="#{bundle.ModuleStockIn}">  
-                        <p:menuitem value="#{bundle.StockIn_NewStockIn}" icon="ui-icon-document" onclick="wDlgBuy.show()" /> 
+                        <p:menuitem value="#{bundle.StockIn_NewStockIn}" icon="ui-icon-document" onclick="wDlgBuy.show()"  /> 
                         <p:menuitem value="#{bundle.StockIn_StockInList}" icon="ui-icon-document" onclick="wDlgBuyList.show()" /> 
                     </p:submenu>  
 
                     <p:submenu label="#{bundle.ModuleReceipt}">  
-                        <p:menuitem value="#{bundle.Receip_NewReceipt}" icon="ui-icon-document" onclick="wDlgPaymentReceive.show()" /> 
-                        <p:menuitem value="#{bundle.Receip_ReceiptList}" icon="ui-icon-document" onclick="wDlgPaymentReceiveList.show()" /> 
+                        <p:menuitem value="#{bundle.Receipt_NewReceipt}" icon="ui-icon-document" 
+                                    onclick="wDlgReceipt.show()" action="#{contactController.refreshList}" 
+                                    update=":createReceiptForm:soMenu" /> 
+                        <p:menuitem value="#{bundle.Receipt_ReceiptList}" icon="ui-icon-document" 
+                                    onclick="wDlgReceiptList.show()" action="#{receiptController.refreshList}" 
+                                    update=":receiptListForm:iReceiptTable" /> 
                     </p:submenu>  
 
                     <p:submenu label="#{bundle.ModulePayment}">  
@@ -373,14 +377,144 @@
             </h:form>            
 
             <!-- Create Receipt -->            
-            <h:form id="createPaymentReceiveForm" onkeypress="return event.keyCode != 13;">
-                <p:dialog id="iDlgPaymentReceive" header="#{bundle.Receip_NewReceipt}" widgetVar="wDlgPaymentReceive">                    
+            <h:form id="createReceiptForm" onkeypress="return event.keyCode != 13;">
+                <p:dialog id="iDlgReceipt" header="#{bundle.Receipt_NewReceipt}" widgetVar="wDlgReceipt">  
+                    <p:messages id="msgs" autoUpdate="true"/>
+                    <h:panelGrid columns="3" cellpadding="5">  
+
+                        <h:outputLabel for="soMenu" value="#{bundle.ModuleContact} *" />                                                 
+                        <p:selectOneMenu id="soMenu" value="#{receiptController.contact}" converter="contactConverter" 
+                                         panelStyle="width:500px" effect="fade" var="p" style="width:160px"  
+                                         filter="true" filterMatchMode="contains" required="true">                              
+                            <f:selectItems value="#{contactController.list}" var="c" itemLabel="#{c.contactId} - #{c.name}" itemValue="#{c}"/>  
+
+                            <p:column> #{p.contactId} </p:column>
+                            <p:column> #{p.name} </p:column>
+                            <p:column> #{p.address} </p:column>
+                            <p:column> #{p.city} </p:column>
+                            <p:column> #{p.country} </p:column>
+
+                        </p:selectOneMenu>
+                        <p:message for="soMenu" display="icon"/>
+
+                        <h:outputLabel for="cDate" value="#{bundle.Date} *" />  
+                        <p:calendar id="cDate" locale="de" showButtonPanel="true" navigator="true" 
+                                    value="#{receiptController.newT.date}" required="true" >
+
+
+                        </p:calendar>    
+                        <p:message for="cDate" display="icon"/>
+
+                        <h:outputLabel for="iAmount" value="#{bundle.Amount} *" />  
+                        <p:inputText id="iAmount" value="#{receiptController.newT.amount}" 
+                                     required="true" immediate="true" >  
+                            <f:convertNumber pattern="#,##0" maxIntegerDigits="12" />
+                            <f:validateDoubleRange minimum="1" />
+                            <p:ajax event="blur" update="iAmount"/> 
+                        </p:inputText>
+                        <p:message for="iAmount" display="icon"/>
+
+                        <h:outputLabel for="iReason" value="#{bundle.Reason}" />  
+                        <p:inputText id="iReason" value="#{receiptController.newT.paymentReason}" />  
+
+                        <p:commandButton widgetVar="saveReceiptButton" value="#{bundle.Save}" 
+                                         onclick="saveReceiptButton.disable()"
+                                         actionListener="#{receiptController.create}" 
+                                         update="iDlgReceipt, :receiptListForm:iReceiptTable, :mainForm:messages" 
+                                         oncomplete="saveReceiptButton.enable(); wDlgReceipt.hide()" 
+                                         validateClient="true" style="margin-right:10px" />  
+                    </h:panelGrid>     
                 </p:dialog>                
             </h:form>
 
             <!-- Receipt list -->            
-            <h:form id="paymentReceiveListForm" onkeypress="return event.keyCode != 13;">
-                <p:dialog id="iDlgPaymentReceiveList" header="#{bundle.Receip_ReceiptList}" widgetVar="wDlgPaymentReceiveList" position="bottom" >
+            <h:form id="receiptListForm" onkeypress="return event.keyCode != 13;">
+                <p:dialog id="iDlgReceiptList" header="#{bundle.Receipt_ReceiptList}" widgetVar="wDlgReceiptList" position="bottom" >
+                    <p:dataTable id="iReceiptTable" var="item" value="#{receiptController.list}" editable="true"
+                                 widgetVar="wReceiptTable" rowKey="#{item.paymentTransactionId}" scrollable="true" scrollHeight="400"
+                                 emptyMessage="No receipt found with given criteria" editMode="cell" 
+                                 filteredValue="#{receiptController.filterList}"                                 
+                                 resizableColumns="true" liveResize="true" >   
+
+                        <f:facet name="header">  
+                            <p:outputPanel style="text-align:left"> 
+                                <p:commandButton id="refreshButton" update="iReceiptTable" action="#{receiptController.refreshList}" icon="ui-icon-refresh" title="#{bundle.Reresh}" />  
+                                <p:spacer width="20"/>
+                                <h:outputText value="#{bundle.Search}" />
+                                <p:spacer width="5"/>
+                                <p:inputText id="globalFilter" onkeyup="wReceiptTable.filter()" style="width:150px" />                            
+                            </p:outputPanel>
+                        </f:facet>
+
+                        <p:ajax event="cellEdit" listener="#{receiptController.onCellEdit}" update=":mainForm:messages" /> 
+
+                        <p:column style="width:5%">  
+                            <p:commandButton id="deleteButton" update="iReceiptTable, :mainForm:messages" action="#{receiptController.delete}" icon="ui-icon-trash" title="#{bundle.Delete}" >  
+                                <p:confirm header="#{bundle.Confirmation}" message="#{bundle.Delete_Confirm_Message}" icon="ui-icon-alert" />  
+                                <f:setPropertyActionListener value="#{item}" target="#{receiptController.selectedT}" />  
+                            </p:commandButton> 
+                        </p:column> 
+
+                        <p:column id="paymentTransactionIdColumn" sortBy="paymentTransactionId" filterBy="paymentTransactionId"   
+                                  headerText="#{bundle.ID}" filterMatchMode="contains">  
+                            <h:outputText value="#{item.paymentTransactionId}" />  
+                        </p:column>  
+
+                        <p:column id="contactColumn" sortBy="contact.name" filterBy="contact.name"   
+                                  headerText="#{bundle.ModuleContact}"
+                                  filterMatchMode="contains">                              
+                            <h:outputText value="#{item.contact.contactId} - #{item.contact.name}" />  
+                        </p:column> 
+
+                        <p:column id="dateColumn" sortBy="date" filterBy="date"   
+                                  headerText="#{bundle.Date}"
+                                  filterMatchMode="contains">                                    
+                            <p:cellEditor>  
+                                <f:facet name="output">  
+                                    <p:calendar locale="de" showButtonPanel="true" navigator="true" value="#{item.date}" />                                      
+                                </f:facet>  
+                                <f:facet name="input">  
+                                    <p:calendar locale="de" showButtonPanel="true" navigator="true" value="#{item.date}" />  
+                                </f:facet>  
+                            </p:cellEditor>                             
+                        </p:column>  
+
+
+                        <p:column id="amountColumn" sortBy="amount" filterBy="amount"   
+                                  headerText="#{bundle.Amount}"
+                                  filterMatchMode="contains" style="text-align:right">  
+                            <p:cellEditor>  
+                                <f:facet name="output">  
+                                    <h:outputText value="#{item.amount}" >
+                                        <f:convertNumber pattern="#,##0" />
+                                    </h:outputText> 
+                                </f:facet>  
+                                <f:facet name="input">                                      
+                                    <p:inputText id="iAmount" value="#{item.amount}" required="true" 
+                                                 immediate="true"  >  
+                                        <f:convertNumber pattern="#,##0" maxIntegerDigits="12" />
+                                        <f:validateDoubleRange minimum="1" />
+                                        <p:ajax event="blur" update="iAmount"/> 
+                                    </p:inputText>
+                                </f:facet>  
+                            </p:cellEditor>                             
+                        </p:column>  
+
+                        <p:column id="paymentReasonColumn" sortBy="paymentReason" filterBy="paymentReason"   
+                                  headerText="#{bundle.Reason}"
+                                  filterMatchMode="contains">  
+                            <p:cellEditor>  
+                                <f:facet name="output">  
+                                    <h:outputText value="#{item.paymentReason}" />  
+                                </f:facet>  
+                                <f:facet name="input">  
+                                    <p:inputText value="#{item.paymentReason}" />  
+                                </f:facet>  
+                            </p:cellEditor>                             
+
+                        </p:column> 
+
+                    </p:dataTable> 
                 </p:dialog>  
             </h:form>            
 
