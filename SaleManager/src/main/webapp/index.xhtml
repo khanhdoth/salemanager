@@ -419,13 +419,42 @@
                         </p:inputText>
                         <p:message for="iVAT" display="icon"/>
 
-                        <p:commandButton widgetVar="saveStockInButton" value="#{bundle.Save}" 
-                                         onclick="saveStockInButton.disable()"
-                                         actionListener="#{stockInController.create}" 
-                                         update="iDlgBuy, :buyListForm:iStockInTable, :mainForm:messages" 
-                                         oncomplete="saveStockInButton.enable(); wDlgBuy.hide()" 
-                                         validateClient="true" style="margin-right:10px" />                          
-                    </h:panelGrid>                        
+
+                    </h:panelGrid>
+
+                    <p:dataTable id="iSIInTable" var="item" value="#{stockInController.newT.listOfSaleItem}" editable="true"
+                                 widgetVar="wSIInTable" rowKey="#{item.saleItemId}" scrollable="true" scrollHeight="300"
+                                 emptyMessage="No sale item found with given criteria" editMode="cell"                                  
+                                 resizableColumns="true" liveResize="true" >   
+
+                        <p:ajax event="cellEdit" listener="#{stockInController.onSICellEdit}" /> 
+
+                        <p:column style="width:5%">  
+                            <p:commandButton id="deleteButton" update="iStockInTable, :mainForm:messages" action="#{stockInController.delete}" icon="ui-icon-trash" title="#{bundle.Delete}" >  
+                                <p:confirm header="#{bundle.Confirmation}" message="#{bundle.Delete_Confirm_Message}" icon="ui-icon-alert" />  
+                                <f:setPropertyActionListener value="#{item}" target="#{stockInController.selectedSI}" />  
+                            </p:commandButton> 
+                        </p:column> 
+
+                        <p:column id="quantityColumn" headerText="#{bundle.Quantity}">  
+                            <h:outputText value="#{item.quantity}" />  
+                        </p:column>  
+
+                        <p:column id="priceColumn" headerText="#{bundle.Price}">  
+                            <h:outputText value="#{item.price}" />  
+                        </p:column>  
+
+                        <p:column id="discountColumn" headerText="#{bundle.Discount}">  
+                            <h:outputText value="#{item.discount}" />  
+                        </p:column>  
+                    </p:dataTable>  
+                    
+                    <p:commandButton widgetVar="saveStockInButton" value="#{bundle.Save}" 
+                                     onclick="saveStockInButton.disable()"
+                                     actionListener="#{stockInController.create}" 
+                                     update="iDlgBuy, :buyListForm:iStockInTable, :mainForm:messages" 
+                                     oncomplete="saveStockInButton.enable(); wDlgBuy.hide()" 
+                                     validateClient="true" style="margin-right:10px" />    
                 </p:dialog>                
             </h:form>
 

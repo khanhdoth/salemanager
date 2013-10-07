@@ -2,6 +2,7 @@ package com.hatde.salemanager.web;
 
 import com.hatde.salemanager.entities.Buy;
 import com.hatde.salemanager.entities.PaymentSent;
+import com.hatde.salemanager.entities.SaleItem;
 import com.hatde.salemanager.services.AbstractFacade;
 import com.hatde.salemanager.services.BuyFacadeREST;
 import com.hatde.salemanager.services.ContactFacadeREST;
@@ -20,6 +21,8 @@ import javax.inject.Inject;
 @Named(value = "stockInController")
 @SessionScoped
 public class StockInController extends FacadeContactController<Buy> implements Serializable {
+
+    private SaleItem selectedSI;
 
     @EJB
     private BuyFacadeREST bean;
@@ -58,5 +61,20 @@ public class StockInController extends FacadeContactController<Buy> implements S
         super.initNewT();
         newT.setDate(new Date());
         newT.setPayment(new PaymentSent());
+    }
+
+    public void onSICellEdit() {
+    }
+
+    public void deleteSI() {
+        newT.getListOfSaleItem().remove(selectedSI);
+    }
+
+    public SaleItem getSelectedSI() {
+        return selectedSI;
+    }
+
+    public void setSelectedSI(SaleItem selectedSI) {
+        this.selectedSI = selectedSI;
     }
 }
