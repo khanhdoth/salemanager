@@ -22,6 +22,7 @@ public abstract class FacadeContactController<T> extends FacadeController<T> {
     public FacadeContactController() {
     }
 
+    /*
     @Override
     public void create() {
         System.out.println("----create----" + this.toString());
@@ -45,7 +46,8 @@ public abstract class FacadeContactController<T> extends FacadeController<T> {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getString("Delete_Failed_Message"), ""));
         }
     }
-
+    */
+    
     public Contact getContact() {
         return contact;
     }

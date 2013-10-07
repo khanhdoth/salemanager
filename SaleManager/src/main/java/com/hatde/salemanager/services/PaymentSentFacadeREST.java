@@ -60,7 +60,7 @@ public class PaymentSentFacadeREST extends AbstractFacade<PaymentSent> {
         Contact contact = entity.getContact();
         contact.getListOfPaymentReceived().remove(entity);
         em.merge(contact);
-        em.remove(entity);
+        em.remove(em.merge(entity));
     }
 
     @GET
