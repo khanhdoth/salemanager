@@ -54,32 +54,22 @@ public class ReceiptController extends FacadeContactController<PaymentReceived> 
     }
 
     @Override
-    protected ContactFacadeREST getContactBean() {
-        return contactBean;
+    public void doCreate() {
+        bean.create(newT, contact);
+        tempViewContact();
     }
 
     @Override
-    public void create() {
-        //contact = contactBean.find(1);
-        System.out.println("---create ReceiptController ---- " + contact.getName());
-        newT.setContact(contact);
-        contact.getListOfPaymentSent().add(newT);
-        super.create();
+    public void doDelete() {
+        super.doDelete();
+        tempViewContact();
+    }
 
+    public void tempViewContact() {
         Contact contact2 = contactBean.find(contact.getContactId());
         System.out.println(contact2.toString());
     }
 
-    @Override
-    public void delete() {
-        contact = ((PaymentReceived) selectedT).getContact();
-        contact.getListOfPaymentSent().remove(selectedT);
-        super.delete();
-
-        Contact contact2 = contactBean.find(contact.getContactId());
-        System.out.println(contact2.toString());
-    }
-    
     @Override
     public void initNewT() {
         super.initNewT();

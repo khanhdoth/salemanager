@@ -3,10 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.hatde.salemanager.services;
 
 import com.hatde.salemanager.entities.Buy;
+import com.hatde.salemanager.entities.Contact;
+import com.hatde.salemanager.entities.PaymentSent;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -27,6 +28,7 @@ import javax.ws.rs.Produces;
 @Stateless
 @Path("buy")
 public class BuyFacadeREST extends AbstractFacade<Buy> {
+
     @PersistenceContext(unitName = "com.hatde_SaleManager")
     private EntityManager em;
 
@@ -41,6 +43,22 @@ public class BuyFacadeREST extends AbstractFacade<Buy> {
         super.create(entity);
     }
 
+    public void create(Buy entity, Contact contact) {
+        PaymentSent ps = (PaymentSent) entity.getPayment();
+        if (ps.getAmount() > 0) {
+            ps.setDate(entity.getDate());
+            ps.setContact(contact);
+            contact.getListOfPaymentReceived().add(ps);
+        } else {
+            entity.setPayment(null);
+        }
+
+        entity.setContact(contact);
+        contact.getListOfSale().add(entity);
+        em.merge(contact);
+        em.persist(entity);
+    }
+
     @PUT
     @Path("{id}")
     @Consumes({"application/xml", "application/json"})
@@ -52,6 +70,24 @@ public class BuyFacadeREST extends AbstractFacade<Buy> {
     @Path("{id}")
     public void remove(@PathParam("id") Integer id) {
         super.remove(super.find(id));
+    }
+
+    @Override
+    public void remove(Buy entity) {
+        Contact contact = entity.getContact();
+        PaymentSent ps = (PaymentSent) entity.getPayment();
+
+        if (ps != null) {
+            contact.getListOfPaymentReceived().remove(ps);
+        }
+
+        contact.getListOfSale().remove(entity);
+        em.merge(contact);
+        em.remove(em.merge(entity));
+
+        if (ps != null) {            
+            em.remove(em.merge(ps));
+        }
     }
 
     @GET
@@ -86,5 +122,5 @@ public class BuyFacadeREST extends AbstractFacade<Buy> {
     protected EntityManager getEntityManager() {
         return em;
     }
-    
+
 }

@@ -3,10 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.hatde.salemanager.services;
 
+import com.hatde.salemanager.entities.Contact;
 import com.hatde.salemanager.entities.PaymentReceived;
+import com.hatde.salemanager.entities.PaymentSent;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -27,6 +28,7 @@ import javax.ws.rs.Produces;
 @Stateless
 @Path("paymentreceived")
 public class PaymentReceivedFacadeREST extends AbstractFacade<PaymentReceived> {
+
     @PersistenceContext(unitName = "com.hatde_SaleManager")
     private EntityManager em;
 
@@ -41,6 +43,14 @@ public class PaymentReceivedFacadeREST extends AbstractFacade<PaymentReceived> {
         super.create(entity);
     }
 
+    public void create(PaymentReceived entity, Contact contact) {
+        System.out.println("---create Receipt---- " + contact.getName());
+        entity.setContact(contact);
+        contact.getListOfPaymentSent().add(entity);
+        em.merge(contact);
+        em.persist(entity);
+    }
+
     @PUT
     @Path("{id}")
     @Consumes({"application/xml", "application/json"})
@@ -52,6 +62,14 @@ public class PaymentReceivedFacadeREST extends AbstractFacade<PaymentReceived> {
     @Path("{id}")
     public void remove(@PathParam("id") Integer id) {
         super.remove(super.find(id));
+    }
+
+    @Override
+    public void remove(PaymentReceived entity) {
+        Contact contact = entity.getContact();
+        contact.getListOfPaymentSent().remove(entity);
+        em.merge(contact);
+        em.remove(em.merge(entity));
     }
 
     @GET
@@ -86,5 +104,5 @@ public class PaymentReceivedFacadeREST extends AbstractFacade<PaymentReceived> {
     protected EntityManager getEntityManager() {
         return em;
     }
-    
+
 }

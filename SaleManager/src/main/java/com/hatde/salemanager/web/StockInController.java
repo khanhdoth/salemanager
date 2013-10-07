@@ -50,41 +50,22 @@ public class StockInController extends FacadeContactController<Buy> implements S
     }
 
     @Override
-    protected ContactFacadeREST getContactBean() {
-        return contactBean;
+    public void doCreate() {
+        bean.create(newT, contact);
+        tempViewContact();
     }
 
     @Override
-    public void create() {
-        System.out.println("---create Sale---- " + contact.getName());
-        
-        PaymentSent ps = (PaymentSent) newT.getPayment();
-        if(ps.getAmount()>0){
-            ps.setDate(newT.getDate());
-            ps.setContact(contact);
-            contact.getListOfPaymentReceived().add(ps);
-        } else {
-            ps = null;
-        }
-        
-        newT.setContact(contact);
-        contact.getListOfSale().add(newT);
-        super.create();
+    public void doDelete() {
+        super.doDelete();
+        tempViewContact();
+    }
 
+    public void tempViewContact() {
         Contact contact2 = contactBean.find(contact.getContactId());
         System.out.println(contact2.toString());
     }
 
-    @Override
-    public void delete() {
-        contact = ((Buy) selectedT).getContact();
-        contact.getListOfSale().remove(selectedT);
-        super.delete();
-
-        Contact contact2 = contactBean.find(contact.getContactId());
-        System.out.println(contact2.toString());
-    }
-    
     @Override
     public void initNewT() {
         super.initNewT();

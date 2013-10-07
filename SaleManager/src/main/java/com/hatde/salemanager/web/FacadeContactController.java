@@ -15,38 +15,10 @@ import javax.faces.context.FacesContext;
  * @author Khanh
  */
 public abstract class FacadeContactController<T> extends FacadeController<T> {
-
-    protected abstract ContactFacadeREST getContactBean();
     protected Contact contact;
 
     public FacadeContactController() {
     }
-
-    /*
-    @Override
-    public void create() {
-        System.out.println("----create----" + this.toString());
-        try {
-            getContactBean().edit(contact);
-            initListandNewT();
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, bundle.getString("Create_Success"), ""));
-
-        } catch (Exception e) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getString("Create_Failed_Message"), ""));
-        }
-    }
-
-    public void delete() {
-        System.out.println("----delete----" + this.toString());
-        try {
-            getContactBean().edit(contact);
-            super.delete();            
-            initDataList();
-        } catch (Exception e) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getString("Delete_Failed_Message"), ""));
-        }
-    }
-    */
     
     public Contact getContact() {
         return contact;

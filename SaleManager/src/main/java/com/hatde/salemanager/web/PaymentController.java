@@ -47,35 +47,7 @@ public class PaymentController extends FacadeContactController<PaymentSent> impl
     protected BundleBean getBundleBean() {
         return bundleBean;
     }
-
-    @Override
-    protected ContactFacadeREST getContactBean() {
-        return contactBean;
-    }
-
-    /*
-     @Override
-     public void create() {
-     //contact = contactBean.find(1);
-     System.out.println("---create ---- " + contact.getName());
-     newT.setContact(contact);
-     contact.getListOfPaymentReceived().add(newT);
-     super.create();
-
-     Contact contact2 = contactBean.find(contact.getContactId());
-     System.out.println(contact2.toString());
-     }
-
-     @Override
-     public void delete() {
-     contact = ((PaymentSent) selectedT).getContact();
-     contact.getListOfPaymentReceived().remove(selectedT);
-     super.delete();
-
-     Contact contact2 = contactBean.find(contact.getContactId());
-     System.out.println(contact2.toString());
-     }
-     */
+    
     @Override
     public void doCreate() {
         bean.create(newT, contact);
