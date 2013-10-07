@@ -39,10 +39,13 @@ public class ApplicationConfig extends Application {
      * If required, comment out calling this method in getClasses().
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
+        resources.add(com.hatde.salemanager.services.BuyFacadeREST.class);
         resources.add(com.hatde.salemanager.services.ContactFacadeREST.class);
         resources.add(com.hatde.salemanager.services.PaymentReceivedFacadeREST.class);
         resources.add(com.hatde.salemanager.services.PaymentSentFacadeREST.class);
+        resources.add(com.hatde.salemanager.services.PaymentTransactionFacadeREST.class);
         resources.add(com.hatde.salemanager.services.ProductFacadeREST.class);
+        resources.add(com.hatde.salemanager.services.SaleFacadeREST.class);
     }
     
 }

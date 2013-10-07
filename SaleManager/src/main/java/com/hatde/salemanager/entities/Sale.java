@@ -5,9 +5,11 @@ import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
 @Table(name = "Sale")
+@XmlRootElement
 public class Sale extends ProductTransaction implements java.io.Serializable {
 
     public Sale() {

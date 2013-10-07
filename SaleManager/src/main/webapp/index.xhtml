@@ -35,7 +35,9 @@
                     </p:submenu>  
 
                     <p:submenu label="#{bundle.ModuleStockIn}">  
-                        <p:menuitem value="#{bundle.StockIn_NewStockIn}" icon="ui-icon-document" onclick="wDlgBuy.show()"  /> 
+                        <p:menuitem value="#{bundle.StockIn_NewStockIn}" icon="ui-icon-document" 
+                                    onclick="wDlgBuy.show()"  action="#{contactController.refreshList}" 
+                                    update=":createBuyForm:soContactMenu" /> 
                         <p:menuitem value="#{bundle.StockIn_StockInList}" icon="ui-icon-document" onclick="wDlgBuyList.show()" /> 
                     </p:submenu>  
 
@@ -366,7 +368,63 @@
 
             <!-- Create stock-in -->            
             <h:form id="createBuyForm" onkeypress="return event.keyCode != 13;">
-                <p:dialog id="iDlgBuy" header="#{bundle.StockIn_NewStockIn}" widgetVar="wDlgBuy">                    
+                <p:dialog id="iDlgBuy" header="#{bundle.StockIn_NewStockIn}" widgetVar="wDlgBuy">  
+                    <p:messages id="msgs" autoUpdate="true"/>
+                    <h:panelGrid columns="3" cellpadding="5">  
+
+                        <h:outputLabel for="soContactMenu" value="#{bundle.ModuleContact} *" />                                                 
+                        <p:selectOneMenu id="soContactMenu" value="#{stockInController.contact}" converter="contactConverter" 
+                                         panelStyle="width:500px" effect="fade" var="p" style="width:160px"  
+                                         filter="true" filterMatchMode="contains" required="true">                              
+                            <f:selectItems value="#{contactController.list}" var="c" itemLabel="#{c.contactId} - #{c.name}" itemValue="#{c}"/>  
+
+                            <p:column> #{p.contactId} </p:column>
+                            <p:column> #{p.name} </p:column>
+                            <p:column> #{p.address} </p:column>
+                            <p:column> #{p.city} </p:column>
+                            <p:column> #{p.country} </p:column>
+
+                        </p:selectOneMenu>
+                        <p:message for="soContactMenu" display="icon"/>
+
+                        <h:outputLabel for="cDate" value="#{bundle.Date} *" />  
+                        <p:calendar id="cDate" locale="de" showButtonPanel="true" navigator="true" 
+                                    value="#{stockInController.newT.date}" required="true" >
+                        </p:calendar>    
+                        <p:message for="cDate" display="icon"/>
+
+                        <h:outputLabel for="iDiscount" value="#{bundle.Discount}" />  
+                        <p:inputText id="iDiscount" value="#{stockInController.newT.discount}">   
+                            <f:convertNumber pattern="#.##" maxFractionDigits="2" maxIntegerDigits="1" />
+                            <f:validateDoubleRange minimum="0" maximum="1"/>
+                            <p:ajax event="blur" update="iDiscount"/> 
+                        </p:inputText>
+                        <p:message for="iDiscount" display="icon"/>
+
+                        <h:outputLabel for="iVAT" value="#{bundle.VAT}" />  
+                        <p:inputText id="iVAT" value="#{stockInController.newT.VAT}">   
+                            <f:convertNumber pattern="#.##" maxFractionDigits="2" maxIntegerDigits="1" />
+                            <f:validateDoubleRange minimum="0" maximum="1"/>
+                            <p:ajax event="blur" update="iVAT"/> 
+                        </p:inputText>
+                        <p:message for="iVAT" display="icon"/>
+
+                        <h:outputLabel for="iPayment" value="#{bundle.Payment}" />  
+                        <p:inputText id="iPayment" value="#{stockInController.newT.payment.amount}">   
+                            <f:convertNumber pattern="#,##0" maxIntegerDigits="12" />
+                            <f:validateDoubleRange minimum="0" />
+                            <p:ajax event="blur" update="iPayment"/>                         
+                        </p:inputText>
+                        <p:message for="iVAT" display="icon"/>
+
+                        <p:commandButton widgetVar="saveStockInButton" value="#{bundle.Save}" 
+                                         onclick="saveStockInButton.disable()"
+                                         actionListener="#{stockInController.create}" 
+                                         update="iDlgBuy, :mainForm:messages" 
+                                         oncomplete="saveStockInButton.enable(); wDlgBuy.hide()" 
+                                         validateClient="true" style="margin-right:10px" />  
+                        <!-- :receiptListForm:iReceiptTable, --> 
+                    </h:panelGrid>                        
                 </p:dialog>                
             </h:form>
 

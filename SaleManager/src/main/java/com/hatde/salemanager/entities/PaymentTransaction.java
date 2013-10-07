@@ -22,7 +22,7 @@ public class PaymentTransaction implements java.io.Serializable {
 
     private int paymentTransactionId;
     private Date date;
-    private double amount;
+    private double amount=0;
     private String paymentReason;
     private Contact contact;
 

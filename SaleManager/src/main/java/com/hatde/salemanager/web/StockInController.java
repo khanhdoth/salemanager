@@ -1,7 +1,9 @@
 package com.hatde.salemanager.web;
 
+import com.hatde.salemanager.entities.Buy;
 import com.hatde.salemanager.entities.Contact;
 import com.hatde.salemanager.entities.PaymentSent;
+import com.hatde.salemanager.entities.PaymentTransaction;
 import com.hatde.salemanager.services.AbstractFacade;
 import com.hatde.salemanager.services.ContactFacadeREST;
 import com.hatde.salemanager.services.PaymentSentFacadeREST;
@@ -17,9 +19,9 @@ import javax.inject.Inject;
  *
  * @author Khanh
  */
-@Named(value = "paymentController")
+@Named(value = "stockInController")
 @SessionScoped
-public class PaymentController extends FacadeContactController<PaymentSent> implements Serializable {
+public class StockInController extends FacadeContactController<Buy> implements Serializable {
 
     @EJB
     private PaymentSentFacadeREST bean;
@@ -32,10 +34,10 @@ public class PaymentController extends FacadeContactController<PaymentSent> impl
 
     @PostConstruct
     public void init() {
-        super.init(PaymentSent.class);
+        super.init(Buy.class);
     }
 
-    public PaymentController() {
+    public StockInController() {
     }
 
     @Override
@@ -55,10 +57,19 @@ public class PaymentController extends FacadeContactController<PaymentSent> impl
 
     @Override
     public void create() {
-        //contact = contactBean.find(1);
-        System.out.println("---create ---- " + contact.getName());
+        System.out.println("---create Sale---- " + contact.getName());
+        
+        PaymentSent ps = (PaymentSent) newT.getPayment();
+        if(ps.getAmount()>0){
+            ps.setDate(newT.getDate());
+            ps.setContact(contact);
+            contact.getListOfPaymentReceived().add(ps);
+        } else {
+            ps = null;
+        }
+        
         newT.setContact(contact);
-        contact.getListOfPaymentReceived().add(newT);
+        contact.getListOfSale().add(newT);
         super.create();
 
         Contact contact2 = contactBean.find(contact.getContactId());
@@ -67,8 +78,8 @@ public class PaymentController extends FacadeContactController<PaymentSent> impl
 
     @Override
     public void delete() {
-        contact = ((PaymentSent) selectedT).getContact();
-        contact.getListOfPaymentReceived().remove(selectedT);
+        contact = ((Buy) selectedT).getContact();
+        contact.getListOfSale().remove(selectedT);
         super.delete();
 
         Contact contact2 = contactBean.find(contact.getContactId());
@@ -79,5 +90,6 @@ public class PaymentController extends FacadeContactController<PaymentSent> impl
     public void initNewT() {
         super.initNewT();
         newT.setDate(new Date());
+        newT.setPayment(new PaymentSent());
     }
 }

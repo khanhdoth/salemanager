@@ -6,7 +6,7 @@
 
 package com.hatde.salemanager.services;
 
-import com.hatde.salemanager.entities.Contact;
+import com.hatde.salemanager.entities.Sale;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -25,26 +25,26 @@ import javax.ws.rs.Produces;
  * @author Khanh
  */
 @Stateless
-@Path("com.hatde.salemanager.entities.contact")
-public class ContactFacadeREST extends AbstractFacade<Contact> {
+@Path("sale")
+public class SaleFacadeREST extends AbstractFacade<Sale> {
     @PersistenceContext(unitName = "com.hatde_SaleManager")
     private EntityManager em;
 
-    public ContactFacadeREST() {
-        super(Contact.class);
+    public SaleFacadeREST() {
+        super(Sale.class);
     }
 
     @POST
     @Override
     @Consumes({"application/xml", "application/json"})
-    public void create(Contact entity) {
+    public void create(Sale entity) {
         super.create(entity);
     }
 
     @PUT
     @Path("{id}")
     @Consumes({"application/xml", "application/json"})
-    public void edit(@PathParam("id") Integer id, Contact entity) {
+    public void edit(@PathParam("id") Integer id, Sale entity) {
         super.edit(entity);
     }
 
@@ -57,21 +57,21 @@ public class ContactFacadeREST extends AbstractFacade<Contact> {
     @GET
     @Path("{id}")
     @Produces({"application/xml", "application/json"})
-    public Contact find(@PathParam("id") Integer id) {
+    public Sale find(@PathParam("id") Integer id) {
         return super.find(id);
     }
 
     @GET
     @Override
     @Produces({"application/xml", "application/json"})
-    public List<Contact> findAll() {
+    public List<Sale> findAll() {
         return super.findAll();
     }
 
     @GET
     @Path("{from}/{to}")
     @Produces({"application/xml", "application/json"})
-    public List<Contact> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
+    public List<Sale> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
         return super.findRange(new int[]{from, to});
     }
 
