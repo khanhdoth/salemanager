@@ -17,7 +17,7 @@ import javax.inject.Named;
 public class ProductConverter implements Converter {
 
     @Inject
-    private ProductFacadeREST bean;
+    private ProductController bean;
 
     @Override
     public Object getAsObject(FacesContext facesContext, UIComponent component, String submittedValue) {
@@ -26,8 +26,8 @@ public class ProductConverter implements Converter {
             return null;
         } else {
             try {
-                int number = Integer.parseInt(submittedValue);
-                List<Product> products = bean.findAll();    
+                int number = Integer.parseInt(submittedValue);                
+                List<Product> products = bean.getListOne();    
                 for (Product p : products) {
                     if (p.getProductId() == number) {
                         System.out.println("===========getAsObject mached:" + p.getName());

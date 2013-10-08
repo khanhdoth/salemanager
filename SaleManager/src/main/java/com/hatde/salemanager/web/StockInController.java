@@ -6,6 +6,7 @@ import com.hatde.salemanager.entities.SaleItem;
 import com.hatde.salemanager.services.AbstractFacade;
 import com.hatde.salemanager.services.BuyFacadeREST;
 import com.hatde.salemanager.services.ContactFacadeREST;
+import com.hatde.salemanager.services.ProductFacadeREST;
 import java.io.Serializable;
 import java.util.Date;
 import javax.annotation.PostConstruct;
@@ -30,6 +31,12 @@ public class StockInController extends FacadeContactController<Buy> implements S
     @EJB
     private ContactFacadeREST contactBean;
 
+    @Inject
+    private ContactController contactControllerBean;
+
+    @Inject
+    private ProductController productControllerBean;
+    
     @Inject
     private BundleBean bundleBean;
 
@@ -61,7 +68,9 @@ public class StockInController extends FacadeContactController<Buy> implements S
         super.initNewT();
         newT.setDate(new Date());
         newT.setPayment(new PaymentSent());
-        newT.getListOfSaleItem().add(new SaleItem());
+        for (int i = 0; i < 3; i++) {
+            addSaleItem();
+        }
     }
 
     public void onSICellEdit() {
@@ -77,5 +86,14 @@ public class StockInController extends FacadeContactController<Buy> implements S
 
     public void setSelectedSI(SaleItem selectedSI) {
         this.selectedSI = selectedSI;
+    }
+
+    public void refresh() {
+        contactControllerBean.refreshList();
+        productControllerBean.refreshList();
+    }
+    
+    public void addSaleItem() {
+        newT.getListOfSaleItem().add(new SaleItem());
     }
 }

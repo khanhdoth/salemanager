@@ -39,7 +39,7 @@ public abstract class FacadeController<T> {
     }
 
     public void initFirstListandNewT() {
-        list = new ArrayList();
+        //list = new ArrayList();
         initNewT();
     }
 
@@ -120,6 +120,14 @@ public abstract class FacadeController<T> {
      */
     public List<T> getList() {
         System.out.println("----getList----" + this.toString());
+        return list;
+    }
+    
+    public List<T> getListOne() {
+        System.out.println("----getListOne----" + this.toString());
+        if(list == null){
+            refreshList();
+        }
         return list;
     }
 

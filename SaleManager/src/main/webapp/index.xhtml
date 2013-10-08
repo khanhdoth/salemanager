@@ -426,16 +426,26 @@
                                  widgetVar="wSIInTable" rowKey="#{item.saleItemId}" scrollable="true" scrollHeight="300"
                                  emptyMessage="No sale item found with given criteria" editMode="cell"                                  
                                  resizableColumns="true" liveResize="true" >   
+                        
+                        <!-- ***************************************************************** -->
+                        
+                        <f:facet name="header">  
+                            <p:outputPanel style="text-align:left"> 
+                                <p:commandButton id="addButton" update="iSIInTable" action="#{stockInController.addSaleItem}" icon="ui-icon-circle-plus" title="#{bundle.AddNewItem}" /> 
+                                <p:spacer width="10"/>
+                                <p:commandButton id="refreshButton" update="iSIInTable" action="#{productController.refreshList}" icon="ui-icon-refresh" title="#{bundle.Reresh}" /> 
+                            </p:outputPanel>
+                        </f:facet>
 
                         <p:ajax event="cellEdit" listener="#{stockInController.onSICellEdit}" /> 
 
                         <p:column style="width:5%">  
-                            <p:commandButton id="deleteButton" update="iSIInTable, :mainForm:messages" action="#{stockInController.setSelectedSI}" icon="ui-icon-trash" title="#{bundle.Delete}" >  
+                            <p:commandButton id="deleteButton" update="iSIInTable, :mainForm:messages" action="#{stockInController.deleteSI}" icon="ui-icon-trash" title="#{bundle.Delete}" >  
                                 <p:confirm header="#{bundle.Confirmation}" message="#{bundle.Delete_Confirm_Message}" icon="ui-icon-alert" />  
                                 <f:setPropertyActionListener value="#{item}" target="#{stockInController.selectedSI}" />  
                             </p:commandButton> 
                         </p:column> 
-
+                        
                         <p:column id="productColumn" headerText="#{bundle.ModuleProduct}">  
                             <p:cellEditor>  
                                 <f:facet name="output">  
@@ -445,12 +455,12 @@
                                     <p:selectOneMenu id="soProductMenu" value="#{item.product}" converter="productConverter" 
                                                      panelStyle="width:500px" effect="fade" var="p" style="width:160px"  
                                                      filter="true" filterMatchMode="contains" required="true">                              
-                                        <f:selectItems value="#{productController.list}" var="pi" itemLabel="#{pi.productId} - #{pi.name}" itemValue="#{pi}"/>  
+                                        <f:selectItems value="#{productController.listOne}" var="pi" itemLabel="#{pi.productId} - #{pi.name}" itemValue="#{pi}"/>  
 
-                                        <p:column> #{pi.productId} </p:column>
-                                        <p:column> #{pi.name} </p:column>
-                                        <p:column> #{pi.manufacturer} </p:column>
-                                        <p:column> #{pi.unit} </p:column>                                        
+                                        <p:column> #{p.productId} </p:column>
+                                        <p:column> #{p.name} </p:column>
+                                        <p:column> #{p.manufacturer} </p:column>
+                                        <p:column> #{p.unit} </p:column>                                        
 
                                     </p:selectOneMenu>
                                 </f:facet>  
