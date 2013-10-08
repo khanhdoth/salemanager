@@ -538,11 +538,11 @@
                                 <p:inputText id="iDiscount" value="#{stockInController.newT.discount}"  style="width:25px; text-align:right">   
                                     <f:convertNumber pattern="#.##" maxFractionDigits="2"/>
                                     <f:validateDoubleRange minimum="0" maximum="100"/>
-                                    <p:ajax event="blur" update="iDiscount"/> 
+                                    <p:ajax event="blur" update="iDiscount, oAmountDiscount, oAmountVAT, oAmountAfterPayment"/> 
                                 </p:inputText>
                             </p:column>
                             <p:column style="text-align:right">
-                                <h:outputText value="#{stockInController.newT.amountDiscount}">
+                                <h:outputText id="oAmountDiscount" value="#{stockInController.newT.amountDiscount}">
                                     <f:convertNumber pattern="-#,##0" />
                                 </h:outputText> 
                             </p:column>
@@ -554,11 +554,11 @@
                                 <p:inputText id="iVAT" value="#{stockInController.newT.VAT}"  style="width:25px; text-align:right">   
                                     <f:convertNumber pattern="#.##" maxFractionDigits="2"/>
                                     <f:validateDoubleRange minimum="0" maximum="100"/>
-                                    <p:ajax event="blur" update="iVAT"/> 
+                                    <p:ajax event="blur" update="iVAT, oAmountVAT, oAmountAfterPayment"/> 
                                 </p:inputText>
                             </p:column>
                             <p:column style="text-align:right">
-                                <h:outputText value="#{stockInController.newT.amountVAT}">
+                                <h:outputText id="oAmountVAT" value="#{stockInController.newT.amountVAT}">
                                     <f:convertNumber pattern="#,##0" />
                                 </h:outputText> 
                             </p:column>
@@ -581,7 +581,7 @@
                                 <p:inputText id="iPayment" value="#{stockInController.newT.payment.amount}"  style="width:100px; text-align:right">   
                                     <f:convertNumber pattern="-#,##0" maxIntegerDigits="12" />
                                     <f:validateDoubleRange minimum="0" />
-                                    <p:ajax event="blur" update="iPayment"/>                         
+                                    <p:ajax event="blur" update="iPayment, oAmountAfterPayment"/>                         
                                 </p:inputText>                                
                             </p:column>
                         </p:row>               
@@ -590,7 +590,7 @@
                                 <h:outputText value="#{bundle.BalanceDue}"/>
                             </p:column>
                             <p:column style="text-align:right"  styleClass="ui-widget-header">
-                                <h:outputText value="#{stockInController.newT.amountAfterPayment}">
+                                <h:outputText id="oAmountAfterPayment" value="#{stockInController.newT.amountAfterPayment}">
                                     <f:convertNumber pattern="#,##0" />
                                 </h:outputText> 
                             </p:column>
