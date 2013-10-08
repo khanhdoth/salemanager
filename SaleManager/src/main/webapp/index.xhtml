@@ -97,7 +97,9 @@
 
             <!-- Create contact -->            
             <h:form id="createContactForm" onkeypress="return event.keyCode != 13;">
-                <p:dialog id="iDlgContact" header="#{bundle.Contact_NewContact}" widgetVar="wDlgContact"  modal="true" >                    
+                <p:dialog id="iDlgContact" header="#{contactController.dialogTitle}" widgetVar="wDlgContact"  modal="true" >  
+                    <p:ajax event="close" update=":createContactForm:iDlgContact" listener="#{contactController.closeDialog}"/>
+                    
                     <h:panelGrid columns="2" cellpadding="5">  
                         <h:outputLabel value="#{bundle.Contact_Name}" />  
                         <p:inputText value="#{contactController.newT.name}" />  
@@ -263,7 +265,9 @@
 
             <!-- Create product -->            
             <h:form id="createProductForm" onkeypress="return event.keyCode != 13;">
-                <p:dialog id="iDlgProduct" header="#{bundle.Product_NewProduct}" widgetVar="wDlgProduct"  modal="true" >                    
+                <p:dialog id="iDlgProduct" header="#{productController.dialogTitle}" widgetVar="wDlgProduct"  modal="true" >                    
+                    <p:ajax event="close" update=":createProductForm:iDlgProduct" listener="#{productController.closeDialog}"/>                    
+                    
                     <h:panelGrid columns="2" cellpadding="5">  
                         <h:outputLabel value="#{bundle.Product_Name}" />  
                         <p:inputText value="#{productController.newT.name}" />  
@@ -365,7 +369,7 @@
 
             <!-- Create stock-out -->            
             <h:form id="createSaleForm" onkeypress="return event.keyCode != 13;">
-                <p:dialog id="iDlgSale" header="#{bundle.StockOut_NewStockOut}" widgetVar="wDlgSale"  modal="true" >                    
+                <p:dialog id="iDlgSale" header="#{productController.dialogTitle}" widgetVar="wDlgSale"  modal="true" >     
                 </p:dialog>                
             </h:form>
 
@@ -661,7 +665,9 @@
 
             <!-- Create Receipt -->            
             <h:form id="createReceiptForm" onkeypress="return event.keyCode != 13;">
-                <p:dialog id="iDlgReceipt" header="#{bundle.Receipt_NewReceipt}" widgetVar="wDlgReceipt"  modal="true" >  
+                <p:dialog id="iDlgReceipt" header="#{receiptController.dialogTitle}" widgetVar="wDlgReceipt"  modal="true" >                  
+                    <p:ajax event="close" update=":createReceiptForm:iDlgReceipt" listener="#{receiptController.closeDialog}"/>
+                    
                     <p:messages id="msgs" autoUpdate="true"/>
                     <h:panelGrid columns="3" cellpadding="5">  
 
@@ -807,7 +813,9 @@
 
             <!-- Create payment -->            
             <h:form id="createPaymentForm" onkeypress="return event.keyCode != 13;">
-                <p:dialog id="iDlgPayment" header="#{bundle.Payment_NewPayment}" widgetVar="wDlgPayment"  modal="true" >   
+                <p:dialog id="iDlgPayment" header="#{paymentController.dialogTitle}" widgetVar="wDlgPayment"  modal="true" >   
+                    <p:ajax event="close" update=":createPaymentForm:iDlgPayment" listener="#{paymentController.closeDialog}"/>                    
+                    
                     <p:messages id="msgs" autoUpdate="true"/>
                     <h:panelGrid columns="3" cellpadding="5">  
 
