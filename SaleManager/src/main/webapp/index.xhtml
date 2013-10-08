@@ -370,12 +370,12 @@
 
             <!-- Create stock-in -->            
             <h:form id="createBuyForm" onkeypress="return event.keyCode != 13;">
-                <p:dialog id="iDlgBuy" header="#{bundle.StockIn_NewStockIn}" widgetVar="wDlgBuy" modal="true" >  
+                <p:dialog id="iDlgBuy" header="#{stockInController.dialogTitle}" widgetVar="wDlgBuy" modal="true" >  
                     <p:messages id="msgs" autoUpdate="true"/>
                     <h:panelGrid columns="3" cellpadding="5">  
 
                         <h:outputLabel for="soContactMenu" value="#{bundle.ModuleContact} *" />                                                 
-                        <p:selectOneMenu id="soContactMenu" value="#{stockInController.contact}" converter="contactConverter" 
+                        <p:selectOneMenu id="soContactMenu" value="#{stockInController.newT.contact}" converter="contactConverter" 
                                          panelStyle="width:500px" effect="fade" var="p" style="width:160px"  
                                          filter="true" filterMatchMode="contains" required="true">                              
                             <f:selectItems value="#{contactController.list}" var="c" itemLabel="#{c.contactId} - #{c.name}" itemValue="#{c}"/>  
@@ -658,7 +658,7 @@
                     <h:panelGrid columns="3" cellpadding="5">  
 
                         <h:outputLabel for="soMenu" value="#{bundle.ModuleContact} *" />                                                 
-                        <p:selectOneMenu id="soMenu" value="#{receiptController.contact}" converter="contactConverter" 
+                        <p:selectOneMenu id="soMenu" value="#{receiptController.newT.contact}" converter="contactConverter" 
                                          panelStyle="width:500px" effect="fade" var="p" style="width:160px"  
                                          filter="true" filterMatchMode="contains" required="true">                              
                             <f:selectItems value="#{contactController.list}" var="c" itemLabel="#{c.contactId} - #{c.name}" itemValue="#{c}"/>  
@@ -800,7 +800,7 @@
                     <h:panelGrid columns="3" cellpadding="5">  
 
                         <h:outputLabel for="soMenu" value="#{bundle.ModuleContact} *" />                                                 
-                        <p:selectOneMenu id="soMenu" value="#{paymentController.contact}" converter="contactConverter" 
+                        <p:selectOneMenu id="soMenu" value="#{paymentController.newT.contact}" converter="contactConverter" 
                                          panelStyle="width:500px" effect="fade" var="p" style="width:160px"  
                                          filter="true" filterMatchMode="contains" required="true">                              
                             <f:selectItems value="#{contactController.list}" var="c" itemLabel="#{c.contactId} - #{c.name}" itemValue="#{c}"/>  

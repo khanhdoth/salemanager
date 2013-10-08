@@ -14,6 +14,7 @@ import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -34,13 +35,25 @@ public class PaymentSentFacadeREST extends AbstractFacade<PaymentSent> {
         super(PaymentSent.class);
     }
 
-    public void create(PaymentSent entity, Contact contact) {
-        System.out.println("---create Payment---- " + contact.getName());
+    @POST
+    @Override
+    @Consumes({"application/xml", "application/json"})
+    public void create(PaymentSent entity) {
+        Contact contact = entity.getContact();
         entity.setContact(contact);
         contact.getListOfPaymentReceived().add(entity);
         em.merge(contact);
         em.persist(entity);
     }
+    /*
+     public void create(PaymentSent entity, Contact contact) {
+     System.out.println("---create Payment---- " + contact.getName());
+     entity.setContact(contact);
+     contact.getListOfPaymentReceived().add(entity);
+     em.merge(contact);
+     em.persist(entity);
+     }
+     */
 
     @PUT
     @Path("{id}")

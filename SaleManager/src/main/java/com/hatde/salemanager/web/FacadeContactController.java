@@ -22,7 +22,8 @@ public abstract class FacadeContactController<T> extends FacadeController<T> {
     
     @Override
     public void doCreate() {
-        getBean().create(newT, contact);
+        //getBean().create(newT, contact);
+        super.doCreate();
         tempViewContact();
     }
 

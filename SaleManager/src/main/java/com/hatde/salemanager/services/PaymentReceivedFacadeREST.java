@@ -7,7 +7,6 @@ package com.hatde.salemanager.services;
 
 import com.hatde.salemanager.entities.Contact;
 import com.hatde.salemanager.entities.PaymentReceived;
-import com.hatde.salemanager.entities.PaymentSent;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -40,9 +39,15 @@ public class PaymentReceivedFacadeREST extends AbstractFacade<PaymentReceived> {
     @Override
     @Consumes({"application/xml", "application/json"})
     public void create(PaymentReceived entity) {
-        super.create(entity);
+        Contact contact = entity.getContact();
+        entity.setContact(contact);
+        contact.getListOfPaymentSent().add(entity);
+        em.merge(contact);
+        em.persist(entity);
+
     }
 
+    /*
     public void create(PaymentReceived entity, Contact contact) {
         System.out.println("---create Receipt---- " + contact.getName());
         entity.setContact(contact);
@@ -50,6 +55,7 @@ public class PaymentReceivedFacadeREST extends AbstractFacade<PaymentReceived> {
         em.merge(contact);
         em.persist(entity);
     }
+    */
 
     @PUT
     @Path("{id}")

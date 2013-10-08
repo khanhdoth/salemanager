@@ -22,13 +22,7 @@ import javax.inject.Inject;
 @SessionScoped
 public class StockInController extends FacadeContactController<Buy> implements Serializable {
 
-    public enum DialogMode {
-
-        CREATE, EDIT
-    }
-
     private SaleItem selectedSI;
-    private DialogMode dialogMode = DialogMode.CREATE;
 
     @EJB
     private BuyFacadeREST bean;

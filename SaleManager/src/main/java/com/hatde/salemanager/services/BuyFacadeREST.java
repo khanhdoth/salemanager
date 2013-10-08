@@ -40,9 +40,23 @@ public class BuyFacadeREST extends AbstractFacade<Buy> {
     @Override
     @Consumes({"application/xml", "application/json"})
     public void create(Buy entity) {
-        super.create(entity);
+        Contact contact = entity.getContact();
+        PaymentSent ps = (PaymentSent) entity.getPayment();
+        if (ps.getAmount() > 0) {
+            ps.setDate(entity.getDate());
+            ps.setContact(contact);
+            contact.getListOfPaymentReceived().add(ps);
+        } else {
+            entity.setPayment(null);
+        }
+
+        entity.setContact(contact);
+        contact.getListOfSale().add(entity);
+        em.merge(contact);
+        em.persist(entity);
     }
 
+    /*
     public void create(Buy entity, Contact contact) {
         PaymentSent ps = (PaymentSent) entity.getPayment();
         if (ps.getAmount() > 0) {
@@ -58,6 +72,7 @@ public class BuyFacadeREST extends AbstractFacade<Buy> {
         em.merge(contact);
         em.persist(entity);
     }
+    */
 
     @PUT
     @Path("{id}")
