@@ -124,7 +124,7 @@
 
                         <p:commandButton widgetVar="saveContactButton" value="#{bundle.Save}" 
                                          onclick="saveContactButton.disable()"
-                                         actionListener="#{contactController.create}" 
+                                         actionListener="#{contactController.createOrEdit}" 
                                          update="iDlgContact, :ContactListForm:iContactTable, :mainForm:messages" 
                                          oncomplete="saveContactButton.enable(); wDlgContact.hide()" />  
 
@@ -280,7 +280,7 @@
 
                         <p:commandButton widgetVar="saveProductButton" value="#{bundle.Save}" 
                                          onclick="saveProductButton.disable()"
-                                         actionListener="#{productController.create}" 
+                                         actionListener="#{productController.createOrEdit}" 
                                          update="iDlgProduct, :productListForm:iProductTable, :mainForm:messages" 
                                          oncomplete="saveProductButton.enable(); wDlgContact.hide()" />  
                     </h:panelGrid>  
@@ -407,18 +407,18 @@
                         </p:calendar>    
                         <p:message for="cDate" display="icon"/>
 
-                        <h:outputLabel for="iDiscount" value="#{bundle.Discount}" />  
+                        <h:outputLabel for="iDiscount" value="#{bundle.Discount} (%)" />  
                         <p:inputText id="iDiscount" value="#{stockInController.newT.discount}">   
-                            <f:convertNumber pattern="#.##" maxFractionDigits="2" maxIntegerDigits="1" />
-                            <f:validateDoubleRange minimum="0" maximum="1"/>
+                            <f:convertNumber pattern="#.##" maxFractionDigits="2"/>
+                            <f:validateDoubleRange minimum="0" maximum="100"/>
                             <p:ajax event="blur" update="iDiscount"/> 
                         </p:inputText>
                         <p:message for="iDiscount" display="icon"/>
 
-                        <h:outputLabel for="iVAT" value="#{bundle.VAT}" />  
+                        <h:outputLabel for="iVAT" value="#{bundle.VAT} (%)" />  
                         <p:inputText id="iVAT" value="#{stockInController.newT.VAT}">   
-                            <f:convertNumber pattern="#.##" maxFractionDigits="2" maxIntegerDigits="1" />
-                            <f:validateDoubleRange minimum="0" maximum="1"/>
+                            <f:convertNumber pattern="#.##" maxFractionDigits="2"/>
+                            <f:validateDoubleRange minimum="0" maximum="100"/>
                             <p:ajax event="blur" update="iVAT"/> 
                         </p:inputText>
                         <p:message for="iVAT" display="icon"/>
@@ -429,7 +429,7 @@
                             <f:validateDoubleRange minimum="0" />
                             <p:ajax event="blur" update="iPayment"/>                         
                         </p:inputText>
-                        <p:message for="iVAT" display="icon"/>
+                        <p:message for="iPayment" display="icon"/>
 
 
                     </h:panelGrid>
@@ -515,15 +515,15 @@
                         <p:column id="discountColumn" headerText="#{bundle.Discount}" style="text-align:right">                              
                             <p:cellEditor>  
                                 <f:facet name="output">  
-                                    <h:outputText value="#{item.discount}" >
-                                        <f:convertNumber pattern="#.##" />
+                                    <h:outputText value="#{item.discount / 100}" >
+                                        <f:convertNumber pattern="#.##%" type="percent"/>
                                     </h:outputText> 
                                 </f:facet>  
                                 <f:facet name="input">                                      
                                     <p:inputText id="iDiscount" value="#{item.discount}" 
                                                  immediate="true"  >  
-                                        <f:convertNumber pattern="#.##" maxFractionDigits="2" maxIntegerDigits="1" />
-                                        <f:validateDoubleRange minimum="0" maximum="1"/>
+                                        <f:convertNumber pattern="#.##" maxFractionDigits="2" />
+                                        <f:validateDoubleRange minimum="0" maximum="100"/>
                                         <p:ajax event="blur" update="iDiscount"/> 
                                     </p:inputText>
                                 </f:facet>  
@@ -543,7 +543,7 @@
             <!-- stock-in list -->            
             <h:form id="buyListForm" onkeypress="return event.keyCode != 13;">
                 <p:dialog id="iDlgBuyList" header="#{bundle.StockIn_StockInList}" widgetVar="wDlgBuyList" position="bottom" >                    
-                    <p:dataTable id="iStockInTable" var="item" value="#{stockInController.list}" editable="true"
+                    <p:dataTable id="iStockInTable" var="item" value="#{stockInController.list}" 
                                  widgetVar="wStockInTable" rowKey="#{item.productTransactionId}" scrollable="true" scrollHeight="400"
                                  emptyMessage="No stockIn found with given criteria" editMode="cell" 
                                  filteredValue="#{stockInController.filterList}"                                 
@@ -560,7 +560,7 @@
                         </f:facet>
 
                         <p:ajax event="cellEdit" listener="#{stockInController.onCellEdit}" update=":mainForm:messages" /> 
-                        <!-- ***************************************************************** -->
+<!-- ***************************************************************** -->
                         <p:column width="50">  
                             <p:commandButton id="deleteButton" update="iStockInTable, :mainForm:messages" action="#{stockInController.delete}" icon="ui-icon-trash" title="#{bundle.Delete}" >  
                                 <p:confirm header="#{bundle.Confirmation}" message="#{bundle.Delete_Confirm_Message}" icon="ui-icon-alert" />  
@@ -603,15 +603,15 @@
                                   filterMatchMode="contains" style="text-align:right">  
                             <p:cellEditor>  
                                 <f:facet name="output">  
-                                    <h:outputText value="#{item.discount}" >
-                                        <f:convertNumber pattern="#.##" />
+                                    <h:outputText value="#{item.discount / 100}" >
+                                        <f:convertNumber pattern="#.##%" type="percent"/>
                                     </h:outputText> 
                                 </f:facet>  
                                 <f:facet name="input">                                      
                                     <p:inputText id="iDiscount" value="#{item.discount}" 
                                                  immediate="true"  >  
-                                        <f:convertNumber pattern="#.##" maxFractionDigits="2" maxIntegerDigits="1" />
-                                        <f:validateDoubleRange minimum="0" maximum="1"/>
+                                        <f:convertNumber pattern="#.##" maxFractionDigits="2" />
+                                        <f:validateDoubleRange minimum="0" maximum="100"/>
                                         <p:ajax event="blur" update="iDiscount"/> 
                                     </p:inputText>
                                 </f:facet>  
@@ -623,15 +623,15 @@
                                   filterMatchMode="contains" style="text-align:right">  
                             <p:cellEditor>  
                                 <f:facet name="output">  
-                                    <h:outputText value="#{item.VAT}" >
-                                        <f:convertNumber pattern="#.##" />
+                                    <h:outputText value="#{item.VAT / 100}" >
+                                        <f:convertNumber pattern="#.##%" type="percent"/>
                                     </h:outputText> 
                                 </f:facet>  
                                 <f:facet name="input">                                      
                                     <p:inputText id="iVAT" value="#{item.VAT}" 
                                                  immediate="true"  >  
-                                        <f:convertNumber pattern="#.##" maxFractionDigits="2" maxIntegerDigits="1" />
-                                        <f:validateDoubleRange minimum="0" maximum="1"/>
+                                        <f:convertNumber pattern="#.##" maxFractionDigits="2" />
+                                        <f:validateDoubleRange minimum="0" maximum="100"/>
                                         <p:ajax event="blur" update="iVAT"/> 
                                     </p:inputText>
                                 </f:facet>  
@@ -708,7 +708,7 @@
 
                         <p:commandButton widgetVar="saveReceiptButton" value="#{bundle.Save}" 
                                          onclick="saveReceiptButton.disable()"
-                                         actionListener="#{receiptController.create}" 
+                                         actionListener="#{receiptController.createOrEdit}" 
                                          update="iDlgReceipt, :receiptListForm:iReceiptTable, :mainForm:messages" 
                                          oncomplete="saveReceiptButton.enable(); wDlgReceipt.hide()" 
                                          validateClient="true" style="margin-right:10px" />  
@@ -856,7 +856,7 @@
 
                         <p:commandButton widgetVar="savePaymentButton" value="#{bundle.Save}" 
                                          onclick="savePaymentButton.disable()"
-                                         actionListener="#{paymentController.create}" 
+                                         actionListener="#{paymentController.createOrEdit}" 
                                          update="iDlgPayment, :paymentListForm:iPaymentTable, :mainForm:messages" 
                                          oncomplete="savePaymentButton.enable(); wDlgPayment.hide()" 
                                          validateClient="true" style="margin-right:10px" />  
