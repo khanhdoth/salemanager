@@ -77,8 +77,8 @@ public class SaleItem implements java.io.Serializable {
         return myInfo;
     }
 
-    public double gAmount() {
-        return quantity * price * (1 - discount);
+    public double getAmount() {
+        return quantity * price * (1 - discount/100);
     }
 
     @Column(name = "Price")

@@ -209,24 +209,24 @@ public class Contact implements java.io.Serializable {
         return myInfo;
     }
 
-    public double gProductTransactionsAmount(Collection list) {
+    public double getProductTransactionsAmount(Collection list) {
         double amount = 0;
         for (Iterator iterator = list.iterator(); iterator.hasNext();) {
             ProductTransaction pt = (ProductTransaction) iterator.next();
-            amount += pt.gAmount();
+            amount += pt.getAmount();
         }
         return amount;
     }
 
-    public double gBuyAmount() {
-        return gProductTransactionsAmount(listOfBuy);
+    public double getBuyAmount() {
+        return getProductTransactionsAmount(listOfBuy);
     }
 
-    public double gSaleAmount() {
-        return gProductTransactionsAmount(listOfSale);
+    public double getSaleAmount() {
+        return getProductTransactionsAmount(listOfSale);
     }
 
-    public double gPaymentsAmount(Collection list) {
+    public double getPaymentsAmount(Collection list) {
         double amount = 0;
         for (Iterator iterator = list.iterator(); iterator.hasNext();) {
             PaymentTransaction pmt = (PaymentTransaction) iterator.next();
@@ -235,24 +235,24 @@ public class Contact implements java.io.Serializable {
         return amount;
     }
 
-    public double gPaymentReceivedAmount() {
-        return gPaymentsAmount(listOfPaymentReceived);
+    public double getPaymentReceivedAmount() {
+        return getPaymentsAmount(listOfPaymentReceived);
     }
 
-    public double gPaymentSentAmount() {
-        return gPaymentsAmount(listOfPaymentSent);
+    public double getPaymentSentAmount() {
+        return getPaymentsAmount(listOfPaymentSent);
     }
 
-    public double gDebit() {
-        return (gBuyAmount() + gPaymentReceivedAmount());
+    public double getDebit() {
+        return (getBuyAmount() + getPaymentReceivedAmount());
     }
 
-    public double gCredit() {
-        return (gSaleAmount() + gPaymentSentAmount());
+    public double getCredit() {
+        return (getSaleAmount() + getPaymentSentAmount());
     }
 
     public double gBalance() {
-        return (gCredit() - gDebit());
+        return (getCredit() - getDebit());
     }
 
     @Override

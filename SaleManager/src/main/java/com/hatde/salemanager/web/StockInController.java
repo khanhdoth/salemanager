@@ -5,7 +5,6 @@ import com.hatde.salemanager.entities.PaymentSent;
 import com.hatde.salemanager.entities.SaleItem;
 import com.hatde.salemanager.services.AbstractFacade;
 import com.hatde.salemanager.services.BuyFacadeREST;
-import com.hatde.salemanager.services.ContactFacadeREST;
 import java.io.Serializable;
 import java.util.Date;
 import javax.annotation.PostConstruct;
@@ -13,6 +12,9 @@ import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
+import org.primefaces.component.datatable.DataTable;
+import org.primefaces.event.CellEditEvent;
+import org.primefaces.event.RowEditEvent;
 
 /**
  *
@@ -64,9 +66,17 @@ public class StockInController extends FacadeController<Buy> implements Serializ
         }
     }
 
-    public void onSICellEdit() {
-    }
+    public void onSICellEdit(CellEditEvent event) {
+        System.out.println("Stock-in onSICellEdit");
+        Object oldValue = event.getOldValue();
+        Object newValue = event.getNewValue();
+        SaleItem c = (SaleItem) ((DataTable) event.getSource()).getRowData();
 
+        System.out.println(c.getProduct().getName() + " " + c.getQuantity()
+                + " X " + c.getPrice() + " _ " + c.getDiscount()
+                + "% = " + c.getAmount());
+    }
+    
     public void deleteSI() {
         newT.getListOfSaleItem().remove(selectedSI);
     }

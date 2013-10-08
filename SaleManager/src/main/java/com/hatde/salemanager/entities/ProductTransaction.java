@@ -133,17 +133,17 @@ public class ProductTransaction implements java.io.Serializable {
         return myInfo;
     }
 
-    public double gAmount() {
+    public double getAmount() {
         double amount = 0;
         for (SaleItem saleItem : listOfSaleItem) {
-            amount += saleItem.gAmount();
+            amount += saleItem.getAmount();
         }
         amount = amount * (1 - discount) * (1 - VAT);
         return amount;
     }
 
-    public double gAmountAfterPayment() {
-        double amount = gAmount();
+    public double getAmountAfterPayment() {
+        double amount = getAmount();
         if (payment != null) {
             amount -= payment.getAmount();
         }

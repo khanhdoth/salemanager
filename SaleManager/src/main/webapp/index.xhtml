@@ -99,7 +99,7 @@
             <h:form id="createContactForm" onkeypress="return event.keyCode != 13;">
                 <p:dialog id="iDlgContact" header="#{contactController.dialogTitle}" widgetVar="wDlgContact"  modal="true" >  
                     <p:ajax event="close" update=":createContactForm:iDlgContact" listener="#{contactController.closeDialog}"/>
-                    
+
                     <h:panelGrid columns="2" cellpadding="5">  
                         <h:outputLabel value="#{bundle.Contact_Name}" />  
                         <p:inputText value="#{contactController.newT.name}" />  
@@ -267,7 +267,7 @@
             <h:form id="createProductForm" onkeypress="return event.keyCode != 13;">
                 <p:dialog id="iDlgProduct" header="#{productController.dialogTitle}" widgetVar="wDlgProduct"  modal="true" >                    
                     <p:ajax event="close" update=":createProductForm:iDlgProduct" listener="#{productController.closeDialog}"/>                    
-                    
+
                     <h:panelGrid columns="2" cellpadding="5">  
                         <h:outputLabel value="#{bundle.Product_Name}" />  
                         <p:inputText value="#{productController.newT.name}" />  
@@ -447,7 +447,7 @@
                             </p:outputPanel>
                         </f:facet>
 
-                        <p:ajax event="cellEdit" listener="#{stockInController.onSICellEdit}" /> 
+                        <p:ajax event="cellEdit" listener="#{stockInController.onSICellEdit}" />                         
 
                         <p:column width="25">  
                             <p:commandButton id="deleteButton" update="iSIInTable, :mainForm:messages" action="#{stockInController.deleteSI}" icon="ui-icon-trash" title="#{bundle.Delete}" >  
@@ -488,7 +488,7 @@
                                     <p:inputText id="iQuantity" value="#{item.quantity}" 
                                                  immediate="true"  >                                          
                                         <f:convertNumber pattern="#,##0.##" maxFractionDigits="2" maxIntegerDigits="12" />                                        
-                                        <p:ajax event="blur" update="iQuantity"/> 
+                                        <p:ajax event="blur" update="iQuantity, oAmount"/> 
                                     </p:inputText>
                                 </f:facet>  
                             </p:cellEditor>
@@ -506,7 +506,7 @@
                                                  immediate="true"  >  
                                         <f:convertNumber pattern="#,##0" maxIntegerDigits="12" />
                                         <f:validateDoubleRange minimum="0" />
-                                        <p:ajax event="blur" update="iPrice"/> 
+                                        <p:ajax event="blur" update="iPrice, oAmount"/> 
                                     </p:inputText>
                                 </f:facet>  
                             </p:cellEditor>
@@ -524,11 +524,17 @@
                                                  immediate="true"  >  
                                         <f:convertNumber pattern="#.##" maxFractionDigits="2" />
                                         <f:validateDoubleRange minimum="0" maximum="100"/>
-                                        <p:ajax event="blur" update="iDiscount"/> 
+                                        <p:ajax event="blur" update="iDiscount, oAmount"/> 
                                     </p:inputText>
                                 </f:facet>  
                             </p:cellEditor>  
-                        </p:column>  
+                        </p:column>
+
+                        <p:column id="amountColumn" headerText="#{bundle.Amount}" style="text-align:right">                              
+                            <h:outputText id="oAmount" value="#{item.amount}" >
+                                <f:convertNumber pattern="#,##0" />
+                            </h:outputText> 
+                        </p:column>
                     </p:dataTable>  
 
                     <p:commandButton widgetVar="saveStockInButton" value="#{bundle.Save}" 
@@ -560,7 +566,7 @@
                         </f:facet>
 
                         <p:ajax event="cellEdit" listener="#{stockInController.onCellEdit}" update=":mainForm:messages" /> 
-<!-- ***************************************************************** -->
+                        <!-- ***************************************************************** -->
                         <p:column width="50">  
                             <p:commandButton id="deleteButton" update="iStockInTable, :mainForm:messages" action="#{stockInController.delete}" icon="ui-icon-trash" title="#{bundle.Delete}" >  
                                 <p:confirm header="#{bundle.Confirmation}" message="#{bundle.Delete_Confirm_Message}" icon="ui-icon-alert" />  
@@ -667,7 +673,7 @@
             <h:form id="createReceiptForm" onkeypress="return event.keyCode != 13;">
                 <p:dialog id="iDlgReceipt" header="#{receiptController.dialogTitle}" widgetVar="wDlgReceipt"  modal="true" >                  
                     <p:ajax event="close" update=":createReceiptForm:iDlgReceipt" listener="#{receiptController.closeDialog}"/>
-                    
+
                     <p:messages id="msgs" autoUpdate="true"/>
                     <h:panelGrid columns="3" cellpadding="5">  
 
@@ -815,7 +821,7 @@
             <h:form id="createPaymentForm" onkeypress="return event.keyCode != 13;">
                 <p:dialog id="iDlgPayment" header="#{paymentController.dialogTitle}" widgetVar="wDlgPayment"  modal="true" >   
                     <p:ajax event="close" update=":createPaymentForm:iDlgPayment" listener="#{paymentController.closeDialog}"/>                    
-                    
+
                     <p:messages id="msgs" autoUpdate="true"/>
                     <h:panelGrid columns="3" cellpadding="5">  
 
