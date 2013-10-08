@@ -97,7 +97,7 @@
 
             <!-- Create contact -->            
             <h:form id="createContactForm" onkeypress="return event.keyCode != 13;">
-                <p:dialog id="iDlgContact" header="#{bundle.Contact_NewContact}" widgetVar="wDlgContact">                    
+                <p:dialog id="iDlgContact" header="#{bundle.Contact_NewContact}" widgetVar="wDlgContact"  modal="true" >                    
                     <h:panelGrid columns="2" cellpadding="5">  
                         <h:outputLabel value="#{bundle.Contact_Name}" />  
                         <p:inputText value="#{contactController.newT.name}" />  
@@ -151,9 +151,13 @@
 
                         <p:ajax event="cellEdit" listener="#{contactController.onCellEdit}" update=":mainForm:messages" /> 
 
-                        <p:column style="width:5%">  
+                        <p:column width="50">  
                             <p:commandButton id="deleteButton" update="iContactTable, :mainForm:messages" action="#{contactController.delete}" icon="ui-icon-trash" title="#{bundle.Delete}" >  
                                 <p:confirm header="#{bundle.Confirmation}" message="#{bundle.Delete_Confirm_Message}" icon="ui-icon-alert" />  
+                                <f:setPropertyActionListener value="#{item}" target="#{contactController.selectedT}" />  
+                            </p:commandButton>
+                            <p:commandButton id="editButton" update=":createContactForm:iDlgContact" action="#{contactController.setEdit}" 
+                                             icon="ui-icon-search" title="#{bundle.Edit}" oncomplete="wDlgContact.show()" >                                  
                                 <f:setPropertyActionListener value="#{item}" target="#{contactController.selectedT}" />  
                             </p:commandButton> 
                         </p:column> 
@@ -259,7 +263,7 @@
 
             <!-- Create product -->            
             <h:form id="createProductForm" onkeypress="return event.keyCode != 13;">
-                <p:dialog id="iDlgProduct" header="#{bundle.Product_NewProduct}" widgetVar="wDlgProduct">                    
+                <p:dialog id="iDlgProduct" header="#{bundle.Product_NewProduct}" widgetVar="wDlgProduct"  modal="true" >                    
                     <h:panelGrid columns="2" cellpadding="5">  
                         <h:outputLabel value="#{bundle.Product_Name}" />  
                         <p:inputText value="#{productController.newT.name}" />  
@@ -300,9 +304,13 @@
 
                         <p:ajax event="cellEdit" listener="#{productController.onCellEdit}" update=":mainForm:messages" /> 
 
-                        <p:column style="width:5%">  
+                        <p:column width="50">  
                             <p:commandButton id="deleteButton" update="iProductTable, :mainForm:messages" action="#{productController.delete}" icon="ui-icon-trash" title="#{bundle.Delete}" >  
                                 <p:confirm header="#{bundle.Confirmation}" message="#{bundle.Delete_Confirm_Message}" icon="ui-icon-alert" />  
+                                <f:setPropertyActionListener value="#{item}" target="#{productController.selectedT}" />  
+                            </p:commandButton> 
+                            <p:commandButton id="editButton" update=":createProductForm:iDlgProduct" action="#{productController.setEdit}" 
+                                             icon="ui-icon-search" title="#{bundle.Edit}" oncomplete="wDlgProduct.show()" >                                  
                                 <f:setPropertyActionListener value="#{item}" target="#{productController.selectedT}" />  
                             </p:commandButton> 
                         </p:column> 
@@ -357,7 +365,7 @@
 
             <!-- Create stock-out -->            
             <h:form id="createSaleForm" onkeypress="return event.keyCode != 13;">
-                <p:dialog id="iDlgSale" header="#{bundle.StockOut_NewStockOut}" widgetVar="wDlgSale">                    
+                <p:dialog id="iDlgSale" header="#{bundle.StockOut_NewStockOut}" widgetVar="wDlgSale"  modal="true" >                    
                 </p:dialog>                
             </h:form>
 
@@ -426,7 +434,7 @@
                                  widgetVar="wSIInTable" rowKey="#{item.saleItemId}" scrollable="true" scrollHeight="300"
                                  emptyMessage="No sale item found with given criteria" editMode="cell"                                  
                                  resizableColumns="true" liveResize="true" >   
-                        
+
                         <f:facet name="header">  
                             <p:outputPanel style="text-align:left"> 
                                 <p:commandButton id="addButton" update="iSIInTable" action="#{stockInController.addSaleItem}" icon="ui-icon-circle-plus" title="#{bundle.AddNewItem}" /> 
@@ -437,7 +445,7 @@
 
                         <p:ajax event="cellEdit" listener="#{stockInController.onSICellEdit}" /> 
 
-                        <p:column width="20">  
+                        <p:column width="25">  
                             <p:commandButton id="deleteButton" update="iSIInTable, :mainForm:messages" action="#{stockInController.deleteSI}" icon="ui-icon-trash" title="#{bundle.Delete}" >  
                                 <p:confirm header="#{bundle.Confirmation}" message="#{bundle.Delete_Confirm_Message}" icon="ui-icon-alert" />  
                                 <f:setPropertyActionListener value="#{item}" target="#{stockInController.selectedSI}" />  
@@ -530,7 +538,7 @@
 
             <!-- stock-in list -->            
             <h:form id="buyListForm" onkeypress="return event.keyCode != 13;">
-                <p:dialog id="iDlgBuyList" header="#{bundle.StockIn_StockInList}" widgetVar="wDlgBuyList" position="bottom">                    
+                <p:dialog id="iDlgBuyList" header="#{bundle.StockIn_StockInList}" widgetVar="wDlgBuyList" position="bottom" >                    
                     <p:dataTable id="iStockInTable" var="item" value="#{stockInController.list}" editable="true"
                                  widgetVar="wStockInTable" rowKey="#{item.productTransactionId}" scrollable="true" scrollHeight="400"
                                  emptyMessage="No stockIn found with given criteria" editMode="cell" 
@@ -548,7 +556,7 @@
                         </f:facet>
 
                         <p:ajax event="cellEdit" listener="#{stockInController.onCellEdit}" update=":mainForm:messages" /> 
-<!-- ***************************************************************** -->
+                        <!-- ***************************************************************** -->
                         <p:column width="50">  
                             <p:commandButton id="deleteButton" update="iStockInTable, :mainForm:messages" action="#{stockInController.delete}" icon="ui-icon-trash" title="#{bundle.Delete}" >  
                                 <p:confirm header="#{bundle.Confirmation}" message="#{bundle.Delete_Confirm_Message}" icon="ui-icon-alert" />  
@@ -653,7 +661,7 @@
 
             <!-- Create Receipt -->            
             <h:form id="createReceiptForm" onkeypress="return event.keyCode != 13;">
-                <p:dialog id="iDlgReceipt" header="#{bundle.Receipt_NewReceipt}" widgetVar="wDlgReceipt">  
+                <p:dialog id="iDlgReceipt" header="#{bundle.Receipt_NewReceipt}" widgetVar="wDlgReceipt"  modal="true" >  
                     <p:messages id="msgs" autoUpdate="true"/>
                     <h:panelGrid columns="3" cellpadding="5">  
 
@@ -723,9 +731,13 @@
 
                         <p:ajax event="cellEdit" listener="#{receiptController.onCellEdit}" update=":mainForm:messages" /> 
 
-                        <p:column style="width:5%">  
+                        <p:column width="50">  
                             <p:commandButton id="deleteButton" update="iReceiptTable, :mainForm:messages" action="#{receiptController.delete}" icon="ui-icon-trash" title="#{bundle.Delete}" >  
                                 <p:confirm header="#{bundle.Confirmation}" message="#{bundle.Delete_Confirm_Message}" icon="ui-icon-alert" />  
+                                <f:setPropertyActionListener value="#{item}" target="#{receiptController.selectedT}" />  
+                            </p:commandButton>
+                            <p:commandButton id="editButton" update=":createReceiptForm:iDlgReceipt" action="#{receiptController.setEdit}" 
+                                             icon="ui-icon-search" title="#{bundle.Edit}" oncomplete="wDlgReceipt.show()" >                                  
                                 <f:setPropertyActionListener value="#{item}" target="#{receiptController.selectedT}" />  
                             </p:commandButton> 
                         </p:column> 
@@ -795,7 +807,7 @@
 
             <!-- Create payment -->            
             <h:form id="createPaymentForm" onkeypress="return event.keyCode != 13;">
-                <p:dialog id="iDlgPayment" header="#{bundle.Payment_NewPayment}" widgetVar="wDlgPayment">   
+                <p:dialog id="iDlgPayment" header="#{bundle.Payment_NewPayment}" widgetVar="wDlgPayment"  modal="true" >   
                     <p:messages id="msgs" autoUpdate="true"/>
                     <h:panelGrid columns="3" cellpadding="5">  
 
@@ -865,11 +877,16 @@
 
                         <p:ajax event="cellEdit" listener="#{paymentController.onCellEdit}" update=":mainForm:messages" /> 
 
-                        <p:column style="width:5%">  
+                        <p:column width="50">  
                             <p:commandButton id="deleteButton" update="iPaymentTable, :mainForm:messages" action="#{paymentController.delete}" icon="ui-icon-trash" title="#{bundle.Delete}" >  
                                 <p:confirm header="#{bundle.Confirmation}" message="#{bundle.Delete_Confirm_Message}" icon="ui-icon-alert" />  
                                 <f:setPropertyActionListener value="#{item}" target="#{paymentController.selectedT}" />  
                             </p:commandButton> 
+                            <p:commandButton id="editButton" update=":createPaymentForm:iDlgPayment" action="#{paymentController.setEdit}" 
+                                             icon="ui-icon-search" title="#{bundle.Edit}" oncomplete="wDlgPayment.show()" >                                  
+                                <f:setPropertyActionListener value="#{item}" target="#{paymentController.selectedT}" />  
+                            </p:commandButton> 
+
                         </p:column> 
 
                         <p:column id="paymentTransactionIdColumn" sortBy="paymentTransactionId" filterBy="paymentTransactionId"   
