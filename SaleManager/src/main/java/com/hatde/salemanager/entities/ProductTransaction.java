@@ -108,7 +108,7 @@ public class ProductTransaction implements java.io.Serializable {
         this.payment = payment;
     }
 
-    @JoinColumn(name="contactId")    
+    @JoinColumn(name = "contactId")
     public Contact getContact() {
         return contact;
     }
@@ -133,12 +133,32 @@ public class ProductTransaction implements java.io.Serializable {
         return myInfo;
     }
 
+    public double getSubTotal() {
+        double subTotal = 0;
+        for (SaleItem saleItem : listOfSaleItem) {
+            subTotal += saleItem.getAmount();
+        }
+        return subTotal;
+    }
+
+    public double getAmountDiscount() {
+        return getSubTotal() * discount/100;
+    }
+
+    public double getAmountAfterDiscount() {
+        return getSubTotal() * (1-discount/100);
+    }
+    
+    public double getAmountVAT() {
+        return getAmountAfterDiscount() * VAT/100;
+    }
+
     public double getAmount() {
         double amount = 0;
         for (SaleItem saleItem : listOfSaleItem) {
             amount += saleItem.getAmount();
         }
-        amount = amount * (1 - discount) * (1 - VAT);
+        amount = amount * (1 - discount/100) * (1 - VAT/100);
         return amount;
     }
 

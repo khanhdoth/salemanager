@@ -406,9 +406,10 @@
                             </p:calendar> 
                         </h:panelGrid>  
                     </p:panel>    
+
                     <p:panelGrid>  
                         <p:row>  
-                            <p:column colspan="5" styleClass="ui-widget-header">
+                            <p:column colspan="4" styleClass="ui-widget-header">
                                 <p:dataTable id="iSIInTable" var="item" value="#{stockInController.newT.listOfSaleItem}" editable="true"
                                              widgetVar="wSIInTable" rowKey="#{item.saleItemId}" scrollable="true" scrollHeight="200"
                                              emptyMessage="No sale item found with given criteria" editMode="cell"                                  
@@ -511,90 +512,91 @@
                                         </h:outputText> 
                                     </p:column>
                                 </p:dataTable>  
+
                             </p:column>  
                         </p:row>               
-                        <p:row>                             
-                            <p:column colspan="4" style="text-align:right">
-                                <h:outputText value="#{bundle.Subtotal}"/>
-                            </p:column>
-                            <p:column style="text-align:right">
-                                <h:outputText value="#{stockInController.newT.amount}">
-                                    <f:convertNumber pattern="#,##0" />
-                                </h:outputText> 
-                            </p:column>
-                        </p:row>               
-                        <p:row>                             
-                            <p:column colspan="4" style="text-align:right">
-                                <h:outputText value="#{bundle.AdditionalDiscount}"/>
-                            </p:column>
-                            <p:column style="text-align:right">
-                                <h:outputText value="-#{stockInController.newT.amount}">
-                                    <f:convertNumber pattern="#,##0" />
-                                </h:outputText> 
-                            </p:column>
-                        </p:row>               
-                        <p:row>                             
-                            <p:column colspan="4" style="text-align:right">
-                                <h:outputText value="#{bundle.VAT}"/>
-                            </p:column>
-                            <p:column style="text-align:right">
-                                <h:outputText value="#{stockInController.newT.amount}">
-                                    <f:convertNumber pattern="#,##0" />
-                                </h:outputText> 
-                            </p:column>
-                        </p:row>               
-                        
-                        <p:row>                             
-                            <p:column style="text-align:right">
-                                <h:outputText value="#{bundle.Subtotal}"/>
-                            </p:column>
-                            <p:column style="text-align:right">
-                                <h:outputText value="#{bundle.Subtotal}"/>
-                            </p:column>
-                            <p:column style="text-align:right">
-                                <h:outputText value="#{bundle.Subtotal}"/>
-                            </p:column>
-                            <p:column style="text-align:right">
-                                <h:outputText value="#{bundle.Subtotal}"/>
-                            </p:column>
-                            <p:column style="text-align:right">
-                                <h:outputText value="#{bundle.Subtotal}"/>
-                            </p:column>
-                        </p:row>               
 
+                        <p:row>
+                            <p:column width="50%" colspan="2" rowspan="6">
+
+                            </p:column>
+
+                            <p:column style="width:200px; text-align:right">
+                                <h:outputText value="#{bundle.Subtotal}"/>
+                            </p:column>
+                            <p:column style="width:100px; text-align:right">
+                                <h:outputText value="#{stockInController.newT.subTotal}">
+                                    <f:convertNumber pattern="#,##0" />
+                                </h:outputText> 
+                            </p:column>
+                        </p:row>               
+                        <p:row>      
+                            <!-- ************************************************************************* -->                                                    
+                            <p:column style="text-align:right">                                
+                                <h:outputLabel for="iDiscount" value="#{bundle.AdditionalDiscount} (%)" /> 
+                                <p:spacer width="20"/>
+                                <p:inputText id="iDiscount" value="#{stockInController.newT.discount}"  style="width:25px; text-align:right">   
+                                    <f:convertNumber pattern="#.##" maxFractionDigits="2"/>
+                                    <f:validateDoubleRange minimum="0" maximum="100"/>
+                                    <p:ajax event="blur" update="iDiscount"/> 
+                                </p:inputText>
+                            </p:column>
+                            <p:column style="text-align:right">
+                                <h:outputText value="#{stockInController.newT.amountDiscount}">
+                                    <f:convertNumber pattern="-#,##0" />
+                                </h:outputText> 
+                            </p:column>
+                        </p:row>               
+                        <p:row>                             
+                            <p:column style="text-align:right">                                
+                                <h:outputLabel for="iVAT" value="#{bundle.VAT} (%)" />  
+                                <p:spacer width="20"/>
+                                <p:inputText id="iVAT" value="#{stockInController.newT.VAT}"  style="width:25px; text-align:right">   
+                                    <f:convertNumber pattern="#.##" maxFractionDigits="2"/>
+                                    <f:validateDoubleRange minimum="0" maximum="100"/>
+                                    <p:ajax event="blur" update="iVAT"/> 
+                                </p:inputText>
+                            </p:column>
+                            <p:column style="text-align:right">
+                                <h:outputText value="#{stockInController.newT.amountVAT}">
+                                    <f:convertNumber pattern="#,##0" />
+                                </h:outputText> 
+                            </p:column>
+                        </p:row>               
+                        <p:row>                             
+                            <p:column style="text-align:right"  styleClass="ui-widget-header">
+                                <h:outputText value="#{bundle.Total}"/>
+                            </p:column>
+                            <p:column style="text-align:right"  styleClass="ui-widget-header">
+                                <h:outputText value="#{stockInController.newT.amount}">
+                                    <f:convertNumber pattern="#,##0" />
+                                </h:outputText> 
+                            </p:column>
+                        </p:row>               
+                        <p:row>                             
+                            <p:column style="text-align:right">
+                                <h:outputLabel for="iPayment" value="#{bundle.Paid}" />  
+                            </p:column>
+                            <p:column style="text-align:right">
+                                <p:inputText id="iPayment" value="#{stockInController.newT.payment.amount}"  style="width:100px; text-align:right">   
+                                    <f:convertNumber pattern="-#,##0" maxIntegerDigits="12" />
+                                    <f:validateDoubleRange minimum="0" />
+                                    <p:ajax event="blur" update="iPayment"/>                         
+                                </p:inputText>                                
+                            </p:column>
+                        </p:row>               
+                        <p:row>                             
+                            <p:column style="text-align:right"  styleClass="ui-widget-header">
+                                <h:outputText value="#{bundle.BalanceDue}"/>
+                            </p:column>
+                            <p:column style="text-align:right"  styleClass="ui-widget-header">
+                                <h:outputText value="#{stockInController.newT.amountAfterPayment}">
+                                    <f:convertNumber pattern="#,##0" />
+                                </h:outputText> 
+                            </p:column>
+                        </p:row>               
                     </p:panelGrid> 
 
-
-
-                    <p:panel> 
-                        <h:panelGrid columns="3" cellpadding="5">  
-                            <h:outputLabel for="iDiscount" value="#{bundle.AdditionalDiscount} (%)" />  
-                            <p:inputText id="iDiscount" value="#{stockInController.newT.discount}">   
-                                <f:convertNumber pattern="#.##" maxFractionDigits="2"/>
-                                <f:validateDoubleRange minimum="0" maximum="100"/>
-                                <p:ajax event="blur" update="iDiscount"/> 
-                            </p:inputText>
-                            <p:message for="iDiscount" display="icon"/>
-
-                            <h:outputLabel for="iVAT" value="#{bundle.VAT} (%)" />  
-                            <p:inputText id="iVAT" value="#{stockInController.newT.VAT}">   
-                                <f:convertNumber pattern="#.##" maxFractionDigits="2"/>
-                                <f:validateDoubleRange minimum="0" maximum="100"/>
-                                <p:ajax event="blur" update="iVAT"/> 
-                            </p:inputText>
-                            <p:message for="iVAT" display="icon"/>
-
-                            <h:outputLabel for="iPayment" value="#{bundle.Payment}" />  
-                            <p:inputText id="iPayment" value="#{stockInController.newT.payment.amount}">   
-                                <f:convertNumber pattern="#,##0" maxIntegerDigits="12" />
-                                <f:validateDoubleRange minimum="0" />
-                                <p:ajax event="blur" update="iPayment"/>                         
-                            </p:inputText>
-                            <p:message for="iPayment" display="icon"/>
-
-
-                        </h:panelGrid>
-                    </p:panel>
                     <p:commandButton widgetVar="saveStockInButton" value="#{bundle.Save}" 
                                      onclick="saveStockInButton.disable()"
                                      actionListener="#{stockInController.createOrEdit}" 
@@ -624,7 +626,7 @@
                         </f:facet>
 
                         <p:ajax event="cellEdit" listener="#{stockInController.onCellEdit}" update=":mainForm:messages" /> 
-                        <!-- ***************************************************************** -->
+
                         <p:column width="50">  
                             <p:commandButton id="deleteButton" update="iStockInTable, :mainForm:messages" action="#{stockInController.delete}" icon="ui-icon-trash" title="#{bundle.Delete}" >  
                                 <p:confirm header="#{bundle.Confirmation}" message="#{bundle.Delete_Confirm_Message}" icon="ui-icon-alert" />  
