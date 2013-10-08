@@ -88,7 +88,6 @@ public class StockInController extends FacadeController<Buy> implements Serializ
         newT.getListOfSaleItem().add(new SaleItem());
     }
 
-
     @Override
     public String getDialogTitle() {
         return dialogMode == DialogMode.CREATE

@@ -49,4 +49,12 @@ public class PaymentController extends FacadeController<PaymentSent> implements 
         super.initNewT();
         newT.setDate(new Date());
     }
+    
+    @Override
+    public String getDialogTitle() {
+        return dialogMode == DialogMode.CREATE
+                ? bundleBean.getBundle().getString("Payment_NewPayment")
+                : bundleBean.getBundle().getString("Payment_EditPayment");
+
+    }
 }

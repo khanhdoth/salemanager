@@ -41,4 +41,12 @@ public class ProductController extends FacadeController<Product> implements Seri
     protected BundleBean getBundleBean() {
         return bundleBean;
     }
+    
+    @Override
+    public String getDialogTitle() {
+        return dialogMode == DialogMode.CREATE
+                ? bundleBean.getBundle().getString("Product_NewProduct")
+                : bundleBean.getBundle().getString("Product_EditProduct");
+
+    }
 }

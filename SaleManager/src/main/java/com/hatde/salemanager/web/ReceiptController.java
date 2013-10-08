@@ -54,4 +54,12 @@ public class ReceiptController extends FacadeController<PaymentReceived> impleme
         super.initNewT();
         newT.setDate(new Date());
     }
+
+    @Override
+    public String getDialogTitle() {
+        return dialogMode == DialogMode.CREATE
+                ? bundleBean.getBundle().getString("Receipt_NewReceipt")
+                : bundleBean.getBundle().getString("Receipt_EditReceipt");
+
+    }
 }

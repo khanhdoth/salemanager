@@ -41,4 +41,12 @@ public class ContactController extends FacadeController<Contact> implements Seri
     protected BundleBean getBundleBean() {
         return bundleBean;
     }
+    
+    @Override
+    public String getDialogTitle() {
+        return dialogMode == DialogMode.CREATE
+                ? bundleBean.getBundle().getString("Contact_NewContact")
+                : bundleBean.getBundle().getString("Contact_EditContact");
+
+    }
 }
