@@ -115,9 +115,9 @@ public abstract class FacadeController<T> {
     public void doDelete() {
         getBean().remove(selectedT);
     }
-    
+
     public void createOrEdit() {
-        if(dialogMode == DialogMode.CREATE){
+        if (dialogMode == DialogMode.CREATE) {
             create();
         } else {
             edit();
@@ -189,9 +189,21 @@ public abstract class FacadeController<T> {
     public void setNewT(T newT) {
         this.newT = newT;
     }
-    
-    public void closeDialog(){
+
+    public void closeDialog() {
         System.out.println("---- closeDialog ----" + this.toString());
         initListandNewT();
+    }
+
+    public void setEdit() {
+        newT = selectedT;
+        dialogMode = DialogMode.EDIT;
+    }
+    
+    public String getDialogTitle() {
+        return dialogMode == DialogMode.CREATE
+                ? bundle.getString("New")
+                : bundle.getString("Edit");
+
     }
 }

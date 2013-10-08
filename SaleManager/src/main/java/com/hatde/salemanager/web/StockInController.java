@@ -88,11 +88,8 @@ public class StockInController extends FacadeController<Buy> implements Serializ
         newT.getListOfSaleItem().add(new SaleItem());
     }
 
-    public void setEdit() {
-        newT = selectedT;
-        dialogMode = DialogMode.EDIT;
-    }
 
+    @Override
     public String getDialogTitle() {
         return dialogMode == DialogMode.CREATE
                 ? bundleBean.getBundle().getString("StockIn_NewStockIn")
