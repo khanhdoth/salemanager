@@ -6,7 +6,6 @@ import com.hatde.salemanager.entities.SaleItem;
 import com.hatde.salemanager.services.AbstractFacade;
 import com.hatde.salemanager.services.BuyFacadeREST;
 import com.hatde.salemanager.services.ContactFacadeREST;
-import com.hatde.salemanager.services.ProductFacadeREST;
 import java.io.Serializable;
 import java.util.Date;
 import javax.annotation.PostConstruct;
@@ -23,7 +22,13 @@ import javax.inject.Inject;
 @SessionScoped
 public class StockInController extends FacadeContactController<Buy> implements Serializable {
 
+    public enum DialogMode {
+
+        CREATE, EDIT
+    }
+
     private SaleItem selectedSI;
+    private DialogMode dialogMode = DialogMode.CREATE;
 
     @EJB
     private BuyFacadeREST bean;
@@ -36,7 +41,7 @@ public class StockInController extends FacadeContactController<Buy> implements S
 
     @Inject
     private ProductController productControllerBean;
-    
+
     @Inject
     private BundleBean bundleBean;
 
@@ -92,8 +97,20 @@ public class StockInController extends FacadeContactController<Buy> implements S
         contactControllerBean.refreshList();
         productControllerBean.refreshList();
     }
-    
+
     public void addSaleItem() {
         newT.getListOfSaleItem().add(new SaleItem());
+    }
+
+    public void setEdit() {
+        newT = selectedT;
+        dialogMode = DialogMode.EDIT;
+    }
+
+    public String getDialogTitle() {
+        return dialogMode == DialogMode.CREATE
+                ? bundleBean.getBundle().getString("StockIn_NewStockIn")
+                : bundleBean.getBundle().getString("StockIn_EditStockIn");
+
     }
 }

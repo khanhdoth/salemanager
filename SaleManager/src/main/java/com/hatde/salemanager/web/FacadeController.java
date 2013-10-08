@@ -4,6 +4,7 @@
  */
 package com.hatde.salemanager.web;
 
+import com.hatde.salemanager.entities.SaleItem;
 import com.hatde.salemanager.services.AbstractFacade;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,12 @@ import org.primefaces.event.CellEditEvent;
  * @author Do
  */
 public abstract class FacadeController<T> {
+
+    public enum DialogMode {
+
+        CREATE, EDIT
+    }
+    protected DialogMode dialogMode = DialogMode.CREATE;
 
     protected Class<T> entityClass;
 
@@ -56,6 +63,7 @@ public abstract class FacadeController<T> {
     public void initNewT() {
         try {
             newT = entityClass.newInstance();
+            dialogMode = dialogMode.CREATE;
         } catch (Exception e) {
         }
     }
@@ -69,13 +77,28 @@ public abstract class FacadeController<T> {
 
         if (newValue != null && !newValue.equals(oldValue)) {
             T c = (T) ((DataTable) event.getSource()).getRowData();
-            try {
-                getBean().edit(c);
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, bundle.getString("Edit_Success"), ""));
-            } catch (Exception e) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getString("Edit_Failed_Message"), ""));
-            }
+            doEdit(c);
         }
+    }
+
+    public void edit() {
+        System.out.println("----create----" + this.toString());
+        try {
+            doEdit(newT);
+            initListandNewT();
+        } catch (Exception e) {
+        }
+    }
+
+    public void doEdit(T c) {
+        System.out.println("----edit----" + this.toString());
+        try {
+            getBean().edit(c);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, bundle.getString("Edit_Success"), ""));
+        } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getString("Edit_Failed_Message"), ""));
+        }
+
     }
 
     public void delete() {
@@ -89,10 +112,18 @@ public abstract class FacadeController<T> {
         }
     }
 
-    public void doDelete(){
+    public void doDelete() {
         getBean().remove(selectedT);
     }
     
+    public void createOrEdit() {
+        if(dialogMode == DialogMode.CREATE){
+            create();
+        } else {
+            edit();
+        }
+    }
+
     public void create() {
         System.out.println("----create----" + this.toString());
         try {
@@ -105,11 +136,11 @@ public abstract class FacadeController<T> {
         }
 
     }
-    
-    public void doCreate(){
+
+    public void doCreate() {
         getBean().create(newT);
     }
-    
+
     public void refreshList() {
         initDataList();
     }
@@ -122,10 +153,10 @@ public abstract class FacadeController<T> {
         System.out.println("----getList----" + this.toString());
         return list;
     }
-    
+
     public List<T> getListOne() {
         System.out.println("----getListOne----" + this.toString());
-        if(list == null){
+        if (list == null) {
             refreshList();
         }
         return list;

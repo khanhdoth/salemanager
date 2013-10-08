@@ -370,7 +370,7 @@
 
             <!-- Create stock-in -->            
             <h:form id="createBuyForm" onkeypress="return event.keyCode != 13;">
-                <p:dialog id="iDlgBuy" header="#{bundle.StockIn_NewStockIn}" widgetVar="wDlgBuy">  
+                <p:dialog id="iDlgBuy" header="#{bundle.StockIn_NewStockIn}" widgetVar="wDlgBuy" modal="true" >  
                     <p:messages id="msgs" autoUpdate="true"/>
                     <h:panelGrid columns="3" cellpadding="5">  
 
@@ -427,8 +427,6 @@
                                  emptyMessage="No sale item found with given criteria" editMode="cell"                                  
                                  resizableColumns="true" liveResize="true" >   
                         
-                        <!-- ***************************************************************** -->
-                        
                         <f:facet name="header">  
                             <p:outputPanel style="text-align:left"> 
                                 <p:commandButton id="addButton" update="iSIInTable" action="#{stockInController.addSaleItem}" icon="ui-icon-circle-plus" title="#{bundle.AddNewItem}" /> 
@@ -445,11 +443,11 @@
                                 <f:setPropertyActionListener value="#{item}" target="#{stockInController.selectedSI}" />  
                             </p:commandButton> 
                         </p:column> 
-                        
+
                         <p:column id="productColumn" headerText="#{bundle.ModuleProduct}">  
                             <p:cellEditor>  
                                 <f:facet name="output">  
-                                    <h:outputText value="#{item.product.productId} - #{item.product.name}" />
+                                    <h:outputText value="#{item.product.name}" />
                                 </f:facet>  
                                 <f:facet name="input">                                      
                                     <p:selectOneMenu id="soProductMenu" value="#{item.product}" converter="productConverter" 
@@ -467,22 +465,63 @@
                             </p:cellEditor>  
                         </p:column>  
 
-                        <p:column id="quantityColumn" headerText="#{bundle.Quantity}">  
-                            <h:outputText value="#{item.quantity}" />  
+                        <p:column id="quantityColumn" headerText="#{bundle.Quantity}" style="text-align:right">                              
+                            <p:cellEditor>  
+                                <f:facet name="output">  
+                                    <h:outputText value="#{item.quantity}" >
+                                        <f:convertNumber pattern="#,##0.##" />
+                                    </h:outputText> 
+                                </f:facet>  
+                                <f:facet name="input">                                      
+                                    <p:inputText id="iQuantity" value="#{item.quantity}" 
+                                                 immediate="true"  >                                          
+                                        <f:convertNumber pattern="#,##0.##" maxFractionDigits="2" maxIntegerDigits="12" />                                        
+                                        <p:ajax event="blur" update="iQuantity"/> 
+                                    </p:inputText>
+                                </f:facet>  
+                            </p:cellEditor>
                         </p:column>  
 
-                        <p:column id="priceColumn" headerText="#{bundle.Price}">  
-                            <h:outputText value="#{item.price}" />  
+                        <p:column id="priceColumn" headerText="#{bundle.Price}" style="text-align:right">                              
+                            <p:cellEditor>  
+                                <f:facet name="output">  
+                                    <h:outputText value="#{item.price}" >
+                                        <f:convertNumber pattern="#,##0" />
+                                    </h:outputText> 
+                                </f:facet>  
+                                <f:facet name="input">                                      
+                                    <p:inputText id="iPrice" value="#{item.price}" 
+                                                 immediate="true"  >  
+                                        <f:convertNumber pattern="#,##0" maxIntegerDigits="12" />
+                                        <f:validateDoubleRange minimum="0" />
+                                        <p:ajax event="blur" update="iPrice"/> 
+                                    </p:inputText>
+                                </f:facet>  
+                            </p:cellEditor>
                         </p:column>  
 
-                        <p:column id="discountColumn" headerText="#{bundle.Discount}">  
-                            <h:outputText value="#{item.discount}" />  
+                        <p:column id="discountColumn" headerText="#{bundle.Discount}" style="text-align:right">                              
+                            <p:cellEditor>  
+                                <f:facet name="output">  
+                                    <h:outputText value="#{item.discount}" >
+                                        <f:convertNumber pattern="#.##" />
+                                    </h:outputText> 
+                                </f:facet>  
+                                <f:facet name="input">                                      
+                                    <p:inputText id="iDiscount" value="#{item.discount}" 
+                                                 immediate="true"  >  
+                                        <f:convertNumber pattern="#.##" maxFractionDigits="2" maxIntegerDigits="1" />
+                                        <f:validateDoubleRange minimum="0" maximum="1"/>
+                                        <p:ajax event="blur" update="iDiscount"/> 
+                                    </p:inputText>
+                                </f:facet>  
+                            </p:cellEditor>  
                         </p:column>  
                     </p:dataTable>  
 
                     <p:commandButton widgetVar="saveStockInButton" value="#{bundle.Save}" 
                                      onclick="saveStockInButton.disable()"
-                                     actionListener="#{stockInController.create}" 
+                                     actionListener="#{stockInController.createOrEdit}" 
                                      update="iDlgBuy, :buyListForm:iStockInTable, :mainForm:messages" 
                                      oncomplete="saveStockInButton.enable(); wDlgBuy.hide()" 
                                      validateClient="true" style="margin-right:10px" />    
@@ -491,7 +530,7 @@
 
             <!-- stock-in list -->            
             <h:form id="buyListForm" onkeypress="return event.keyCode != 13;">
-                <p:dialog id="iDlgBuyList" header="#{bundle.StockIn_StockInList}" widgetVar="wDlgBuyList" position="bottom" >
+                <p:dialog id="iDlgBuyList" header="#{bundle.StockIn_StockInList}" widgetVar="wDlgBuyList" position="bottom">
                     <p:dataTable id="iStockInTable" var="item" value="#{stockInController.list}" editable="true"
                                  widgetVar="wStockInTable" rowKey="#{item.productTransactionId}" scrollable="true" scrollHeight="400"
                                  emptyMessage="No stockIn found with given criteria" editMode="cell" 
@@ -509,10 +548,14 @@
                         </f:facet>
 
                         <p:ajax event="cellEdit" listener="#{stockInController.onCellEdit}" update=":mainForm:messages" /> 
-
-                        <p:column style="width:5%">  
+<!-- ***************************************************************** -->
+                        <p:column style="width:6%">  
                             <p:commandButton id="deleteButton" update="iStockInTable, :mainForm:messages" action="#{stockInController.delete}" icon="ui-icon-trash" title="#{bundle.Delete}" >  
                                 <p:confirm header="#{bundle.Confirmation}" message="#{bundle.Delete_Confirm_Message}" icon="ui-icon-alert" />  
+                                <f:setPropertyActionListener value="#{item}" target="#{stockInController.selectedT}" />  
+                            </p:commandButton> 
+                            <p:commandButton id="editButton" update=":createBuyForm:iDlgBuy" action="#{stockInController.setEdit}" 
+                                             icon="ui-icon-search" title="#{bundle.Edit}" oncomplete="wDlgBuy.show()" >                                  
                                 <f:setPropertyActionListener value="#{item}" target="#{stockInController.selectedT}" />  
                             </p:commandButton> 
                         </p:column> 
@@ -533,7 +576,9 @@
                                   filterMatchMode="contains">                                    
                             <p:cellEditor>  
                                 <f:facet name="output">  
-                                    <p:calendar locale="de" showButtonPanel="true" navigator="true" value="#{item.date}" />                                      
+                                    <h:outputText value="#{item.date}"> 
+                                        <f:convertDateTime pattern="dd.MM.yyyy" />
+                                    </h:outputText>     
                                 </f:facet>  
                                 <f:facet name="input">  
                                     <p:calendar locale="de" showButtonPanel="true" navigator="true" value="#{item.date}" />  
