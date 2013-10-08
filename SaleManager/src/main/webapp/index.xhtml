@@ -21,7 +21,7 @@
                     <h:graphicImage value="images/ajax_loader.gif" />  
                 </f:facet>  
 
-                <f:facet name="complete">  
+                <f:facet name="complete">   
                     <h:outputText value="" />  
                 </f:facet>  
             </p:ajaxStatus> 
@@ -392,11 +392,11 @@
                                              filter="true" filterMatchMode="contains" required="true">                              
                                 <f:selectItems value="#{contactController.listOne}" var="c" itemLabel="#{c.contactId} - #{c.name}" itemValue="#{c}"/>  
 
-                                <p:column> #{p.contactId} </p:column>
+                                <p:column style="width:15px"> #{p.contactId} </p:column>
                                 <p:column> #{p.name} </p:column>
-                                <p:column> #{p.address} </p:column>
-                                <p:column> #{p.city} </p:column>
-                                <p:column> #{p.country} </p:column>
+                                <p:column style="width:25px"> #{p.address} </p:column>
+                                <p:column style="width:25px"> #{p.city} </p:column>
+                                <p:column style="width:25px"> #{p.country} </p:column>
 
                             </p:selectOneMenu> 
                             <p:spacer width="30"/>
@@ -427,7 +427,7 @@
 
                                     <p:ajax event="cellEdit" listener="#{stockInController.onSICellEdit}" />                         
 
-                                    <p:column width="25">  
+                                    <p:column style="width:25px">  
                                         <p:commandButton id="deleteButton" update="iSIInTable, :mainForm:messages,:createBuyForm:oSubTotal, :createBuyForm:oSubTotal, :createBuyForm:oAmountDiscount, :createBuyForm:oAmountVAT, 
                                                             :createBuyForm:oTotal, :createBuyForm:oAmountAfterPayment"
                                                             action="#{stockInController.deleteSI}" icon="ui-icon-trash" title="#{bundle.Delete}" >  
@@ -457,7 +457,7 @@
                                         </p:cellEditor>  
                                     </p:column>  
 
-                                    <p:column id="quantityColumn" headerText="#{bundle.Quantity}" style="text-align:right">                              
+                                    <p:column id="quantityColumn" headerText="#{bundle.Quantity}" style="width:70px; text-align:right">                              
                                         <p:cellEditor>  
                                             <f:facet name="output">  
                                                 <h:outputText value="#{item.quantity}" >
@@ -476,7 +476,7 @@
                                         </p:cellEditor>
                                     </p:column>  
 
-                                    <p:column id="priceColumn" headerText="#{bundle.Price}" style="text-align:right">                              
+                                    <p:column id="priceColumn" headerText="#{bundle.Price}" style="width:70px; text-align:right">                              
                                         <p:cellEditor>  
                                             <f:facet name="output">  
                                                 <h:outputText value="#{item.price}" >
@@ -496,7 +496,7 @@
                                         </p:cellEditor>
                                     </p:column>  
 
-                                    <p:column id="discountColumn" headerText="#{bundle.Discount}" style="text-align:right">                              
+                                    <p:column id="discountColumn" headerText="#{bundle.Discount}" style="width:70px; text-align:right">                              
                                         <p:cellEditor>  
                                             <f:facet name="output">  
                                                 <h:outputText value="#{item.discount / 100}" >
@@ -516,7 +516,7 @@
                                         </p:cellEditor>  
                                     </p:column>
 
-                                    <p:column id="amountColumn" headerText="#{bundle.Amount2}" style="text-align:right">                              
+                                    <p:column id="amountColumn" headerText="#{bundle.Amount2}" style="width:70px; text-align:right">                              
                                         <h:outputText id="oAmount" value="#{item.amount}" >
                                             <f:convertNumber pattern="#,##0" />
                                         </h:outputText> 
