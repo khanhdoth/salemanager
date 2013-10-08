@@ -36,8 +36,7 @@
 
                     <p:submenu label="#{bundle.ModuleStockIn}">  
                         <p:menuitem value="#{bundle.StockIn_NewStockIn}" icon="ui-icon-document" 
-                                    onclick="wDlgBuy.show()"  action="#{contactController.refreshList}" 
-                                    update=":createBuyForm:soContactMenu" /> 
+                                    onclick="wDlgBuy.show()" /> 
                         <p:menuitem value="#{bundle.StockIn_StockInList}" icon="ui-icon-document" 
                                     onclick="wDlgBuyList.show()" action="#{stockInController.refreshList}" 
                                     update=":buyListForm:iStockInTable" /> 
@@ -370,7 +369,8 @@
 
             <!-- Create stock-in -->            
             <h:form id="createBuyForm" onkeypress="return event.keyCode != 13;">
-                <p:dialog id="iDlgBuy" header="#{stockInController.dialogTitle}" widgetVar="wDlgBuy" modal="true" >  
+                <p:dialog id="iDlgBuy" header="#{stockInController.dialogTitle}" widgetVar="wDlgBuy" modal="true" >
+                    <p:ajax event="close" update=":createBuyForm:iDlgBuy" listener="#{stockInController.closeDialog}"/>
                     <p:messages id="msgs" autoUpdate="true"/>
                     <h:panelGrid columns="3" cellpadding="5">  
 
@@ -378,7 +378,7 @@
                         <p:selectOneMenu id="soContactMenu" value="#{stockInController.newT.contact}" converter="contactConverter" 
                                          panelStyle="width:500px" effect="fade" var="p" style="width:160px"  
                                          filter="true" filterMatchMode="contains" required="true">                              
-                            <f:selectItems value="#{contactController.list}" var="c" itemLabel="#{c.contactId} - #{c.name}" itemValue="#{c}"/>  
+                            <f:selectItems value="#{contactController.listOne}" var="c" itemLabel="#{c.contactId} - #{c.name}" itemValue="#{c}"/>  
 
                             <p:column> #{p.contactId} </p:column>
                             <p:column> #{p.name} </p:column>
@@ -437,7 +437,7 @@
 
                         <p:ajax event="cellEdit" listener="#{stockInController.onSICellEdit}" /> 
 
-                        <p:column style="width:5%">  
+                        <p:column width="20">  
                             <p:commandButton id="deleteButton" update="iSIInTable, :mainForm:messages" action="#{stockInController.deleteSI}" icon="ui-icon-trash" title="#{bundle.Delete}" >  
                                 <p:confirm header="#{bundle.Confirmation}" message="#{bundle.Delete_Confirm_Message}" icon="ui-icon-alert" />  
                                 <f:setPropertyActionListener value="#{item}" target="#{stockInController.selectedSI}" />  
@@ -530,7 +530,7 @@
 
             <!-- stock-in list -->            
             <h:form id="buyListForm" onkeypress="return event.keyCode != 13;">
-                <p:dialog id="iDlgBuyList" header="#{bundle.StockIn_StockInList}" widgetVar="wDlgBuyList" position="bottom">
+                <p:dialog id="iDlgBuyList" header="#{bundle.StockIn_StockInList}" widgetVar="wDlgBuyList" position="bottom">                    
                     <p:dataTable id="iStockInTable" var="item" value="#{stockInController.list}" editable="true"
                                  widgetVar="wStockInTable" rowKey="#{item.productTransactionId}" scrollable="true" scrollHeight="400"
                                  emptyMessage="No stockIn found with given criteria" editMode="cell" 
@@ -549,7 +549,7 @@
 
                         <p:ajax event="cellEdit" listener="#{stockInController.onCellEdit}" update=":mainForm:messages" /> 
 <!-- ***************************************************************** -->
-                        <p:column style="width:6%">  
+                        <p:column width="50">  
                             <p:commandButton id="deleteButton" update="iStockInTable, :mainForm:messages" action="#{stockInController.delete}" icon="ui-icon-trash" title="#{bundle.Delete}" >  
                                 <p:confirm header="#{bundle.Confirmation}" message="#{bundle.Delete_Confirm_Message}" icon="ui-icon-alert" />  
                                 <f:setPropertyActionListener value="#{item}" target="#{stockInController.selectedT}" />  

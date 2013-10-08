@@ -25,7 +25,7 @@ import javax.ws.rs.Produces;
  * @author Khanh
  */
 @Stateless
-@Path("com.hatde.salemanager.entities.contact")
+@Path("contact")
 public class ContactFacadeREST extends AbstractFacade<Contact> {
     @PersistenceContext(unitName = "com.hatde_SaleManager")
     private EntityManager em;

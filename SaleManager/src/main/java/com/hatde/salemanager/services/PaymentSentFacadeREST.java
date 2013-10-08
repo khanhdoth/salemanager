@@ -45,16 +45,7 @@ public class PaymentSentFacadeREST extends AbstractFacade<PaymentSent> {
         em.merge(contact);
         em.persist(entity);
     }
-    /*
-     public void create(PaymentSent entity, Contact contact) {
-     System.out.println("---create Payment---- " + contact.getName());
-     entity.setContact(contact);
-     contact.getListOfPaymentReceived().add(entity);
-     em.merge(contact);
-     em.persist(entity);
-     }
-     */
-
+    
     @PUT
     @Path("{id}")
     @Consumes({"application/xml", "application/json"})

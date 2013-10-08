@@ -189,4 +189,9 @@ public abstract class FacadeController<T> {
     public void setNewT(T newT) {
         this.newT = newT;
     }
+    
+    public void closeDialog(){
+        System.out.println("---- closeDialog ----" + this.toString());
+        initListandNewT();
+    }
 }

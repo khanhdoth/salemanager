@@ -16,8 +16,8 @@ import javax.inject.Named;
 @FacesConverter("contactConverter")
 public class ContactConverter implements Converter {
 
-    @Inject
-    private ContactFacadeREST bean;
+    @Inject    
+    private ContactController bean;
 
     @Override
     public Object getAsObject(FacesContext facesContext, UIComponent component, String submittedValue) {
@@ -27,7 +27,7 @@ public class ContactConverter implements Converter {
         } else {
             try {
                 int number = Integer.parseInt(submittedValue);
-                List<Contact> contacts = bean.findAll();    
+                List<Contact> contacts = bean.getListOne();    
                 for (Contact c : contacts) {
                     if (c.getContactId() == number) {
                         System.out.println("===========getAsObject mached:" + c.getName());

@@ -23,13 +23,10 @@ import javax.inject.Inject;
  */
 @Named(value = "receiptController")
 @SessionScoped
-public class ReceiptController extends FacadeContactController<PaymentReceived> implements Serializable {
+public class ReceiptController extends FacadeController<PaymentReceived> implements Serializable {
 
     @EJB
     private PaymentReceivedFacadeREST bean;
-
-    @EJB
-    private ContactFacadeREST contactBean;
 
     @Inject
     private BundleBean bundleBean;
@@ -52,11 +49,6 @@ public class ReceiptController extends FacadeContactController<PaymentReceived> 
         return bundleBean;
     }
 
-    @Override
-    protected ContactFacadeREST getContactBean() {
-        return contactBean;
-    }
-    
     @Override
     public void initNewT() {
         super.initNewT();

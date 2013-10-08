@@ -20,15 +20,12 @@ import javax.inject.Inject;
  */
 @Named(value = "stockInController")
 @SessionScoped
-public class StockInController extends FacadeContactController<Buy> implements Serializable {
+public class StockInController extends FacadeController<Buy> implements Serializable {
 
     private SaleItem selectedSI;
 
     @EJB
     private BuyFacadeREST bean;
-
-    @EJB
-    private ContactFacadeREST contactBean;
 
     @Inject
     private ContactController contactControllerBean;
@@ -55,11 +52,6 @@ public class StockInController extends FacadeContactController<Buy> implements S
     @Override
     protected BundleBean getBundleBean() {
         return bundleBean;
-    }
-
-    @Override
-    protected ContactFacadeREST getContactBean() {
-        return contactBean;
     }
 
     @Override

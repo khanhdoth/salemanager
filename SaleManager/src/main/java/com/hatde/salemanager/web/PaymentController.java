@@ -18,13 +18,10 @@ import javax.inject.Inject;
  */
 @Named(value = "paymentController")
 @SessionScoped
-public class PaymentController extends FacadeContactController<PaymentSent> implements Serializable {
+public class PaymentController extends FacadeController<PaymentSent> implements Serializable {
 
     @EJB
     private PaymentSentFacadeREST bean;
-
-    @EJB
-    private ContactFacadeREST contactBean;
 
     @Inject
     private BundleBean bundleBean;
@@ -47,11 +44,6 @@ public class PaymentController extends FacadeContactController<PaymentSent> impl
         return bundleBean;
     }
 
-    @Override
-    protected ContactFacadeREST getContactBean() {
-        return contactBean;
-    }
-    
     @Override
     public void initNewT() {
         super.initNewT();

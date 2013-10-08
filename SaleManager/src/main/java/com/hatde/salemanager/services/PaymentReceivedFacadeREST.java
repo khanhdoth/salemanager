@@ -46,17 +46,7 @@ public class PaymentReceivedFacadeREST extends AbstractFacade<PaymentReceived> {
         em.persist(entity);
 
     }
-
-    /*
-    public void create(PaymentReceived entity, Contact contact) {
-        System.out.println("---create Receipt---- " + contact.getName());
-        entity.setContact(contact);
-        contact.getListOfPaymentSent().add(entity);
-        em.merge(contact);
-        em.persist(entity);
-    }
-    */
-
+  
     @PUT
     @Path("{id}")
     @Consumes({"application/xml", "application/json"})
