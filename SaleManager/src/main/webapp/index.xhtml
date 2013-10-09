@@ -111,12 +111,8 @@
                                     <f:convertNumber pattern="#,##0" />
                                 </h:outputText>
                             </p:column>                            
-                            <p:column rowspan="3" styleClass="ui-widget-header"  style="text-align:center; font-size: 200%">
-                                <h:outputLabel value="#{bundle.BalanceInHand}:" />
+                            <p:column>
                                 <p:spacer width="20"/>
-                                <h:outputText value="#{contactController.viewT.balance}" >
-                                    <f:convertNumber pattern="#,##0" />
-                                </h:outputText>                                    
                             </p:column>
                             <p:column  style="width:100px; text-align:right; font-weight:bold">
                                 <h:outputLabel value="#{bundle.TotalStockInAmount}" />  
@@ -136,6 +132,13 @@
                                 <h:outputText value="#{contactController.viewT.paymentSentAmount}" style="font-weight:bold; font-size: 120%">
                                     <f:convertNumber pattern="#,##0" />
                                 </h:outputText>
+                            </p:column>
+                            <p:column rowspan="2" styleClass="ui-widget-header"  style="text-align:center; font-size: 200%">
+                                <h:outputLabel value="#{bundle.BalanceInHand}:" />
+                                <p:spacer width="20"/>
+                                <h:outputText value="#{contactController.viewT.balance}" >
+                                    <f:convertNumber pattern="#,##0" />
+                                </h:outputText>                                    
                             </p:column>
                             <p:column  style="text-align:right; font-weight:bold">
                                 <h:outputLabel value="#{bundle.TotalReceiptAmount}" /> 
