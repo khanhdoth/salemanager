@@ -166,7 +166,7 @@
                         </p:column> 
 
                         <p:column id="contactIdColumn" sortBy="contactId" filterBy="contactId"   
-                                  headerText="#{bundle.ID}" filterMatchMode="contains">  
+                                  headerText="#{bundle.ID}" filterMatchMode="contains" style="width:60px">  
                             <h:outputText value="#{item.contactId}" />  
                         </p:column>  
 
@@ -321,7 +321,7 @@
                         </p:column> 
 
                         <p:column id="productIdColumn" sortBy="productId" filterBy="productId"   
-                                  headerText="#{bundle.ID}" filterMatchMode="contains">  
+                                  headerText="#{bundle.ID}" filterMatchMode="contains" style="width:60px">  
                             <h:outputText value="#{item.productId}" />  
                         </p:column>  
 
@@ -340,7 +340,7 @@
 
                         <p:column id="manufacturerColumn" sortBy="manufacturer" filterBy="manufacturer"   
                                   headerText="#{bundle.Product_Manufacturer}"
-                                  filterMatchMode="contains">  
+                                  filterMatchMode="contains" style="width:100px">  
                             <p:cellEditor>  
                                 <f:facet name="output">  
                                     <h:outputText value="#{item.manufacturer}" />  
@@ -353,7 +353,7 @@
 
                         <p:column id="unitColumn" sortBy="unit" filterBy="unit"   
                                   headerText="#{bundle.Product_Unit}"
-                                  filterMatchMode="contains">  
+                                  filterMatchMode="contains" style="width:80px">  
                             <p:cellEditor>  
                                 <f:facet name="output">  
                                     <h:outputText value="#{item.unit}" />  
@@ -623,8 +623,6 @@
                 </p:dialog>                
             </h:form>
 
-<!-- *************************************************************************************** -->
-            
             <!-- stock-out list -->            
             <h:form id="saleListForm" onkeypress="return event.keyCode != 13;">
                 <p:dialog id="iDlgSaleList" header="#{bundle.StockOut_StockOutList}" widgetVar="wDlgSaleList" position="bottom" >
@@ -646,7 +644,7 @@
 
                         <p:ajax event="cellEdit" listener="#{stockOutController.onCellEdit}" update=":mainForm:messages" /> 
 
-                        <p:column style="width:52px; text-align:right" exportable="false">  
+                        <p:column style="width:52px" exportable="false">  
                             <p:commandButton id="deleteButton" update="iStockOutTable, :mainForm:messages" action="#{stockOutController.delete}" icon="ui-icon-trash" title="#{bundle.Delete}" >  
                                 <p:confirm header="#{bundle.Confirmation}" message="#{bundle.Delete_Confirm_Message}" icon="ui-icon-alert" />  
                                 <f:setPropertyActionListener value="#{item}" target="#{stockOutController.selectedT}" />  
@@ -949,7 +947,7 @@
                                      validateClient="true" style="margin-right:10px" />    
                 </p:dialog>                
             </h:form>
-            
+
             <!-- stock-in list -->            
             <h:form id="buyListForm" onkeypress="return event.keyCode != 13;">
                 <p:dialog id="iDlgBuyList" header="#{bundle.StockIn_StockInList}" widgetVar="wDlgBuyList" position="bottom" >                    
@@ -971,7 +969,7 @@
 
                         <p:ajax event="cellEdit" listener="#{stockInController.onCellEdit}" update=":mainForm:messages" /> 
 
-                        <p:column style="width:52px; text-align:right" exportable="false">  
+                        <p:column style="width:52px" exportable="false">  
                             <p:commandButton id="deleteButton" update="iStockInTable, :mainForm:messages" action="#{stockInController.delete}" icon="ui-icon-trash" title="#{bundle.Delete}" >  
                                 <p:confirm header="#{bundle.Confirmation}" message="#{bundle.Delete_Confirm_Message}" icon="ui-icon-alert" />  
                                 <f:setPropertyActionListener value="#{item}" target="#{stockInController.selectedT}" />  
@@ -1038,6 +1036,8 @@
                 </p:dialog>  
             </h:form>            
 
+            <!-- *************************************************************************************** -->
+
             <!-- Create Receipt -->            
             <h:form id="createReceiptForm" onkeypress="return event.keyCode != 13;">
                 <p:dialog id="iDlgReceipt" header="#{receiptController.dialogTitle}" widgetVar="wDlgReceipt"  modal="true" >                  
@@ -1081,6 +1081,7 @@
                         <h:outputLabel for="iReason" value="#{bundle.Reason}" />  
                         <p:inputText id="iReason" value="#{receiptController.newT.paymentReason}" />  
 
+                        <p:spacer width="5"/>
                         <p:commandButton widgetVar="saveReceiptButton" value="#{bundle.Save}" 
                                          onclick="saveReceiptButton.disable()"
                                          actionListener="#{receiptController.createOrEdit}" 
@@ -1112,7 +1113,7 @@
 
                         <p:ajax event="cellEdit" listener="#{receiptController.onCellEdit}" update=":mainForm:messages" /> 
 
-                        <p:column width="50">  
+                        <p:column style="width:52px">  
                             <p:commandButton id="deleteButton" update="iReceiptTable, :mainForm:messages" action="#{receiptController.delete}" icon="ui-icon-trash" title="#{bundle.Delete}" >  
                                 <p:confirm header="#{bundle.Confirmation}" message="#{bundle.Delete_Confirm_Message}" icon="ui-icon-alert" />  
                                 <f:setPropertyActionListener value="#{item}" target="#{receiptController.selectedT}" />  
@@ -1124,7 +1125,7 @@
                         </p:column> 
 
                         <p:column id="paymentTransactionIdColumn" sortBy="paymentTransactionId" filterBy="paymentTransactionId"   
-                                  headerText="#{bundle.ID}" filterMatchMode="contains">  
+                                  headerText="#{bundle.ID}" filterMatchMode="contains" style="width:60px">  
                             <h:outputText value="#{item.paymentTransactionId}" />  
                         </p:column>  
 
@@ -1136,10 +1137,12 @@
 
                         <p:column id="dateColumn" sortBy="date" filterBy="date"   
                                   headerText="#{bundle.Date}"
-                                  filterMatchMode="contains">                                    
+                                  filterMatchMode="contains" style="width:70px">                                    
                             <p:cellEditor>  
                                 <f:facet name="output">  
-                                    <p:calendar locale="de" showButtonPanel="true" navigator="true" value="#{item.date}" />                                      
+                                    <h:outputText value="#{item.date}"> 
+                                        <f:convertDateTime pattern="dd.MM.yyyy" />
+                                    </h:outputText>                                     
                                 </f:facet>  
                                 <f:facet name="input">  
                                     <p:calendar locale="de" showButtonPanel="true" navigator="true" value="#{item.date}" />  
@@ -1147,10 +1150,9 @@
                             </p:cellEditor>                             
                         </p:column>  
 
-
                         <p:column id="amountColumn" sortBy="amount" filterBy="amount"   
                                   headerText="#{bundle.Amount}"
-                                  filterMatchMode="contains" style="text-align:right">  
+                                  filterMatchMode="contains" style="width:80px; text-align:right">  
                             <p:cellEditor>  
                                 <f:facet name="output">  
                                     <h:outputText value="#{item.amount}" >
@@ -1170,7 +1172,7 @@
 
                         <p:column id="paymentReasonColumn" sortBy="paymentReason" filterBy="paymentReason"   
                                   headerText="#{bundle.Reason}"
-                                  filterMatchMode="contains">  
+                                  filterMatchMode="contains" style="width:150px" >  
                             <p:cellEditor>  
                                 <f:facet name="output">  
                                     <h:outputText value="#{item.paymentReason}" />  
@@ -1229,6 +1231,7 @@
                         <h:outputLabel for="iReason" value="#{bundle.Reason}" />  
                         <p:inputText id="iReason" value="#{paymentController.newT.paymentReason}" />  
 
+                        <p:spacer width="5"/>
                         <p:commandButton widgetVar="savePaymentButton" value="#{bundle.Save}" 
                                          onclick="savePaymentButton.disable()"
                                          actionListener="#{paymentController.createOrEdit}" 
@@ -1260,7 +1263,7 @@
 
                         <p:ajax event="cellEdit" listener="#{paymentController.onCellEdit}" update=":mainForm:messages" /> 
 
-                        <p:column width="50">  
+                        <p:column style="width:52px">  
                             <p:commandButton id="deleteButton" update="iPaymentTable, :mainForm:messages" action="#{paymentController.delete}" icon="ui-icon-trash" title="#{bundle.Delete}" >  
                                 <p:confirm header="#{bundle.Confirmation}" message="#{bundle.Delete_Confirm_Message}" icon="ui-icon-alert" />  
                                 <f:setPropertyActionListener value="#{item}" target="#{paymentController.selectedT}" />  
@@ -1273,7 +1276,7 @@
                         </p:column> 
 
                         <p:column id="paymentTransactionIdColumn" sortBy="paymentTransactionId" filterBy="paymentTransactionId"   
-                                  headerText="#{bundle.ID}" filterMatchMode="contains">  
+                                  headerText="#{bundle.ID}" filterMatchMode="contains" style="width:60px">  
                             <h:outputText value="#{item.paymentTransactionId}" />  
                         </p:column>  
 
@@ -1285,10 +1288,12 @@
 
                         <p:column id="dateColumn" sortBy="date" filterBy="date"   
                                   headerText="#{bundle.Date}"
-                                  filterMatchMode="contains">                                    
+                                  filterMatchMode="contains" style="width:70px">                                    
                             <p:cellEditor>  
                                 <f:facet name="output">  
-                                    <p:calendar locale="de" showButtonPanel="true" navigator="true" value="#{item.date}" />                                      
+                                    <h:outputText value="#{item.date}"> 
+                                        <f:convertDateTime pattern="dd.MM.yyyy" />
+                                    </h:outputText>                                      
                                 </f:facet>  
                                 <f:facet name="input">  
                                     <p:calendar locale="de" showButtonPanel="true" navigator="true" value="#{item.date}" />  
@@ -1299,7 +1304,7 @@
 
                         <p:column id="amountColumn" sortBy="amount" filterBy="amount"   
                                   headerText="#{bundle.Amount}"
-                                  filterMatchMode="contains" style="text-align:right">  
+                                  filterMatchMode="contains" style="width:80px; text-align:right">  
                             <p:cellEditor>  
                                 <f:facet name="output">  
                                     <h:outputText value="#{item.amount}" >
@@ -1319,7 +1324,7 @@
 
                         <p:column id="paymentReasonColumn" sortBy="paymentReason" filterBy="paymentReason"   
                                   headerText="#{bundle.Reason}"
-                                  filterMatchMode="contains">  
+                                  filterMatchMode="contains" style="width:150px" >  
                             <p:cellEditor>  
                                 <f:facet name="output">  
                                     <h:outputText value="#{item.paymentReason}" />  
