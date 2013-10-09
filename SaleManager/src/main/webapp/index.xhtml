@@ -107,7 +107,7 @@
                                 <h:outputLabel value="#{bundle.TotalStockOutAmount}" />  
                             </p:column>
                             <p:column  style="width:100px; text-align:right">
-                                <h:outputText value="#{contactController.businessStockOutAmount}" >
+                                <h:outputText value="#{contactController.businessStockOutAmount}" style="font-weight:bold">
                                     <f:convertNumber pattern="#,##0" />
                                 </h:outputText>
                             </p:column>
@@ -118,7 +118,7 @@
                                 <h:outputLabel value="#{bundle.TotalStockInAmount}" />  
                             </p:column>
                             <p:column  style="width:100px; text-align:right">
-                                <h:outputText value="#{contactController.businessReceiptAmount}" >
+                                <h:outputText value="#{contactController.businessStockInAmount}" style="font-weight:bold">
                                     <f:convertNumber pattern="#,##0" />
                                 </h:outputText>
                             </p:column>
@@ -129,7 +129,7 @@
                                 <h:outputLabel value="#{bundle.TotalPaymentAmount}" />
                             </p:column>
                             <p:column  style="text-align:right">
-                                <h:outputText value="#{contactController.businessPaymentAmount}" >
+                                <h:outputText value="#{contactController.businessPaymentAmount}" style="font-weight:bold">
                                     <f:convertNumber pattern="#,##0" />
                                 </h:outputText>
                             </p:column>
@@ -137,7 +137,7 @@
                                 <h:outputLabel value="#{bundle.TotalReceiptAmount}" /> 
                             </p:column>
                             <p:column  style="text-align:right">
-                                <h:outputText value="#{contactController.businessReceiptAmount}" >
+                                <h:outputText value="#{contactController.businessReceiptAmount}" style="font-weight:bold">
                                     <f:convertNumber pattern="#,##0" />
                                 </h:outputText>
                             </p:column>
@@ -180,7 +180,7 @@
 
                                     <f:facet name="header">  
                                         <p:outputPanel style="text-align:left"> 
-                                            <p:commandButton id="refreshButton" update="iBusinessTable" action="#{contactController.refreshList}" icon="ui-icon-refresh" title="#{bundle.Reresh}" />
+                                            <p:commandButton id="refreshButton" update=":businessListForm:iPGBusinessList" action="#{contactController.refreshList}" icon="ui-icon-refresh" title="#{bundle.Reresh}" />
                                             <p:spacer width="20"/>
                                             <h:outputText value="#{bundle.Search}" />
                                             <p:spacer width="5"/>
