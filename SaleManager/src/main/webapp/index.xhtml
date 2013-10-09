@@ -112,7 +112,19 @@
                                 </h:outputText>
                             </p:column>                            
                             <p:column>
-                                <p:spacer width="20"/>
+                                <h:outputLabel for="soContactMenu" value="#{bundle.ModuleContact} : " />  
+                                <p:selectOneMenu id="soContactMenu" value="#{contactController.viewT}" converter="contactConverter" 
+                                                 panelStyle="width:500px" effect="fade" var="p" style="width:160px"  
+                                                 filter="true" filterMatchMode="contains" required="true">                              
+                                    <f:selectItems value="#{contactController.listOne}" var="c" itemLabel="#{c.contactId} - #{c.name}" itemValue="#{c}"/>  
+
+                                    <p:column style="width:15px"> #{p.contactId} </p:column>
+                                    <p:column> #{p.name} </p:column>
+                                    <p:column style="width:25px"> #{p.address} </p:column>
+                                    <p:column style="width:25px"> #{p.city} </p:column>
+                                    <p:column style="width:25px"> #{p.country} </p:column>
+
+                                </p:selectOneMenu> 
                             </p:column>
                             <p:column  style="width:100px; text-align:right; font-weight:bold">
                                 <h:outputLabel value="#{bundle.TotalStockInAmount}" />  
