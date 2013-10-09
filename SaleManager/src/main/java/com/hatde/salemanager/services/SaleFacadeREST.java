@@ -7,7 +7,6 @@ package com.hatde.salemanager.services;
 
 import com.hatde.salemanager.entities.Contact;
 import com.hatde.salemanager.entities.PaymentReceived;
-import com.hatde.salemanager.entities.PaymentSent;
 import com.hatde.salemanager.entities.Sale;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -41,7 +40,20 @@ public class SaleFacadeREST extends AbstractFacade<Sale> {
     @Override
     @Consumes({"application/xml", "application/json"})
     public void create(Sale entity) {
-        super.create(entity);
+        Contact contact = entity.getContact();
+        PaymentReceived pc = (PaymentReceived) entity.getPayment();
+        if (pc.getAmount() > 0) {
+            pc.setDate(entity.getDate());
+            pc.setContact(contact);
+            contact.getListOfPaymentSent().add(pc);
+        } else {
+            entity.setPayment(null);
+        }
+
+        entity.setContact(contact);
+        contact.getListOfBuy().add(entity);
+        em.merge(contact);
+        em.persist(entity);
     }
 
     @PUT

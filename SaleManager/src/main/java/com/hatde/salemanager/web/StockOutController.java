@@ -4,7 +4,7 @@ import com.hatde.salemanager.entities.PaymentReceived;
 import com.hatde.salemanager.entities.Sale;
 import com.hatde.salemanager.entities.SaleItem;
 import com.hatde.salemanager.services.AbstractFacade;
-import com.hatde.salemanager.services.BuyFacadeREST;
+import com.hatde.salemanager.services.SaleFacadeREST;
 import java.io.Serializable;
 import java.util.Date;
 import javax.annotation.PostConstruct;
@@ -26,7 +26,7 @@ public class StockOutController extends FacadeController<Sale> implements Serial
     private SaleItem selectedSI;
 
     @EJB
-    private BuyFacadeREST bean;
+    private SaleFacadeREST bean;
 
     @Inject
     private ContactController contactControllerBean;
