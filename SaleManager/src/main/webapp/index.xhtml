@@ -98,6 +98,78 @@
                 </p:confirmDialog>  
             </h:form>
 
+            <!-- Business contact report -->            
+            <h:form id="businessContactForm" onkeypress="return event.keyCode != 13;">
+                <p:dialog id="iDlgBusinessContactList" header="#{bundle.ReportBusiness}" widgetVar="wDlgBusinessContactList" position="bottom">                    
+                    <p:ajax event="close" listener="#{stockInController.closeDialog}"/>
+                    <p:panelGrid id="iPGBusinessContactList">
+                        <p:row>
+                            <p:column  style="width:100px; text-align:right; font-weight:bold">
+                                <h:outputLabel value="#{bundle.TotalStockOutAmount}" />  
+                            </p:column>
+                            <p:column  style="width:150px; text-align:right">
+                                <h:outputText value="#{contactController.newT.saleAmount}" style="font-weight:bold; font-size: 120%">
+                                    <f:convertNumber pattern="#,##0" />
+                                </h:outputText>
+                            </p:column>                            
+                            <p:column rowspan="3" styleClass="ui-widget-header"  style="text-align:center; font-size: 200%">
+                                <h:outputLabel value="#{bundle.BalanceInHand}:" />
+                                <p:spacer width="20"/>
+                                <h:outputText value="#{contactController.newT.balance}" >
+                                    <f:convertNumber pattern="#,##0" />
+                                </h:outputText>                                    
+                            </p:column>
+                            <p:column  style="width:100px; text-align:right; font-weight:bold">
+                                <h:outputLabel value="#{bundle.TotalStockInAmount}" />  
+                            </p:column>
+                            <p:column  style="width:150px; text-align:right">
+                                <h:outputText value="#{contactController.newT.buyAmount}" style="font-weight:bold; font-size: 120%">
+                                    <f:convertNumber pattern="#,##0" />
+                                </h:outputText>
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column  style="text-align:right; font-weight:bold">
+                                <h:outputLabel value="#{bundle.TotalPaymentAmount}" />
+                            </p:column>
+                            <p:column  style="text-align:right">
+                                <h:outputText value="#{contactController.newT.paymentSentAmount}" style="font-weight:bold; font-size: 120%">
+                                    <f:convertNumber pattern="#,##0" />
+                                </h:outputText>
+                            </p:column>
+                            <p:column  style="text-align:right; font-weight:bold">
+                                <h:outputLabel value="#{bundle.TotalReceiptAmount}" /> 
+                            </p:column>
+                            <p:column  style="text-align:right">
+                                <h:outputText value="#{contactController.newT.paymentReceivedAmount}" style="font-weight:bold; font-size: 120%">
+                                    <f:convertNumber pattern="#,##0" />
+                                </h:outputText>
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column  styleClass="ui-widget-header"  style="text-align:right; font-size: 150%">
+                                <h:outputLabel value="#{bundle.Debit}" /> 
+                            </p:column>
+                            <p:column styleClass="ui-widget-header"  style="text-align:right; font-size: 150%">
+                                <h:outputText value="#{contactController.newT.debit}" >
+                                    <f:convertNumber pattern="#,##0" />
+                                </h:outputText>
+                            </p:column>
+                            <p:column  styleClass="ui-widget-header"  style="text-align:right; font-size: 150%">
+                                <h:outputLabel value="#{bundle.Credit}" /> 
+                            </p:column>
+                            <p:column  styleClass="ui-widget-header"  style="text-align:right; font-size: 150%">
+                                <h:outputText value="#{contactController.newT.credit}" >
+                                    <f:convertNumber pattern="#,##0" />
+                                </h:outputText>
+                            </p:column>
+                        </p:row>                                                
+                    </p:panelGrid> 
+                </p:dialog>
+            </h:form>
+
             <!-- Business report -->            
             <h:form id="businessListForm" onkeypress="return event.keyCode != 13;">
                 <p:dialog id="iDlgBusinessList" header="#{bundle.ReportBusiness}" widgetVar="wDlgBusinessList" position="bottom">                    
@@ -186,8 +258,8 @@
                                     <p:ajax event="cellEdit" listener="#{contactController.onCellEdit}" update=":mainForm:messages" /> 
 
                                     <p:column style="width:35px">  
-                                        <p:commandButton id="editButton" update=":createContactForm:iDlgContact" action="#{contactController.setEdit}" 
-                                                         icon="ui-icon-search" title="#{bundle.View}" oncomplete="wDlgContact.show()" >                                  
+                                        <p:commandButton id="editButton" update=":businessContactForm:iPGBusinessContactList" action="#{contactController.setEdit}" 
+                                                         icon="ui-icon-search" title="#{bundle.View}" oncomplete="wDlgBusinessContactList.show()" >                                  
                                             <f:setPropertyActionListener value="#{item}" target="#{contactController.selectedT}" />  
                                         </p:commandButton> 
                                     </p:column> 
