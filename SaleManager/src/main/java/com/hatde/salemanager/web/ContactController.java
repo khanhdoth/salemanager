@@ -17,6 +17,7 @@ import javax.inject.Named;
 @Named(value = "contactController")
 @SessionScoped
 public class ContactController extends FacadeController<Contact> implements Serializable {
+    private Contact viewT = new Contact();
 
     @EJB
     private ContactFacadeREST bean;
@@ -119,5 +120,13 @@ public class ContactController extends FacadeController<Contact> implements Seri
 
     public double getBusinessBalance() {
         return (getBusinessCredit() - getBusinessDebit());
+    }
+
+    public Contact getViewT() {
+        return viewT;
+    }
+
+    public void setViewT(Contact viewT) {
+        this.viewT = viewT;
     }
 }
