@@ -76,10 +76,13 @@
                                     update=":productListForm:iProductTable" /> 
                     </p:submenu>  
 
-                    <p:menuitem value="#{bundle.Report}" icon="ui-icon-document" 
-                                onclick="wDlgBusinessList.show()" action="#{contactController.refreshList}" 
-                                update=":businessListForm:iPGBusinessList" />  
-
+                    <p:submenu label="#{bundle.Report}">  
+                        <p:menuitem value="#{bundle.ReportContact}" icon="ui-icon-document" onclick="wDlgBusinessContactList.show()" /> 
+                        <p:menuitem value="#{bundle.ReportBusiness}" icon="ui-icon-document" 
+                                    onclick="wDlgBusinessList.show()" action="#{contactController.refreshList}" 
+                                    update=":businessListForm:iPGBusinessList" />  
+                    </p:submenu>
+                    
                     <f:facet name="options">  
                         <p:inputText style="margin-right:10px"/>  
                         <p:commandButton type="button" value="#{bundle.Logout}" icon="ui-icon-extlink" />  
@@ -100,7 +103,7 @@
 
             <!-- Business contact report -->            
             <h:form id="businessContactForm" onkeypress="return event.keyCode != 13;">
-                <p:dialog id="iDlgBusinessContactList" header="#{bundle.ReportBusiness}" widgetVar="wDlgBusinessContactList" position="bottom">                                        
+                <p:dialog id="iDlgBusinessContactList" header="#{bundle.ReportContact}" widgetVar="wDlgBusinessContactList" position="bottom">                                        
                     <p:panelGrid id="iPGBusinessContactList">
                         <p:row>
                             <p:column  style="width:100px; text-align:right; font-weight:bold">
@@ -118,7 +121,7 @@
                                                  filter="true" filterMatchMode="contains" required="true">                              
                                     <f:selectItems value="#{contactController.listOne}" var="c" itemLabel="#{c.contactId} - #{c.name}" itemValue="#{c}"/>  
                                     <p:ajax update="iPGBusinessContactList"/>
-                                    
+
                                     <p:column style="width:15px"> #{p.contactId} </p:column>
                                     <p:column> #{p.name} </p:column>
                                     <p:column style="width:25px"> #{p.address} </p:column>
