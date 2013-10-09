@@ -5,7 +5,8 @@
        xmlns:p="http://primefaces.org/ui"
        xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
        xmlns:f="http://xmlns.jcp.org/jsf/core"
-       xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+       xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+       xmlns:pe="http://primefaces.org/ui/extensions">
 
     <ui:composition>
 
@@ -364,6 +365,20 @@
 
                         </p:column> 
                     </p:dataTable>  
+
+                    <p:panel header="Export Data">  
+                        <p:commandLink id="pdf" ajax="false">  
+                            <p:graphicImage value="/images/pdf.png"/>  
+                            <pe:exporter type="pdf" target="iProductTable" fileName="products"/>
+                        </p:commandLink> 
+
+                        <p:spacer height="20"/>  
+
+                        <p:commandLink id="xls" ajax="false">  
+                            <p:graphicImage value="/images/excel.png"/>                              
+                            <pe:exporter type="xlsx" target="iProductTable" fileName="products"/>  
+                        </p:commandLink>                      
+                    </p:panel>  
                 </p:dialog>  
             </h:form>
 
@@ -637,7 +652,7 @@
 
                         <p:ajax event="cellEdit" listener="#{stockInController.onCellEdit}" update=":mainForm:messages" /> 
 
-                        <p:column style="width:52px; text-align:right" >  
+                        <p:column style="width:52px; text-align:right" exportable="false">  
                             <p:commandButton id="deleteButton" update="iStockInTable, :mainForm:messages" action="#{stockInController.delete}" icon="ui-icon-trash" title="#{bundle.Delete}" >  
                                 <p:confirm header="#{bundle.Confirmation}" message="#{bundle.Delete_Confirm_Message}" icon="ui-icon-alert" />  
                                 <f:setPropertyActionListener value="#{item}" target="#{stockInController.selectedT}" />  
@@ -689,7 +704,18 @@
                                 <f:convertNumber pattern="#,##0" />
                             </h:outputText> 
                         </p:column>  
-                    </p:dataTable>  
+                    </p:dataTable>   
+
+                    <p:panel header="Export Data">  
+                        <h:commandLink>  
+                            <p:graphicImage value="/images/excel.png" />  
+                            <p:dataExporter type="xls" target="iStockInTable" fileName="SaleList"/>  
+                        </h:commandLink>  
+                        <h:commandLink>  
+                            <p:graphicImage value="/images/pdf.png" />  
+                            <p:dataExporter type="pdf" target="iStockInTable" fileName="SaleList"/>  
+                        </h:commandLink>  
+                    </p:panel>  
                 </p:dialog>  
             </h:form>            
 

@@ -41,7 +41,7 @@ public class ProductController extends FacadeController<Product> implements Seri
     protected BundleBean getBundleBean() {
         return bundleBean;
     }
-    
+
     @Override
     public String getDialogTitle() {
         return dialogMode == DialogMode.CREATE
@@ -49,4 +49,5 @@ public class ProductController extends FacadeController<Product> implements Seri
                 : bundleBean.getBundle().getString("Product_EditProduct");
 
     }
+
 }

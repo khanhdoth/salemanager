@@ -43,7 +43,12 @@
             <groupId>org.primefaces</groupId>  
             <artifactId>primefaces</artifactId>  
             <version>4.0</version>  
-        </dependency>         
+        </dependency>  
+        <dependency>
+            <groupId>org.primefaces.extensions</groupId>
+            <artifactId>primefaces-extensions</artifactId>
+            <version>1.0.0.RC1</version>
+        </dependency>                   
         <dependency>   
             <groupId>commons-fileupload</groupId>
             <artifactId>commons-fileupload</artifactId>     
@@ -57,6 +62,21 @@
             <systemPath>
                 C:\glassfish4\glassfish\lib\embedded\glassfish-embedded-static-shell.jar
             </systemPath>
+        </dependency>
+        <dependency>
+            <groupId>com.lowagie</groupId>
+            <artifactId>itext</artifactId>
+            <version>4.2.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>3.10-beta2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>3.10-beta2</version>
         </dependency>
     </dependencies>
 
