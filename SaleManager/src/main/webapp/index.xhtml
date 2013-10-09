@@ -103,67 +103,67 @@
                 <p:dialog id="iDlgBusinessList" header="#{bundle.ReportBusiness}" widgetVar="wDlgBusinessList" position="bottom">                    
                     <p:panelGrid id="iPGBusinessList">
                         <p:row>
-                            <p:column  style="width:100px; text-align:right">
+                            <p:column  style="width:100px; text-align:right; font-weight:bold">
                                 <h:outputLabel value="#{bundle.TotalStockOutAmount}" />  
                             </p:column>
-                            <p:column  style="width:100px; text-align:right">
-                                <h:outputText value="#{contactController.businessStockOutAmount}" style="font-weight:bold">
+                            <p:column  style="width:150px; text-align:right">
+                                <h:outputText value="#{contactController.businessStockOutAmount}" style="font-weight:bold; font-size: 120%">
                                     <f:convertNumber pattern="#,##0" />
                                 </h:outputText>
                             </p:column>
                             <p:column rowspan="3">
                                 <p:spacer width=""/>
                             </p:column>
-                            <p:column  style="width:100px; text-align:right">
+                            <p:column  style="width:100px; text-align:right; font-weight:bold">
                                 <h:outputLabel value="#{bundle.TotalStockInAmount}" />  
                             </p:column>
-                            <p:column  style="width:100px; text-align:right">
-                                <h:outputText value="#{contactController.businessStockInAmount}" style="font-weight:bold">
+                            <p:column  style="width:150px; text-align:right">
+                                <h:outputText value="#{contactController.businessStockInAmount}" style="font-weight:bold; font-size: 120%">
                                     <f:convertNumber pattern="#,##0" />
                                 </h:outputText>
                             </p:column>
                         </p:row>
 
                         <p:row>
-                            <p:column  style="text-align:right">
+                            <p:column  style="text-align:right; font-weight:bold">
                                 <h:outputLabel value="#{bundle.TotalPaymentAmount}" />
                             </p:column>
                             <p:column  style="text-align:right">
-                                <h:outputText value="#{contactController.businessPaymentAmount}" style="font-weight:bold">
+                                <h:outputText value="#{contactController.businessPaymentAmount}" style="font-weight:bold; font-size: 120%">
                                     <f:convertNumber pattern="#,##0" />
                                 </h:outputText>
                             </p:column>
-                            <p:column  style="text-align:right">
+                            <p:column  style="text-align:right; font-weight:bold">
                                 <h:outputLabel value="#{bundle.TotalReceiptAmount}" /> 
                             </p:column>
                             <p:column  style="text-align:right">
-                                <h:outputText value="#{contactController.businessReceiptAmount}" style="font-weight:bold">
+                                <h:outputText value="#{contactController.businessReceiptAmount}" style="font-weight:bold; font-size: 120%">
                                     <f:convertNumber pattern="#,##0" />
                                 </h:outputText>
                             </p:column>
                         </p:row>
 
                         <p:row>
-                            <p:column  styleClass="ui-widget-header"  style="text-align:right">
+                            <p:column  styleClass="ui-widget-header"  style="text-align:right; font-size: 150%">
                                 <h:outputLabel value="#{bundle.Debit}" /> 
                             </p:column>
-                            <p:column styleClass="ui-widget-header"  style="text-align:right">
+                            <p:column styleClass="ui-widget-header"  style="text-align:right; font-size: 150%">
                                 <h:outputText value="#{contactController.businessDebit}" >
                                     <f:convertNumber pattern="#,##0" />
                                 </h:outputText>
                             </p:column>
-                            <p:column  styleClass="ui-widget-header"  style="text-align:right">
+                            <p:column  styleClass="ui-widget-header"  style="text-align:right; font-size: 150%">
                                 <h:outputLabel value="#{bundle.Credit}" /> 
                             </p:column>
-                            <p:column  styleClass="ui-widget-header"  style="text-align:right">
+                            <p:column  styleClass="ui-widget-header"  style="text-align:right; font-size: 150%">
                                 <h:outputText value="#{contactController.businessCredit}" >
                                     <f:convertNumber pattern="#,##0" />
                                 </h:outputText>
                             </p:column>
                         </p:row>
                         <p:row>
-                            <p:column colspan="5" styleClass="ui-widget-header"  style="text-align:center">
-                                <h:outputLabel value="#{bundle.BalanceInHand}" />
+                            <p:column colspan="5" styleClass="ui-widget-header"  style="text-align:center; font-size: 200%">
+                                <h:outputLabel value="#{bundle.BalanceInHand}:" />
                                 <p:spacer width="20"/>
                                 <h:outputText value="#{contactController.businessBalance}" >
                                     <f:convertNumber pattern="#,##0" />
@@ -221,7 +221,7 @@
                                             <h:outputText value="#{bundle.TotalPaymentAmount}" title="#{bundle.TotalPaymentAmount} #{bundle.forCustomer}" />
                                         </f:facet>
                                         <h:outputText value="#{item.paymentSentAmount}" >
-                                            <f:convertNumber pattern="-#,##0" />
+                                            <f:convertNumber pattern="#,##0" />
                                         </h:outputText> 
                                     </p:column>
 
@@ -230,7 +230,7 @@
                                             <h:outputText value="#{bundle.TotalStockOutAmount}" title="#{bundle.TotalStockOutAmount} #{bundle.forCustomer}" />
                                         </f:facet>
                                         <h:outputText value="#{item.saleAmount}" >
-                                            <f:convertNumber pattern="-#,##0" />
+                                            <f:convertNumber pattern="#,##0" />
                                         </h:outputText> 
                                     </p:column>
 
