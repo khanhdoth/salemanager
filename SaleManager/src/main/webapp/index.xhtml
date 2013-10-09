@@ -113,11 +113,12 @@
                             </p:column>                            
                             <p:column>
                                 <h:outputLabel for="soContactMenu" value="#{bundle.ModuleContact} : " />  
-                                <p:selectOneMenu id="soContactMenu" value="#{contactController.viewT}" converter="contactConverter" 
+                                <p:selectOneMenu id="soContactMenu" value="#{contactController.viewT}" converter="contactConverter"                                                  
                                                  panelStyle="width:500px" effect="fade" var="p" style="width:160px"  
                                                  filter="true" filterMatchMode="contains" required="true">                              
                                     <f:selectItems value="#{contactController.listOne}" var="c" itemLabel="#{c.contactId} - #{c.name}" itemValue="#{c}"/>  
-
+                                    <p:ajax update="iPGBusinessContactList"/>
+                                    
                                     <p:column style="width:15px"> #{p.contactId} </p:column>
                                     <p:column> #{p.name} </p:column>
                                     <p:column style="width:25px"> #{p.address} </p:column>
