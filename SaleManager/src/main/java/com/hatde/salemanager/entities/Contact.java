@@ -212,14 +212,14 @@ public class Contact implements java.io.Serializable {
     }
 
     public double getDebit() {
-        return (getBuyAmount() + getPaymentReceivedAmount());
+        return (getSaleAmount() + getPaymentSentAmount());        
     }
 
     public double getCredit() {
-        return (getSaleAmount() + getPaymentSentAmount());
+        return (getBuyAmount() + getPaymentReceivedAmount());
     }
 
-    public double gBalance() {
+    public double getBalance() {
         return (getCredit() - getDebit());
     }
 

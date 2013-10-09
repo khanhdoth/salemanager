@@ -41,12 +41,83 @@ public class ContactController extends FacadeController<Contact> implements Seri
     protected BundleBean getBundleBean() {
         return bundleBean;
     }
-    
+
     @Override
     public String getDialogTitle() {
         return dialogMode == DialogMode.CREATE
                 ? bundleBean.getBundle().getString("Contact_NewContact")
                 : bundleBean.getBundle().getString("Contact_EditContact");
 
+    }
+
+    public double getBusinessStockInAmount() {
+        if (list == null) {
+            return 0;
+        }
+        double amount = 0;
+        for (Contact c : getList()) {
+            amount += c.getSaleAmount();
+        }
+        return amount;
+    }
+
+    public double getBusinessStockOutAmount() {
+        if (list == null) {
+            return 0;
+        }
+        double amount = 0;
+
+        for (Contact c : getList()) {
+            amount += c.getBuyAmount();
+        }
+        return amount;
+    }
+
+    public double getBusinessPaymentAmount() {
+        if (list == null) {
+            return 0;
+        }
+        double amount = 0;
+        for (Contact c : getList()) {
+            amount += c.getPaymentReceivedAmount();
+        }
+        return amount;
+    }
+
+    public double getBusinessReceiptAmount() {
+        if (list == null) {
+            return 0;
+        }
+        double amount = 0;
+        for (Contact c : getList()) {
+            amount += c.getPaymentSentAmount();
+        }
+        return amount;
+    }
+
+    public double getBusinessDebit() {
+        if (list == null) {
+            return 0;
+        }
+        double amount = 0;
+        for (Contact c : getList()) {
+            amount += c.getCredit();
+        }
+        return amount;
+    }
+
+    public double getBusinessCredit() {
+        if (list == null) {
+            return 0;
+        }
+        double amount = 0;
+        for (Contact c : getList()) {
+            amount += c.getDebit();
+        }
+        return amount;
+    }
+
+    public double getBusinessBalance() {
+        return (getBusinessCredit() - getBusinessDebit());
     }
 }
