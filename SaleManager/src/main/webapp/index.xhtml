@@ -110,9 +110,13 @@
                                 <h:outputText value="#{contactController.businessStockOutAmount}" style="font-weight:bold; font-size: 120%">
                                     <f:convertNumber pattern="#,##0" />
                                 </h:outputText>
-                            </p:column>
-                            <p:column rowspan="3">
-                                <p:spacer width=""/>
+                            </p:column>                            
+                            <p:column rowspan="3" styleClass="ui-widget-header"  style="text-align:center; font-size: 200%">
+                                <h:outputLabel value="#{bundle.BalanceInHand}:" />
+                                <p:spacer width="20"/>
+                                <h:outputText value="#{contactController.businessBalance}" >
+                                    <f:convertNumber pattern="#,##0" />
+                                </h:outputText>                                    
                             </p:column>
                             <p:column  style="width:100px; text-align:right; font-weight:bold">
                                 <h:outputLabel value="#{bundle.TotalStockInAmount}" />  
@@ -160,16 +164,7 @@
                                     <f:convertNumber pattern="#,##0" />
                                 </h:outputText>
                             </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column colspan="5" styleClass="ui-widget-header"  style="text-align:center; font-size: 200%">
-                                <h:outputLabel value="#{bundle.BalanceInHand}:" />
-                                <p:spacer width="20"/>
-                                <h:outputText value="#{contactController.businessBalance}" >
-                                    <f:convertNumber pattern="#,##0" />
-                                </h:outputText>                                    
-                            </p:column>
-                        </p:row>
+                        </p:row>                        
                         <p:row>
                             <p:column colspan="5" styleClass="ui-widget-header">
                                 <p:dataTable id="iBusinessTable" var="item" value="#{contactController.list}"
