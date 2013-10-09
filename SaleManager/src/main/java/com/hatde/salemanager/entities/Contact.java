@@ -177,38 +177,6 @@ public class Contact implements java.io.Serializable {
         this.listOfSale = listOfSale;
     }
 
-    public String printInfo() {
-        String myInfo = "Contact info------------------------";
-        myInfo += name + " : " + address + " " + district + " " + postcode + " " + city + " " + country + "\n\n";
-
-//        try {
-//            myInfo += "This contact has " + listOfSale.size() + " sale records: \n";
-//            for (Iterator iterator = listOfSale.iterator(); iterator.hasNext();) {
-//                Buy buy = (Buy) iterator.next();
-//                myInfo += buy.printInfo();
-//            }
-//
-//            myInfo += "This contact has " + listOfBuy.size() + " buy records: \n";
-//            for (Sale sale : listOfBuy) {
-//                myInfo += sale.printInfo();
-//            }
-//
-//            myInfo += "This contact received " + listOfPaymentReceived.size() + " payments: \n";
-//            for (PaymentSent paymentSent : listOfPaymentReceived) {
-//                myInfo += paymentSent.printInfo();
-//            }
-//
-//            myInfo += "This contact sent " + listOfPaymentSent.size() + " payments: \n";
-//            for (PaymentReceived paymentReceived : listOfPaymentSent) {
-//                myInfo += paymentReceived.printInfo();
-//            }
-//        } catch (HibernateException e) {
-//            e.printStackTrace();
-//            throw e;
-//        }
-        return myInfo;
-    }
-
     public double getProductTransactionsAmount(Collection list) {
         double amount = 0;
         for (Iterator iterator = list.iterator(); iterator.hasNext();) {

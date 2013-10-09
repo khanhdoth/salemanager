@@ -84,16 +84,6 @@ public class PaymentTransaction implements java.io.Serializable {
         this.contact = contact;
     }
 
-    public String printInfo() {
-        String myInfo = "\nPaymentSent information: \n";
-        myInfo += "------------------------------------------------\n";
-        myInfo += "paymentTransactionId: " + paymentTransactionId + "\n";
-        myInfo += date.toString() + "    Amount:" + amount + "\n";
-        myInfo += paymentReason + "\n\n";
-
-        return myInfo;
-    }
-    
     @Override
     public int hashCode() {
         int hash = 0;

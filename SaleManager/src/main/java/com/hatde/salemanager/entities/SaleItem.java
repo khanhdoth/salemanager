@@ -71,12 +71,6 @@ public class SaleItem implements java.io.Serializable {
         this.discount = discount;
     }
 
-    public String printInfo() {
-        String myInfo = "";
-        myInfo += "     " + product.getName() + "   " + quantity + " " + product.getUnit() + "\n";
-        return myInfo;
-    }
-
     public double getAmount() {
         return quantity * price * (1 - discount/100);
     }

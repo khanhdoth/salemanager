@@ -49,14 +49,4 @@ public class Store implements java.io.Serializable {
     public void setAddress(String address) {
         this.address = address;
     }
-
-    public String printInfo() {
-        String myInfo = "Store information: \n";
-        myInfo += "------------------------------------------------\n";
-        myInfo += "storeId:" + storeId + "\n";
-        myInfo += name + "\n";
-        myInfo += address + "\n\n";
-
-        return myInfo;
-    }
 }

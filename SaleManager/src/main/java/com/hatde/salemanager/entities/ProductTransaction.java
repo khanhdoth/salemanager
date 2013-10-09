@@ -117,22 +117,6 @@ public class ProductTransaction implements java.io.Serializable {
         this.contact = contact;
     }
 
-    public String printInfo() {
-        String myInfo = "\nSale record information: \n";
-        myInfo += "------------------------------------------------\n";
-        myInfo += "saleId: " + productTransactionId + "\n";
-        myInfo += date.toString() + "\n";
-        myInfo += "Discount: " + (int) (discount * 100) + "%   VAT:" + (int) (VAT * 100) + "%   \n\n";
-        for (SaleItem saleItem : listOfSaleItem) {
-            myInfo += saleItem.printInfo();
-        }
-
-        if (payment != null) {
-            myInfo += "Payment: " + payment.getAmount() + "\n\n";
-        }
-        return myInfo;
-    }
-
     public double getSubTotal() {
         double subTotal = 0;
         for (SaleItem saleItem : listOfSaleItem) {
@@ -158,7 +142,7 @@ public class ProductTransaction implements java.io.Serializable {
         for (SaleItem saleItem : listOfSaleItem) {
             amount += saleItem.getAmount();
         }
-        amount = amount * (1 - discount/100) * (1 - VAT/100);
+        amount = amount * (1 - discount/100) * (1 + VAT/100);
         return amount;
     }
 
