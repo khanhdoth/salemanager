@@ -3,9 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.hatde.salemanager.services;
 
+import com.hatde.salemanager.entities.Contact;
+import com.hatde.salemanager.entities.PaymentReceived;
+import com.hatde.salemanager.entities.PaymentSent;
 import com.hatde.salemanager.entities.Sale;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -27,6 +29,7 @@ import javax.ws.rs.Produces;
 @Stateless
 @Path("sale")
 public class SaleFacadeREST extends AbstractFacade<Sale> {
+
     @PersistenceContext(unitName = "com.hatde_SaleManager")
     private EntityManager em;
 
@@ -48,10 +51,34 @@ public class SaleFacadeREST extends AbstractFacade<Sale> {
         super.edit(entity);
     }
 
+    @Override
+    public void edit(Sale entity) {
+        em.merge(entity.getPayment());
+        em.merge(entity);
+    }
+
     @DELETE
     @Path("{id}")
     public void remove(@PathParam("id") Integer id) {
         super.remove(super.find(id));
+    }
+
+    @Override
+    public void remove(Sale entity) {
+        Contact contact = entity.getContact();
+        PaymentReceived pc = (PaymentReceived) entity.getPayment();
+
+        if (pc != null) {
+            contact.getListOfPaymentSent().remove(pc);
+        }
+
+        contact.getListOfBuy().remove(entity);
+        em.merge(contact);
+        em.remove(em.merge(entity));
+
+        if (pc != null) {
+            em.remove(em.merge(pc));
+        }
     }
 
     @GET
@@ -86,5 +113,5 @@ public class SaleFacadeREST extends AbstractFacade<Sale> {
     protected EntityManager getEntityManager() {
         return em;
     }
-    
+
 }

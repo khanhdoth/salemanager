@@ -1,7 +1,7 @@
 package com.hatde.salemanager.web;
 
-import com.hatde.salemanager.entities.Buy;
-import com.hatde.salemanager.entities.PaymentSent;
+import com.hatde.salemanager.entities.PaymentReceived;
+import com.hatde.salemanager.entities.Sale;
 import com.hatde.salemanager.entities.SaleItem;
 import com.hatde.salemanager.services.AbstractFacade;
 import com.hatde.salemanager.services.BuyFacadeREST;
@@ -19,9 +19,9 @@ import org.primefaces.event.CellEditEvent;
  *
  * @author Khanh
  */
-@Named(value = "stockInController")
+@Named(value = "stockOutController")
 @SessionScoped
-public class StockInController extends FacadeController<Buy> implements Serializable {
+public class StockOutController extends FacadeController<Sale> implements Serializable {
 
     private SaleItem selectedSI;
 
@@ -39,10 +39,10 @@ public class StockInController extends FacadeController<Buy> implements Serializ
 
     @PostConstruct
     public void init() {
-        super.init(Buy.class);
+        super.init(Sale.class);
     }
 
-    public StockInController() {
+    public StockOutController() {
     }
 
     @Override
@@ -59,14 +59,14 @@ public class StockInController extends FacadeController<Buy> implements Serializ
     public void initNewT() {
         super.initNewT();
         newT.setDate(new Date());
-        newT.setPayment(new PaymentSent());
+        newT.setPayment(new PaymentReceived());
         for (int i = 0; i < 3; i++) {
             addSaleItem();
         }
     }
 
     public void onSICellEdit(CellEditEvent event) {
-        System.out.println("Stock-in onSICellEdit");
+        System.out.println("Stock-out onSICellEdit");
         Object oldValue = event.getOldValue();
         Object newValue = event.getNewValue();
         SaleItem c = (SaleItem) ((DataTable) event.getSource()).getRowData();
@@ -99,9 +99,9 @@ public class StockInController extends FacadeController<Buy> implements Serializ
 
     @Override
     public String getDialogTitle() {
-        return dialogMode == DialogMode.CREATE
-                ? bundleBean.getBundle().getString("StockIn_NewStockIn")
-                : bundleBean.getBundle().getString("StockIn_EditStockIn");
+        return dialogMode == FacadeController.DialogMode.CREATE
+                ? bundleBean.getBundle().getString("StockOut_NewStockOut")
+                : bundleBean.getBundle().getString("StockOut_EditStockOut");
 
     }
 }
