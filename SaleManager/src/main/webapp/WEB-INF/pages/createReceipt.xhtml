@@ -1,0 +1,61 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"   
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:form id="createReceiptForm" onkeypress="return event.keyCode != 13;">
+                <p:dialog id="iDlgReceipt" header="#{receiptController.dialogTitle}" widgetVar="wDlgReceipt"  modal="true" >                  
+                    <p:ajax event="close" update=":createReceiptForm:iDlgReceipt" listener="#{receiptController.closeDialog}"/>
+
+                    <p:messages id="msgs" autoUpdate="true"/>
+                    <h:panelGrid columns="3" cellpadding="5">  
+
+                        <h:outputLabel for="soMenu" value="#{bundle.ModuleContact} *" />                                                 
+                        <p:selectOneMenu id="soMenu" value="#{receiptController.newT.contact}" converter="contactConverter" 
+                                         panelStyle="width:500px" effect="fade" var="p" style="width:160px"  
+                                         filter="true" filterMatchMode="contains" required="true">                              
+                            <f:selectItems value="#{contactController.list}" var="c" itemLabel="#{c.contactId} - #{c.name}" itemValue="#{c}"/>  
+
+                            <p:column> #{p.contactId} </p:column>
+                            <p:column> #{p.name} </p:column>
+                            <p:column> #{p.address} </p:column>
+                            <p:column> #{p.city} </p:column>
+                            <p:column> #{p.country} </p:column>
+
+                        </p:selectOneMenu>
+                        <p:message for="soMenu" display="icon"/>
+
+                        <h:outputLabel for="cDate" value="#{bundle.Date} *" />  
+                        <p:calendar id="cDate" locale="de" showButtonPanel="true" navigator="true" 
+                                    value="#{receiptController.newT.date}" required="true" >
+
+
+                        </p:calendar>    
+                        <p:message for="cDate" display="icon"/>
+
+                        <h:outputLabel for="iAmount" value="#{bundle.Amount} *" />  
+                        <p:inputText id="iAmount" value="#{receiptController.newT.amount}" 
+                                     required="true" immediate="true" >  
+                            <f:convertNumber pattern="#,##0" maxIntegerDigits="12" />
+                            <f:validateDoubleRange minimum="1" />
+                            <p:ajax event="blur" update="iAmount"/> 
+                        </p:inputText>
+                        <p:message for="iAmount" display="icon"/>
+
+                        <h:outputLabel for="iReason" value="#{bundle.Reason}" />  
+                        <p:inputText id="iReason" value="#{receiptController.newT.paymentReason}" />  
+
+                        <p:spacer width="5"/>
+                        <p:commandButton widgetVar="saveReceiptButton" value="#{bundle.Save}" 
+                                         onclick="saveReceiptButton.disable()"
+                                         actionListener="#{receiptController.createOrEdit}" 
+                                         update="iDlgReceipt, :receiptListForm:iReceiptTable, :mainForm:messages" 
+                                         oncomplete="saveReceiptButton.enable(); wDlgReceipt.hide()" 
+                                         validateClient="true" style="margin-right:10px" />  
+                    </h:panelGrid>     
+                </p:dialog>                
+            </h:form>
+    
+</ui:composition>

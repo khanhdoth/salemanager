@@ -1,0 +1,94 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"   
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:form id="saleListForm" onkeypress="return event.keyCode != 13;">
+        <p:dialog id="iDlgSaleList" header="#{bundle.StockOut_StockOutList}" widgetVar="wDlgSaleList" position="bottom" >
+            <p:dataTable id="iStockOutTable" var="item" value="#{stockOutController.list}" 
+                         widgetVar="wStockOutTable" rowKey="#{item.productTransactionId}" scrollable="true" scrollHeight="400"
+                         emptyMessage="No stockIn found with given criteria" 
+                         filteredValue="#{stockOutController.filterList}"                                 
+                         resizableColumns="true" liveResize="true" >   
+
+                <f:facet name="header">  
+                    <p:outputPanel style="text-align:left"> 
+                        <p:commandButton id="refreshButton" update="iStockOutTable" action="#{stockOutController.refreshList}" icon="ui-icon-refresh" title="#{bundle.Reresh}" />  
+                        <p:spacer width="20"/>
+                        <h:outputText value="#{bundle.Search}" />
+                        <p:spacer width="5"/>
+                        <p:inputText id="globalFilter" onkeyup="wStockOutTable.filter()" style="width:150px" />                            
+                    </p:outputPanel>
+                </f:facet>
+
+                <p:ajax event="cellEdit" listener="#{stockOutController.onCellEdit}" update=":mainForm:messages" /> 
+
+                <p:column style="width:52px" exportable="false">  
+                    <p:commandButton id="deleteButton" update="iStockOutTable, :mainForm:messages" action="#{stockOutController.delete}" icon="ui-icon-trash" title="#{bundle.Delete}" >  
+                        <p:confirm header="#{bundle.Confirmation}" message="#{bundle.Delete_Confirm_Message}" icon="ui-icon-alert" />  
+                        <f:setPropertyActionListener value="#{item}" target="#{stockOutController.selectedT}" />  
+                    </p:commandButton> 
+                    <p:commandButton id="editButton" update=":createSaleForm:iDlgSale" action="#{stockOutController.setEdit}" 
+                                     icon="ui-icon-search" title="#{bundle.Edit}" oncomplete="wDlgSale.show()" >                                  
+                        <f:setPropertyActionListener value="#{item}" target="#{stockOutController.selectedT}" />  
+                    </p:commandButton> 
+                </p:column> 
+
+                <p:column id="productTransactionIdColumn" sortBy="productTransactionId" filterBy="productTransactionId"   
+                          headerText="#{bundle.ID}" filterMatchMode="contains" style="width:60px">  
+                    <h:outputText value="#{item.productTransactionId}" />  
+                </p:column>  
+
+                <p:column id="contactColumn" sortBy="contact.name" filterBy="contact.name"   
+                          headerText="#{bundle.ModuleContact}"
+                          filterMatchMode="contains">                              
+                    <h:outputText value="#{item.contact.contactId} - #{item.contact.name}" />  
+                </p:column> 
+
+                <p:column id="dateColumn" sortBy="date" filterBy="date"   
+                          headerText="#{bundle.Date}" filterMatchMode="contains" style="width:70px">                                    
+                    <h:outputText value="#{item.date}"> 
+                        <f:convertDateTime pattern="dd.MM.yyyy" />
+                    </h:outputText>     
+                </p:column>  
+
+                <p:column id="amountColumn" sortBy="amount" filterBy="amount"   
+                          headerText="#{bundle.Total}"
+                          filterMatchMode="contains" style="width:80px; text-align:right">  
+                    <h:outputText value="#{item.amount}" >
+                        <f:convertNumber pattern="#,##0" />
+                    </h:outputText> 
+                </p:column>  
+
+                <p:column id="paymentColumn" sortBy="payment.amount" filterBy="payment.amount"   
+                          headerText="#{bundle.Payment}"
+                          filterMatchMode="contains" style="width:80px; text-align:right">  
+                    <h:outputText value="#{item.payment.amount}" >
+                        <f:convertNumber pattern="#,##0" />
+                    </h:outputText> 
+                </p:column>  
+
+                <p:column id="balanceDueColumn" sortBy="amountAfterPayment" filterBy="amountAfterPayment"   
+                          headerText="#{bundle.BalanceDue}"
+                          filterMatchMode="contains" style="width:80px; text-align:right">  
+                    <h:outputText value="#{item.amountAfterPayment}" >
+                        <f:convertNumber pattern="#,##0" />
+                    </h:outputText> 
+                </p:column>  
+            </p:dataTable>   
+
+            <p:panel header="Export Data">  
+                <h:commandLink>  
+                    <p:graphicImage value="/images/excel.png" />  
+                    <p:dataExporter type="xls" target="iStockOutTable" fileName="StockOutList"/>  
+                </h:commandLink>  
+                <h:commandLink>  
+                    <p:graphicImage value="/images/pdf.png" />  
+                    <p:dataExporter type="pdf" target="iStockOutTable" fileName="StockOutList"/>  
+                </h:commandLink>  
+            </p:panel>  
+        </p:dialog>  
+    </h:form>            
+</ui:composition>

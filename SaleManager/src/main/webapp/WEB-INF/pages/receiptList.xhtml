@@ -1,0 +1,102 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"   
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:form id="receiptListForm" onkeypress="return event.keyCode != 13;">
+        <p:dialog id="iDlgReceiptList" header="#{bundle.Receipt_ReceiptList}" widgetVar="wDlgReceiptList" position="bottom" >
+            <p:dataTable id="iReceiptTable" var="item" value="#{receiptController.list}" editable="true"
+                         widgetVar="wReceiptTable" rowKey="#{item.paymentTransactionId}" scrollable="true" scrollHeight="400"
+                         emptyMessage="No receipt found with given criteria" editMode="cell" 
+                         filteredValue="#{receiptController.filterList}"                                 
+                         resizableColumns="true" liveResize="true" >   
+
+                <f:facet name="header">  
+                    <p:outputPanel style="text-align:left"> 
+                        <p:commandButton id="refreshButton" update="iReceiptTable" action="#{receiptController.refreshList}" icon="ui-icon-refresh" title="#{bundle.Reresh}" />  
+                        <p:spacer width="20"/>
+                        <h:outputText value="#{bundle.Search}" />
+                        <p:spacer width="5"/>
+                        <p:inputText id="globalFilter" onkeyup="wReceiptTable.filter()" style="width:150px" />                            
+                    </p:outputPanel>
+                </f:facet>
+
+                <p:ajax event="cellEdit" listener="#{receiptController.onCellEdit}" update=":mainForm:messages" /> 
+
+                <p:column style="width:52px">  
+                    <p:commandButton id="deleteButton" update="iReceiptTable, :mainForm:messages" action="#{receiptController.delete}" icon="ui-icon-trash" title="#{bundle.Delete}" >  
+                        <p:confirm header="#{bundle.Confirmation}" message="#{bundle.Delete_Confirm_Message}" icon="ui-icon-alert" />  
+                        <f:setPropertyActionListener value="#{item}" target="#{receiptController.selectedT}" />  
+                    </p:commandButton>
+                    <p:commandButton id="editButton" update=":createReceiptForm:iDlgReceipt" action="#{receiptController.setEdit}" 
+                                     icon="ui-icon-search" title="#{bundle.Edit}" oncomplete="wDlgReceipt.show()" >                                  
+                        <f:setPropertyActionListener value="#{item}" target="#{receiptController.selectedT}" />  
+                    </p:commandButton> 
+                </p:column> 
+
+                <p:column id="paymentTransactionIdColumn" sortBy="paymentTransactionId" filterBy="paymentTransactionId"   
+                          headerText="#{bundle.ID}" filterMatchMode="contains" style="width:60px">  
+                    <h:outputText value="#{item.paymentTransactionId}" />  
+                </p:column>  
+
+                <p:column id="contactColumn" sortBy="contact.name" filterBy="contact.name"   
+                          headerText="#{bundle.ModuleContact}"
+                          filterMatchMode="contains">                              
+                    <h:outputText value="#{item.contact.contactId} - #{item.contact.name}" />  
+                </p:column> 
+
+                <p:column id="dateColumn" sortBy="date" filterBy="date"   
+                          headerText="#{bundle.Date}"
+                          filterMatchMode="contains" style="width:70px">                                    
+                    <p:cellEditor>  
+                        <f:facet name="output">  
+                            <h:outputText value="#{item.date}"> 
+                                <f:convertDateTime pattern="dd.MM.yyyy" />
+                            </h:outputText>                                     
+                        </f:facet>  
+                        <f:facet name="input">  
+                            <p:calendar locale="de" showButtonPanel="true" navigator="true" value="#{item.date}" />  
+                        </f:facet>  
+                    </p:cellEditor>                             
+                </p:column>  
+
+                <p:column id="amountColumn" sortBy="amount" filterBy="amount"   
+                          headerText="#{bundle.Amount}"
+                          filterMatchMode="contains" style="width:80px; text-align:right">  
+                    <p:cellEditor>  
+                        <f:facet name="output">  
+                            <h:outputText value="#{item.amount}" >
+                                <f:convertNumber pattern="#,##0" />
+                            </h:outputText> 
+                        </f:facet>  
+                        <f:facet name="input">                                      
+                            <p:inputText id="iAmount" value="#{item.amount}" required="true" 
+                                         immediate="true"  >  
+                                <f:convertNumber pattern="#,##0" maxIntegerDigits="12" />
+                                <f:validateDoubleRange minimum="1" />
+                                <p:ajax event="blur" update="iAmount"/> 
+                            </p:inputText>
+                        </f:facet>  
+                    </p:cellEditor>                             
+                </p:column>  
+
+                <p:column id="paymentReasonColumn" sortBy="paymentReason" filterBy="paymentReason"   
+                          headerText="#{bundle.Reason}"
+                          filterMatchMode="contains" style="width:150px" >  
+                    <p:cellEditor>  
+                        <f:facet name="output">  
+                            <h:outputText value="#{item.paymentReason}" />  
+                        </f:facet>  
+                        <f:facet name="input">  
+                            <p:inputText value="#{item.paymentReason}" />  
+                        </f:facet>  
+                    </p:cellEditor>                             
+
+                </p:column> 
+
+            </p:dataTable> 
+        </p:dialog>  
+    </h:form>            
+</ui:composition>

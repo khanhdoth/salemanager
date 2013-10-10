@@ -1,0 +1,247 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"   
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:form id="createSaleForm" onkeypress="return event.keyCode != 13;">
+        <p:dialog id="iDlgSale" header="#{stockOutController.dialogTitle}" widgetVar="wDlgSale"  modal="true" >     
+
+            <p:ajax event="close" update=":createSaleForm:iDlgSale" listener="#{stockOutController.closeDialog}"/>
+            <p:messages id="msgs" autoUpdate="true"/>
+            <p:panel>    
+                <h:panelGrid columns="5">  
+                    <h:outputLabel for="soContactMenu" value="#{bundle.ModuleContact} * :" />  
+                    <p:selectOneMenu id="soContactMenu" value="#{stockOutController.newT.contact}" converter="contactConverter" 
+                                     panelStyle="width:500px" effect="fade" var="p" style="width:160px"  
+                                     filter="true" filterMatchMode="contains" required="true">                              
+                        <f:selectItems value="#{contactController.listOne}" var="c" itemLabel="#{c.contactId} - #{c.name}" itemValue="#{c}"/>  
+
+                        <p:column style="width:15px"> #{p.contactId} </p:column>
+                        <p:column> #{p.name} </p:column>
+                        <p:column style="width:25px"> #{p.address} </p:column>
+                        <p:column style="width:25px"> #{p.city} </p:column>
+                        <p:column style="width:25px"> #{p.country} </p:column>
+
+                    </p:selectOneMenu> 
+                    <p:spacer width="30"/>
+                    <h:outputLabel for="cDate" value="#{bundle.Date} * :" />  
+                    <p:calendar id="cDate" locale="de" showButtonPanel="true" navigator="true" 
+                                value="#{stockOutController.newT.date}" required="true" >
+                    </p:calendar> 
+                </h:panelGrid>  
+            </p:panel>    
+
+            <p:panelGrid>  
+                <p:row>  
+                    <p:column colspan="4" styleClass="ui-widget-header">
+
+                        <p:dataTable id="iSIOutTable" var="item" value="#{stockOutController.newT.listOfSaleItem}" editable="true"
+                                     widgetVar="wSIOutTable" rowKey="#{item.saleItemId}" scrollable="true" scrollHeight="200"
+                                     emptyMessage="No sale item found with given criteria" editMode="cell"                                  
+                                     resizableColumns="true" liveResize="true" >   
+
+                            <f:facet name="header">  
+                                <p:outputPanel style="text-align:left"> 
+                                    <p:commandButton id="addButton" update="iSIOutTable" action="#{stockOutController.addSaleItem}" icon="ui-icon-circle-plus" title="#{bundle.AddNewItem}" /> 
+                                    <p:spacer width="10"/>                                             
+                                    <p:commandButton id="refreshButton" update="iSIOutTable,:createSaleForm:oSubTotal, :createSaleForm:oSubTotal, :createSaleForm:oAmountDiscount, :createSaleForm:oAmountVAT, 
+                                                     :createSaleForm:oTotal, :createSaleForm:oAmountAfterPayment"
+                                                     action="#{productController.refreshList}" icon="ui-icon-refresh" title="#{bundle.Reresh}" /> 
+                                </p:outputPanel>
+                            </f:facet>
+
+                            <p:ajax event="cellEdit" listener="#{stockOutController.onSICellEdit}" />                         
+
+                            <p:column style="width:25px">  
+                                <p:commandButton id="deleteButton" update="iSIOutTable, :mainForm:messages,:createSaleForm:oSubTotal, :createSaleForm:oSubTotal, :createSaleForm:oAmountDiscount, :createSaleForm:oAmountVAT, 
+                                                 :createSaleForm:oTotal, :createSaleForm:oAmountAfterPayment"
+                                                 action="#{stockOutController.deleteSI}" icon="ui-icon-trash" title="#{bundle.Delete}" >  
+                                    <p:confirm header="#{bundle.Confirmation}" message="#{bundle.Delete_Confirm_Message}" icon="ui-icon-alert" />  
+                                    <f:setPropertyActionListener value="#{item}" target="#{stockOutController.selectedSI}" />  
+                                </p:commandButton> 
+                            </p:column> 
+
+
+                            <p:column id="productColumn" headerText="#{bundle.ModuleProduct}">  
+                                <p:cellEditor>  
+                                    <f:facet name="output">  
+                                        <h:outputText value="#{item.product.name}" />
+                                    </f:facet>  
+                                    <f:facet name="input">                                      
+                                        <p:selectOneMenu id="soProductMenu" value="#{item.product}" converter="productConverter" 
+                                                         panelStyle="width:500px" effect="fade" var="p" style="width:160px"  
+                                                         filter="true" filterMatchMode="contains" required="true">                              
+                                            <f:selectItems value="#{productController.listOne}" var="pi" itemLabel="#{pi.productId} - #{pi.name}" itemValue="#{pi}"/>  
+
+                                            <p:column> #{p.productId} </p:column>
+                                            <p:column> #{p.name} </p:column>
+                                            <p:column> #{p.manufacturer} </p:column>
+                                            <p:column> #{p.unit} </p:column>                                        
+
+                                        </p:selectOneMenu>
+                                    </f:facet>  
+                                </p:cellEditor>  
+                            </p:column>  
+
+                            <p:column id="quantityColumn" headerText="#{bundle.Quantity}" style="width:70px; text-align:right">                              
+                                <p:cellEditor>  
+                                    <f:facet name="output">  
+                                        <h:outputText value="#{item.quantity}" >
+                                            <f:convertNumber pattern="#,##0.##" />
+                                        </h:outputText> 
+                                    </f:facet>  
+                                    <f:facet name="input">                                      
+                                        <p:inputText id="iQuantity" value="#{item.quantity}" 
+                                                     immediate="true"  >                                          
+                                            <f:convertNumber pattern="#,##0.##" maxFractionDigits="2" maxIntegerDigits="12" />                                        
+                                            <p:ajax event="blur" update="iQuantity, oAmount, 
+                                                    :createSaleForm:oSubTotal, :createSaleForm:oAmountDiscount, :createSaleForm:oAmountVAT, 
+                                                    :createSaleForm:oTotal, :createSaleForm:oAmountAfterPayment"/> 
+                                        </p:inputText>
+                                    </f:facet>  
+                                </p:cellEditor>
+                            </p:column>  
+
+                            <p:column id="priceColumn" headerText="#{bundle.Price}" style="width:70px; text-align:right">                              
+                                <p:cellEditor>  
+                                    <f:facet name="output">  
+                                        <h:outputText value="#{item.price}" >
+                                            <f:convertNumber pattern="#,##0" />
+                                        </h:outputText> 
+                                    </f:facet>  
+                                    <f:facet name="input">                                      
+                                        <p:inputText id="iPrice" value="#{item.price}" 
+                                                     immediate="true"  >  
+                                            <f:convertNumber pattern="#,##0" maxIntegerDigits="12" />
+                                            <f:validateDoubleRange minimum="0" />
+                                            <p:ajax event="blur" update="iPrice, oAmount, 
+                                                    :createSaleForm:oSubTotal, :createSaleForm:oAmountDiscount, :createSaleForm:oAmountVAT, 
+                                                    :createSaleForm:oTotal, :createSaleForm:oAmountAfterPayment"/> 
+                                        </p:inputText>
+                                    </f:facet>  
+                                </p:cellEditor>
+                            </p:column>  
+
+                            <p:column id="discountColumn" headerText="#{bundle.Discount}" style="width:70px; text-align:right">                              
+                                <p:cellEditor>  
+                                    <f:facet name="output">  
+                                        <h:outputText value="#{item.discount / 100}" >
+                                            <f:convertNumber pattern="#.##%" type="percent"/>
+                                        </h:outputText> 
+                                    </f:facet>  
+                                    <f:facet name="input">                                      
+                                        <p:inputText id="iDiscount" value="#{item.discount}" 
+                                                     immediate="true"  >  
+                                            <f:convertNumber pattern="#.##" maxFractionDigits="2" />
+                                            <f:validateDoubleRange minimum="0" maximum="100"/>
+                                            <p:ajax event="blur" update="iDiscount, oAmount, 
+                                                    :createSaleForm:oSubTotal, :createSaleForm:oAmountDiscount, :createSaleForm:oAmountVAT, 
+                                                    :createSaleForm:oTotal, :createSaleForm:oAmountAfterPayment"/> 
+                                        </p:inputText>
+                                    </f:facet>  
+                                </p:cellEditor>  
+                            </p:column>
+
+                            <p:column id="amountColumn" headerText="#{bundle.Amount2}" style="width:70px; text-align:right">                              
+                                <h:outputText id="oAmount" value="#{item.amount}" >
+                                    <f:convertNumber pattern="#,##0" />
+                                </h:outputText> 
+                            </p:column>
+                        </p:dataTable>  
+
+                    </p:column>  
+                </p:row>               
+
+                <p:row>
+                    <p:column width="50%" colspan="2" rowspan="6">
+
+                    </p:column>
+
+                    <p:column style="width:200px; text-align:right">
+                        <h:outputText value="#{bundle.Subtotal}"/>
+                    </p:column>
+                    <p:column style="width:100px; text-align:right">
+                        <h:outputText id="oSubTotal" value="#{stockOutController.newT.subTotal}">
+                            <f:convertNumber pattern="#,##0" />
+                        </h:outputText> 
+                    </p:column>
+                </p:row>               
+                <p:row>      
+                    <p:column style="text-align:right">                                
+                        <h:outputLabel for="iDiscount" value="#{bundle.AdditionalDiscount} (%)" /> 
+                        <p:spacer width="20"/>
+                        <p:inputText id="iDiscount" value="#{stockOutController.newT.discount}"  style="width:25px; text-align:right">   
+                            <f:convertNumber pattern="#.##" maxFractionDigits="2"/>
+                            <f:validateDoubleRange minimum="0" maximum="100"/>
+                            <p:ajax event="blur" update="iDiscount, oAmountDiscount, oAmountVAT, oTotal, oAmountAfterPayment"/> 
+                        </p:inputText>
+                    </p:column>
+                    <p:column style="text-align:right">
+                        <h:outputText id="oAmountDiscount" value="#{stockOutController.newT.amountDiscount}">
+                            <f:convertNumber pattern="-#,##0" />
+                        </h:outputText> 
+                    </p:column>
+                </p:row>               
+                <p:row>                             
+                    <p:column style="text-align:right">                                
+                        <h:outputLabel for="iVAT" value="#{bundle.VAT} (%)" />  
+                        <p:spacer width="20"/>
+                        <p:inputText id="iVAT" value="#{stockOutController.newT.VAT}"  style="width:25px; text-align:right">   
+                            <f:convertNumber pattern="#.##" maxFractionDigits="2"/>
+                            <f:validateDoubleRange minimum="0" maximum="100"/>
+                            <p:ajax event="blur" update="iVAT, oAmountVAT, oTotal, oAmountAfterPayment"/> 
+                        </p:inputText>
+                    </p:column>
+                    <p:column style="text-align:right">
+                        <h:outputText id="oAmountVAT" value="#{stockOutController.newT.amountVAT}">
+                            <f:convertNumber pattern="#,##0" />
+                        </h:outputText> 
+                    </p:column>
+                </p:row>               
+                <p:row>                             
+                    <p:column style="text-align:right"  styleClass="ui-widget-header">
+                        <h:outputText value="#{bundle.Total}"/>
+                    </p:column>
+                    <p:column style="text-align:right"  styleClass="ui-widget-header">
+                        <h:outputText id="oTotal"  value="#{stockOutController.newT.amount}">
+                            <f:convertNumber pattern="#,##0" />
+                        </h:outputText> 
+                    </p:column>
+                </p:row>               
+                <p:row>                             
+                    <p:column style="text-align:right">
+                        <h:outputLabel for="iPayment" value="#{bundle.Paid}" />  
+                    </p:column>
+                    <p:column style="text-align:right">
+                        -
+                        <p:inputText id="iPayment" value="#{stockOutController.newT.payment.amount}"  style="width:70px; text-align:right">   
+                            <f:convertNumber pattern="#,##0" maxIntegerDigits="12" />
+                            <f:validateDoubleRange minimum="0" />
+                            <p:ajax event="blur" update="iPayment, oAmountAfterPayment"/>                         
+                        </p:inputText>                                
+                    </p:column>
+                </p:row>               
+                <p:row>                             
+                    <p:column style="text-align:right"  styleClass="ui-widget-header">
+                        <h:outputText value="#{bundle.BalanceDue}"/>
+                    </p:column>
+                    <p:column style="text-align:right"  styleClass="ui-widget-header">
+                        <h:outputText id="oAmountAfterPayment" value="#{stockOutController.newT.amountAfterPayment}">
+                            <f:convertNumber pattern="#,##0" />
+                        </h:outputText> 
+                    </p:column>
+                </p:row>               
+            </p:panelGrid> 
+
+            <p:commandButton widgetVar="saveStockOutButton" value="#{bundle.Save}" 
+                             onclick="saveStockOutButton.disable()"
+                             actionListener="#{stockOutController.createOrEdit}" 
+                             update="iDlgSale, :saleListForm:iStockOutTable, :mainForm:messages" 
+                             oncomplete="saveStockOutButton.enable(); wDlgSale.hide()" 
+                             validateClient="true" style="margin-right:10px" />    
+
+        </p:dialog>                
+    </h:form>
+</ui:composition>
