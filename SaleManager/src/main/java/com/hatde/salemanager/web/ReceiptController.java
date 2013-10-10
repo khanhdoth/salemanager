@@ -7,11 +7,11 @@ package com.hatde.salemanager.web;
 
 import com.hatde.salemanager.entities.PaymentReceived;
 import com.hatde.salemanager.services.AbstractFacade;
-import com.hatde.salemanager.services.ContactFacadeREST;
 import com.hatde.salemanager.services.PaymentReceivedFacadeREST;
 import java.io.Serializable;
 import java.util.Date;
 import javax.annotation.PostConstruct;
+import javax.annotation.security.DeclareRoles;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
@@ -21,6 +21,7 @@ import javax.inject.Inject;
  *
  * @author Khanh
  */
+@DeclareRoles("users")
 @Named(value = "receiptController")
 @SessionScoped
 public class ReceiptController extends FacadeController<PaymentReceived> implements Serializable {

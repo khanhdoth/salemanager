@@ -5,6 +5,7 @@ import com.hatde.salemanager.services.AbstractFacade;
 import com.hatde.salemanager.services.ContactFacadeREST;
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
+import javax.annotation.security.PermitAll;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
@@ -14,6 +15,7 @@ import javax.inject.Named;
  *
  * @author Do
  */
+@PermitAll
 @Named(value = "contactController")
 @SessionScoped
 public class ContactController extends FacadeController<Contact> implements Serializable {

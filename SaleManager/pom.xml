@@ -60,7 +60,7 @@
             <version>${project.version}</version>
             <scope>system</scope>
             <systemPath>
-                C:\glassfish4\glassfish\lib\embedded\glassfish-embedded-static-shell.jar
+                C:\Program Files\glassfish-4.0\glassfish\lib\embedded\glassfish-embedded-static-shell.jar
             </systemPath>
         </dependency>
         <dependency>

@@ -5,6 +5,7 @@ import com.hatde.salemanager.services.AbstractFacade;
 import com.hatde.salemanager.services.ProductFacadeREST;
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
+import javax.annotation.security.DeclareRoles;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
@@ -14,6 +15,7 @@ import javax.inject.Named;
  *
  * @author Do
  */
+@DeclareRoles("users")
 @Named(value = "productController")
 @SessionScoped
 public class ProductController extends FacadeController<Product> implements Serializable {
