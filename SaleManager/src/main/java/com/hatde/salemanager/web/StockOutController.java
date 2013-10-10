@@ -8,7 +8,6 @@ import com.hatde.salemanager.services.SaleFacadeREST;
 import java.io.Serializable;
 import java.util.Date;
 import javax.annotation.PostConstruct;
-import javax.annotation.security.PermitAll;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
@@ -20,7 +19,7 @@ import org.primefaces.event.CellEditEvent;
  *
  * @author Khanh
  */
-@PermitAll
+
 @Named(value = "stockOutController")
 @SessionScoped
 public class StockOutController extends FacadeController<Sale> implements Serializable {

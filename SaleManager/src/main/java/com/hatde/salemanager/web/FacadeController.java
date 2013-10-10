@@ -4,7 +4,6 @@
  */
 package com.hatde.salemanager.web;
 
-import com.hatde.salemanager.entities.SaleItem;
 import com.hatde.salemanager.services.AbstractFacade;
 import java.util.ArrayList;
 import java.util.List;

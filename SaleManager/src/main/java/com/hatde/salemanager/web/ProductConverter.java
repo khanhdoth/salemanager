@@ -1,7 +1,6 @@
 package com.hatde.salemanager.web;
 
 import com.hatde.salemanager.entities.Product;
-import com.hatde.salemanager.services.ProductFacadeREST;
 import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
