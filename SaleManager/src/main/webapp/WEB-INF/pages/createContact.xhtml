@@ -1,0 +1,42 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"   
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="createContactForm" onkeypress="return event.keyCode != 13;">
+        <p:dialog id="iDlgContact" header="#{contactController.dialogTitle}" widgetVar="wDlgContact"  modal="true" >  
+            <p:ajax event="close" update=":createContactForm:iDlgContact" listener="#{contactController.closeDialog}"/>
+
+            <h:panelGrid columns="2" cellpadding="5">  
+                <h:outputLabel value="#{bundle.Contact_Name}" />  
+                <p:inputText value="#{contactController.newT.name}" />  
+
+                <h:outputLabel value="#{bundle.Contact_Address}" />  
+                <p:inputText value="#{contactController.newT.address}" />  
+
+                <h:outputLabel value="#{bundle.Contact_District}" />  
+                <p:inputText value="#{contactController.newT.district}" />  
+
+                <h:outputLabel value="#{bundle.Contact_City}" />  
+                <p:inputText value="#{contactController.newT.city}" />  
+
+                <h:outputLabel value="#{bundle.Contact_Postcode}" />  
+                <p:inputText value="#{contactController.newT.postcode}" />  
+
+                <h:outputLabel value="#{bundle.Contact_Country}" />  
+                <p:inputText value="#{contactController.newT.country}" />  
+
+                <h:outputLabel value="#{bundle.Contact_MoreInfo}" />  
+                <p:inputText value="#{contactController.newT.moreInfo}" />  
+
+                <p:commandButton widgetVar="saveContactButton" value="#{bundle.Save}" 
+                                 onclick="saveContactButton.disable()"
+                                 actionListener="#{contactController.createOrEdit}" 
+                                 update="iDlgContact, :ContactListForm:iContactTable, :mainForm:messages" 
+                                 oncomplete="saveContactButton.enable(); wDlgContact.hide()" />  
+
+            </h:panelGrid>  
+        </p:dialog>
+    </h:form>
+</ui:composition>

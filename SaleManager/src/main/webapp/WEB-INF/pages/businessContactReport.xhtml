@@ -1,0 +1,173 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"   
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:form id="businessContactForm" onkeypress="return event.keyCode != 13;">
+        <p:dialog id="iDlgBusinessContactList" header="#{bundle.ReportContact}" widgetVar="wDlgBusinessContactList" position="bottom">                                        
+
+            <p:panelGrid id="iPGBusinessContactList" style="width: 100%">
+                <p:row>
+                    <p:column  style="width:100px; text-align:right; font-weight:bold">
+                        <h:outputLabel value="#{bundle.TotalStockOutAmount}" />  
+                    </p:column>
+                    <p:column  style="width:150px; text-align:right">
+                        <h:outputText value="#{contactController.viewT.saleAmount}" style="font-weight:bold; font-size: 120%">
+                            <f:convertNumber pattern="#,##0" />
+                        </h:outputText>
+                    </p:column>                            
+                    <p:column>
+                        <h:outputLabel for="soContactMenu" value="#{bundle.ModuleContact} : " />  
+                        <p:selectOneMenu id="soContactMenu" value="#{contactController.viewT}" converter="contactConverter"                                                  
+                                         panelStyle="width:500px" effect="fade" var="p" style="width:160px"  
+                                         filter="true" filterMatchMode="contains" required="true">                              
+                            <f:selectItems value="#{contactController.listOne}" var="c" itemLabel="#{c.contactId} - #{c.name}" itemValue="#{c}"/>  
+                            <p:ajax update="iPGBusinessContactList, apContactDetail"/>
+
+                            <p:column style="width:15px"> #{p.contactId} </p:column>
+                            <p:column> #{p.name} </p:column>
+                            <p:column style="width:25px"> #{p.address} </p:column>
+                            <p:column style="width:25px"> #{p.city} </p:column>
+                            <p:column style="width:25px"> #{p.country} </p:column>
+
+                        </p:selectOneMenu> 
+                    </p:column>
+                    <p:column  style="width:100px; text-align:right; font-weight:bold">
+                        <h:outputLabel value="#{bundle.TotalStockInAmount}" />  
+                    </p:column>
+                    <p:column  style="width:150px; text-align:right">
+                        <h:outputText value="#{contactController.viewT.buyAmount}" style="font-weight:bold; font-size: 120%">
+                            <f:convertNumber pattern="#,##0" />
+                        </h:outputText>
+                    </p:column>
+                </p:row>
+
+                <p:row>
+                    <p:column  style="text-align:right; font-weight:bold">
+                        <h:outputLabel value="#{bundle.TotalPaymentAmount}" />
+                    </p:column>
+                    <p:column  style="text-align:right">
+                        <h:outputText value="#{contactController.viewT.paymentSentAmount}" style="font-weight:bold; font-size: 120%">
+                            <f:convertNumber pattern="#,##0" />
+                        </h:outputText>
+                    </p:column>
+                    <p:column rowspan="2" styleClass="ui-widget-header"  style="text-align:center; font-size: 200%">
+                        <h:outputLabel value="#{bundle.BalanceInHand}:" />
+                        <p:spacer width="20"/>
+                        <h:outputText value="#{contactController.viewT.balance}" >
+                            <f:convertNumber pattern="#,##0" />
+                        </h:outputText>                                    
+                    </p:column>
+                    <p:column  style="text-align:right; font-weight:bold">
+                        <h:outputLabel value="#{bundle.TotalReceiptAmount}" /> 
+                    </p:column>
+                    <p:column  style="text-align:right">
+                        <h:outputText value="#{contactController.viewT.paymentReceivedAmount}" style="font-weight:bold; font-size: 120%">
+                            <f:convertNumber pattern="#,##0" />
+                        </h:outputText>
+                    </p:column>
+                </p:row>
+
+                <p:row>
+                    <p:column  styleClass="ui-widget-header"  style="text-align:right; font-size: 150%">
+                        <h:outputLabel value="#{bundle.Debit}" /> 
+                    </p:column>
+                    <p:column styleClass="ui-widget-header"  style="text-align:right; font-size: 150%">
+                        <h:outputText value="#{contactController.viewT.debit}" >
+                            <f:convertNumber pattern="#,##0" />
+                        </h:outputText>
+                    </p:column>
+                    <p:column  styleClass="ui-widget-header"  style="text-align:right; font-size: 150%">
+                        <h:outputLabel value="#{bundle.Credit}" /> 
+                    </p:column>
+                    <p:column  styleClass="ui-widget-header"  style="text-align:right; font-size: 150%">
+                        <h:outputText value="#{contactController.viewT.credit}" >
+                            <f:convertNumber pattern="#,##0" />
+                        </h:outputText>
+                    </p:column>
+                </p:row>                              
+            </p:panelGrid> 
+
+            <p:accordionPanel id="apContactDetail">  
+                <p:tab title="#{bundle.ModuleStockOut}">  
+                    <h:panelGrid columns="2" cellpadding="10">  
+                        <p:dataTable id="iStockOutTable" var="item" value="#{contactController.viewT.listOfBuy}" 
+                                     widgetVar="wContactStockOutTable" rowKey="#{item.productTransactionId}" scrollable="true" scrollHeight="400"
+                                     emptyMessage="No stockIn found with given criteria" 
+                                     filteredValue="#{stockOutController.filterList}"                                 
+                                     resizableColumns="true" liveResize="true" >   
+
+                            <p:column style="width:52px" exportable="false">  
+                                <p:commandButton id="deleteButton" update="iStockOutTable, :mainForm:messages" action="#{stockOutController.delete}" icon="ui-icon-trash" title="#{bundle.Delete}" >  
+                                    <p:confirm header="#{bundle.Confirmation}" message="#{bundle.Delete_Confirm_Message}" icon="ui-icon-alert" />  
+                                    <f:setPropertyActionListener value="#{item}" target="#{stockOutController.selectedT}" />  
+                                </p:commandButton> 
+                                <p:commandButton id="editButton" update=":createSaleForm:iDlgSale" action="#{stockOutController.setEdit}" 
+                                                 icon="ui-icon-search" title="#{bundle.Edit}" oncomplete="wDlgSale.show()" >                                  
+                                    <f:setPropertyActionListener value="#{item}" target="#{stockOutController.selectedT}" />  
+                                </p:commandButton> 
+                            </p:column> 
+
+                            <p:column id="productTransactionIdColumn" sortBy="productTransactionId"
+                                      headerText="#{bundle.ID}" style="width:60px">  
+                                <h:outputText value="#{item.productTransactionId}" />  
+                            </p:column>  
+
+                            <p:column id="contactColumn" sortBy="contact.name" headerText="#{bundle.ModuleContact}">                              
+                                <h:outputText value="#{item.contact.contactId} - #{item.contact.name}" />  
+                            </p:column> 
+
+                            <p:column id="dateColumn" sortBy="date" headerText="#{bundle.Date}" style="width:70px">                                    
+                                <h:outputText value="#{item.date}"> 
+                                    <f:convertDateTime pattern="dd.MM.yyyy" />
+                                </h:outputText>     
+                            </p:column>  
+
+                            <p:column id="amountColumn" sortBy="amount" headerText="#{bundle.Total}" style="width:80px; text-align:right">  
+                                <h:outputText value="#{item.amount}" >
+                                    <f:convertNumber pattern="#,##0" />
+                                </h:outputText> 
+                            </p:column>  
+
+                            <p:column id="paymentColumn" sortBy="payment.amount" headerText="#{bundle.Payment}" style="width:80px; text-align:right">  
+                                <h:outputText value="#{item.payment.amount}" >
+                                    <f:convertNumber pattern="#,##0" />
+                                </h:outputText> 
+                            </p:column>  
+
+                            <p:column id="balanceDueColumn" sortBy="amountAfterPayment" headerText="#{bundle.BalanceDue}" style="width:80px; text-align:right">  
+                                <h:outputText value="#{item.amountAfterPayment}" >
+                                    <f:convertNumber pattern="#,##0" />
+                                </h:outputText> 
+                            </p:column>  
+                        </p:dataTable>  
+                    </h:panelGrid>  
+                </p:tab>  
+                <p:tab title="#{bundle.ModuleReceipt}">  
+                    <h:panelGrid columns="2" cellpadding="10">  
+                        <p:graphicImage value="/images/godfather/godfather2.jpg" />  
+                        <h:outputText value="Francis Ford Coppola's legendary continuation and sequel to his landmark 1972 film, The_Godfather, parallels the young Vito Corleone's rise with his son Michael's spiritual fall, deepening The_Godfather's depiction of the dark side of the American dream.   
+                                      In the early 1900s, the child Vito flees his Sicilian village for America after the local Mafia kills his family. Vito struggles to make a living, legally or illegally, for his wife and growing brood in Little Italy,   
+                                      killing the local Black Hand Fanucci after he demands his customary cut of the tyro's business. With Fanucci gone, Vito's communal stature grows." />  
+                    </h:panelGrid>  
+                </p:tab>  
+                <p:tab title="#{bundle.ModuleStockIn}">  
+                    <h:panelGrid columns="2" cellpadding="10">  
+                        <p:graphicImage value="/images/godfather/godfather3.jpg" />  
+                        <h:outputText value="After a break of more than 15 years, director Francis Ford Coppola and writer Mario Puzo returned to the well for this third and final story of the fictional Corleone crime family.   
+                                      Two decades have passed, and crime kingpin Michael Corleone, now divorced from his wife Kay has nearly succeeded in keeping his promise that his family would one day be completely legitimate." />  
+                    </h:panelGrid>  
+                </p:tab>
+                <p:tab title="#{bundle.ModulePayment}">  
+                    <h:panelGrid columns="2" cellpadding="10">  
+                        <p:graphicImage value="/images/godfather/godfather3.jpg" />  
+                        <h:outputText value="After a break of more than 15 years, director Francis Ford Coppola and writer Mario Puzo returned to the well for this third and final story of the fictional Corleone crime family.   
+                                      Two decades have passed, and crime kingpin Michael Corleone, now divorced from his wife Kay has nearly succeeded in keeping his promise that his family would one day be completely legitimate." />  
+                    </h:panelGrid>  
+                </p:tab>  
+            </p:accordionPanel> 
+        </p:dialog>
+    </h:form>
+</ui:composition>

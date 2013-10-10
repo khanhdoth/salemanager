@@ -1,0 +1,29 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"   
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="createProductForm" onkeypress="return event.keyCode != 13;">
+        <p:dialog id="iDlgProduct" header="#{productController.dialogTitle}" widgetVar="wDlgProduct"  modal="true" >                    
+            <p:ajax event="close" update=":createProductForm:iDlgProduct" listener="#{productController.closeDialog}"/>                    
+
+            <h:panelGrid columns="2" cellpadding="5">  
+                <h:outputLabel value="#{bundle.Product_Name}" />  
+                <p:inputText value="#{productController.newT.name}" />  
+
+                <h:outputLabel value="#{bundle.Product_Manufacturer}" />  
+                <p:inputText value="#{productController.newT.manufacturer}" />  
+
+                <h:outputLabel value="#{bundle.Product_Unit}" />  
+                <p:inputText value="#{productController.newT.unit}" />  
+
+                <p:commandButton widgetVar="saveProductButton" value="#{bundle.Save}" 
+                                 onclick="saveProductButton.disable()"
+                                 actionListener="#{productController.createOrEdit}" 
+                                 update="iDlgProduct, :productListForm:iProductTable, :mainForm:messages" 
+                                 oncomplete="saveProductButton.enable(); wDlgContact.hide()" />  
+            </h:panelGrid>  
+        </p:dialog>                
+    </h:form>
+</ui:composition>

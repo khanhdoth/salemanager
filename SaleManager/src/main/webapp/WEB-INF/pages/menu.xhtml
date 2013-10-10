@@ -1,0 +1,63 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"    
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+    
+    <h:form id="menuForm">
+        <p:menubar autoDisplay="false">                       
+            <p:submenu label="#{bundle.ModuleStockOut}">  
+                <p:menuitem value="#{bundle.StockOut_NewStockOut}" icon="ui-icon-document" onclick="wDlgSale.show()" /> 
+                <p:menuitem value="#{bundle.StockOut_StockOutList}" icon="ui-icon-document" 
+                            onclick="wDlgSaleList.show()" action="#{stockOutController.refreshList}" 
+                            update=":saleListForm:iStockOutTable" />
+            </p:submenu>  
+
+            <p:submenu label="#{bundle.ModuleStockIn}">  
+                <p:menuitem value="#{bundle.StockIn_NewStockIn}" icon="ui-icon-document" onclick="wDlgBuy.show()" /> 
+                <p:menuitem value="#{bundle.StockIn_StockInList}" icon="ui-icon-document" 
+                            onclick="wDlgBuyList.show()" action="#{stockInController.refreshList}" 
+                            update=":buyListForm:iStockInTable" /> 
+            </p:submenu>  
+
+            <p:submenu label="#{bundle.ModuleReceipt}">  
+                <p:menuitem value="#{bundle.Receipt_NewReceipt}" icon="ui-icon-document" 
+                            onclick="wDlgReceipt.show()" /> 
+                <p:menuitem value="#{bundle.Receipt_ReceiptList}" icon="ui-icon-document" 
+                            onclick="wDlgReceiptList.show()" action="#{receiptController.refreshList}" 
+                            update=":receiptListForm:iReceiptTable" /> 
+            </p:submenu>  
+
+            <p:submenu label="#{bundle.ModulePayment}">  
+                <p:menuitem value="#{bundle.Payment_NewPayment}" icon="ui-icon-document" 
+                            onclick="wDlgPayment.show()" action="#{contactController.refreshList}" 
+                            update=":createPaymentForm:soMenu" /> 
+
+                <p:menuitem value="#{bundle.Payment_PaymentList}" icon="ui-icon-document" 
+                            onclick="wDlgPaymentList.show()" action="#{paymentController.refreshList}" 
+                            update=":paymentListForm:iPaymentTable" /> 
+            </p:submenu>  
+
+            <p:submenu label="#{bundle.ModuleContact}" >  
+                <p:menuitem value="#{bundle.Contact_NewContact}" icon="ui-icon-document" onclick="wDlgContact.show()" />  
+                <p:menuitem value="#{bundle.Contact_ContactList}" icon="ui-icon-document" 
+                            onclick="wDlgContactList.show()" action="#{contactController.refreshList}" 
+                            update=":ContactListForm:iContactTable" /> 
+            </p:submenu>  
+
+            <p:submenu label="#{bundle.ModuleProduct}">  
+                <p:menuitem value="#{bundle.Product_NewProduct}" icon="ui-icon-document" onclick="wDlgProduct.show()" /> 
+                <p:menuitem value="#{bundle.Product_ProductList}" icon="ui-icon-document" onclick="wDlgProductList.show()" 
+                            action="#{productController.refreshList}" 
+                            update=":productListForm:iProductTable" /> 
+            </p:submenu>  
+
+            <p:submenu label="#{bundle.Report}">  
+                <p:menuitem value="#{bundle.ReportContact}" icon="ui-icon-document" onclick="wDlgBusinessContactList.show()" /> 
+                <p:menuitem value="#{bundle.ReportBusiness}" icon="ui-icon-document" 
+                            onclick="wDlgBusinessList.show()" action="#{contactController.refreshList}" 
+                            update=":businessListForm:iPGBusinessList" />  
+            </p:submenu>
+        </p:menubar>            
+    </h:form>
+</ui:composition>

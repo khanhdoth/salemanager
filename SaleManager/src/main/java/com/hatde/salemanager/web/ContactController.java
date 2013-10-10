@@ -14,10 +14,10 @@ import javax.inject.Named;
  *
  * @author Do
  */
-
 @Named(value = "contactController")
 @SessionScoped
 public class ContactController extends FacadeController<Contact> implements Serializable {
+
     private Contact viewT = new Contact();
 
     @EJB

@@ -1,0 +1,101 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"   
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:pe="http://primefaces.org/ui/extensions">
+
+    <h:form id="productListForm" onkeypress="return event.keyCode != 13;">
+        <p:dialog id="iDlgProductList" header="#{bundle.Product_ProductList}" widgetVar="wDlgProductList" position="bottom" >                    
+            <p:dataTable id="iProductTable" var="item" value="#{productController.list}" editable="true"
+                         widgetVar="wProductTable" rowKey="#{item.productId}" scrollable="true" scrollHeight="400"
+                         emptyMessage="No product found with given criteria" editMode="cell" 
+                         filteredValue="#{productController.filterList}"                                 
+                         resizableColumns="true" liveResize="true" >   
+
+                <f:facet name="header">  
+                    <p:outputPanel style="text-align:left"> 
+                        <p:commandButton id="refreshButton" update="iProductTable" action="#{productController.refreshList}" icon="ui-icon-refresh" title="#{bundle.Reresh}" />  
+                        <p:spacer width="20"/>
+                        <h:outputText value="#{bundle.Search}" />
+                        <p:spacer width="5"/>
+                        <p:inputText id="globalFilter" onkeyup="wProductTable.filter()" style="width:150px" />                            
+                    </p:outputPanel>
+                </f:facet>
+
+                <p:ajax event="cellEdit" listener="#{productController.onCellEdit}" update=":mainForm:messages" /> 
+
+                <p:column width="50">  
+                    <p:commandButton id="deleteButton" update="iProductTable, :mainForm:messages" action="#{productController.delete}" icon="ui-icon-trash" title="#{bundle.Delete}" >  
+                        <p:confirm header="#{bundle.Confirmation}" message="#{bundle.Delete_Confirm_Message}" icon="ui-icon-alert" />  
+                        <f:setPropertyActionListener value="#{item}" target="#{productController.selectedT}" />  
+                    </p:commandButton> 
+                    <p:commandButton id="editButton" update=":createProductForm:iDlgProduct" action="#{productController.setEdit}" 
+                                     icon="ui-icon-search" title="#{bundle.Edit}" oncomplete="wDlgProduct.show()" >                                  
+                        <f:setPropertyActionListener value="#{item}" target="#{productController.selectedT}" />  
+                    </p:commandButton> 
+                </p:column> 
+
+                <p:column id="productIdColumn" sortBy="productId" filterBy="productId"   
+                          headerText="#{bundle.ID}" filterMatchMode="contains" style="width:60px">  
+                    <h:outputText value="#{item.productId}" />  
+                </p:column>  
+
+                <p:column id="nameColumn" sortBy="name" filterBy="name"   
+                          headerText="#{bundle.Product_Name}"
+                          filterMatchMode="contains">                                    
+                    <p:cellEditor>  
+                        <f:facet name="output">  
+                            <h:outputText value="#{item.name}" />  
+                        </f:facet>  
+                        <f:facet name="input">  
+                            <p:inputText value="#{item.name}" />  
+                        </f:facet>  
+                    </p:cellEditor>                             
+                </p:column>  
+
+                <p:column id="manufacturerColumn" sortBy="manufacturer" filterBy="manufacturer"   
+                          headerText="#{bundle.Product_Manufacturer}"
+                          filterMatchMode="contains" style="width:100px">  
+                    <p:cellEditor>  
+                        <f:facet name="output">  
+                            <h:outputText value="#{item.manufacturer}" />  
+                        </f:facet>  
+                        <f:facet name="input">  
+                            <p:inputText value="#{item.manufacturer}" />  
+                        </f:facet>  
+                    </p:cellEditor>                             
+                </p:column>  
+
+                <p:column id="unitColumn" sortBy="unit" filterBy="unit"   
+                          headerText="#{bundle.Product_Unit}"
+                          filterMatchMode="contains" style="width:80px">  
+                    <p:cellEditor>  
+                        <f:facet name="output">  
+                            <h:outputText value="#{item.unit}" />  
+                        </f:facet>  
+                        <f:facet name="input">  
+                            <p:inputText value="#{item.unit}" />  
+                        </f:facet>  
+                    </p:cellEditor>                             
+
+                </p:column> 
+            </p:dataTable>  
+
+            <p:panel header="Export Data">  
+                <p:commandLink id="pdf" ajax="false">  
+                    <p:graphicImage value="/images/pdf.png"/>  
+                    <pe:exporter type="pdf" target="iProductTable" fileName="products"/>
+                </p:commandLink> 
+
+                <p:spacer height="20"/>  
+
+                <p:commandLink id="xls" ajax="false">  
+                    <p:graphicImage value="/images/excel.png"/>                              
+                    <pe:exporter type="xlsx" target="iProductTable" fileName="products"/>  
+                </p:commandLink>                      
+            </p:panel>  
+        </p:dialog>  
+    </h:form>
+</ui:composition>

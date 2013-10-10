@@ -1,0 +1,162 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"   
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:form id="businessListForm" onkeypress="return event.keyCode != 13;">
+        <p:dialog id="iDlgBusinessList" header="#{bundle.ReportBusiness}" widgetVar="wDlgBusinessList" position="bottom">                    
+            <p:panelGrid id="iPGBusinessList">
+                <p:row>
+                    <p:column  style="width:100px; text-align:right; font-weight:bold">
+                        <h:outputLabel value="#{bundle.TotalStockOutAmount}" />  
+                    </p:column>
+                    <p:column  style="width:150px; text-align:right">
+                        <h:outputText value="#{contactController.businessStockOutAmount}" style="font-weight:bold; font-size: 120%">
+                            <f:convertNumber pattern="#,##0" />
+                        </h:outputText>
+                    </p:column>                            
+                    <p:column rowspan="3" styleClass="ui-widget-header"  style="text-align:center; font-size: 200%">
+                        <h:outputLabel value="#{bundle.BalanceInHand}:" />
+                        <p:spacer width="20"/>
+                        <h:outputText value="#{contactController.businessBalance}" >
+                            <f:convertNumber pattern="#,##0" />
+                        </h:outputText>                                    
+                    </p:column>
+                    <p:column  style="width:100px; text-align:right; font-weight:bold">
+                        <h:outputLabel value="#{bundle.TotalStockInAmount}" />  
+                    </p:column>
+                    <p:column  style="width:150px; text-align:right">
+                        <h:outputText value="#{contactController.businessStockInAmount}" style="font-weight:bold; font-size: 120%">
+                            <f:convertNumber pattern="#,##0" />
+                        </h:outputText>
+                    </p:column>
+                </p:row>
+
+                <p:row>
+                    <p:column  style="text-align:right; font-weight:bold">
+                        <h:outputLabel value="#{bundle.TotalPaymentAmount}" />
+                    </p:column>
+                    <p:column  style="text-align:right">
+                        <h:outputText value="#{contactController.businessPaymentAmount}" style="font-weight:bold; font-size: 120%">
+                            <f:convertNumber pattern="#,##0" />
+                        </h:outputText>
+                    </p:column>
+                    <p:column  style="text-align:right; font-weight:bold">
+                        <h:outputLabel value="#{bundle.TotalReceiptAmount}" /> 
+                    </p:column>
+                    <p:column  style="text-align:right">
+                        <h:outputText value="#{contactController.businessReceiptAmount}" style="font-weight:bold; font-size: 120%">
+                            <f:convertNumber pattern="#,##0" />
+                        </h:outputText>
+                    </p:column>
+                </p:row>
+
+                <p:row>
+                    <p:column  styleClass="ui-widget-header"  style="text-align:right; font-size: 150%">
+                        <h:outputLabel value="#{bundle.Debit}" /> 
+                    </p:column>
+                    <p:column styleClass="ui-widget-header"  style="text-align:right; font-size: 150%">
+                        <h:outputText value="#{contactController.businessDebit}" >
+                            <f:convertNumber pattern="#,##0" />
+                        </h:outputText>
+                    </p:column>
+                    <p:column  styleClass="ui-widget-header"  style="text-align:right; font-size: 150%">
+                        <h:outputLabel value="#{bundle.Credit}" /> 
+                    </p:column>
+                    <p:column  styleClass="ui-widget-header"  style="text-align:right; font-size: 150%">
+                        <h:outputText value="#{contactController.businessCredit}" >
+                            <f:convertNumber pattern="#,##0" />
+                        </h:outputText>
+                    </p:column>
+                </p:row>                        
+                <p:row>
+                    <p:column colspan="5" styleClass="ui-widget-header">
+                        <p:dataTable id="iBusinessTable" var="item" value="#{contactController.list}"
+                                     widgetVar="wBusinessTable" rowKey="#{item.contactId}" scrollable="true" scrollHeight="400"
+                                     emptyMessage="No contact found with given criteria"
+                                     filteredValue="#{contactController.filterList}"                                 
+                                     resizableColumns="true" liveResize="true" >   
+
+                            <f:facet name="header">  
+                                <p:outputPanel style="text-align:left"> 
+                                    <p:commandButton id="refreshButton" update=":businessListForm:iPGBusinessList" action="#{contactController.refreshList}" icon="ui-icon-refresh" title="#{bundle.Reresh}" />
+                                    <p:spacer width="20"/>
+                                    <h:outputText value="#{bundle.Search}" />
+                                    <p:spacer width="5"/>
+                                    <p:inputText id="globalFilter" onkeyup="wBusinessTable.filter()" style="width:150px" />                                                            
+                                </p:outputPanel>
+                            </f:facet>
+
+                            <p:ajax event="cellEdit" listener="#{contactController.onCellEdit}" update=":mainForm:messages" /> 
+
+                            <p:column style="width:35px">  
+                                <p:commandButton id="editButton" update=":businessContactForm:iPGBusinessContactList" 
+                                                 icon="ui-icon-search" title="#{bundle.View}" oncomplete="wDlgBusinessContactList.show()" >                                  
+                                    <f:setPropertyActionListener value="#{item}" target="#{contactController.viewT}" />  
+                                </p:commandButton> 
+                            </p:column> 
+
+                            <p:column id="contactIdColumn" sortBy="contactId" filterBy="contactId"                                  
+                                      headerText="#{bundle.ID}" filterMatchMode="contains" style="width:60px" >  
+                                <h:outputText value="#{item.contactId}" />  
+                            </p:column>  
+
+                            <p:column id="contactNameColumn" sortBy="name" filterBy="name"   
+                                      headerText="#{bundle.Contact_Name}" filterMatchMode="contains">  
+                                <h:outputText value="#{item.name}" />  
+                            </p:column>
+
+                            <p:column id="stockInColumn" style="width:80px; text-align:right" sortBy="buyAmount">
+                                <f:facet name="header">
+                                    <h:outputText value="#{bundle.TotalStockInAmount}" title="#{bundle.TotalStockInAmount} #{bundle.forCustomer}" />
+                                </f:facet>
+                                <h:outputText value="#{item.buyAmount}" >
+                                    <f:convertNumber pattern="#,##0" />
+                                </h:outputText> 
+                            </p:column>
+
+                            <p:column id="paymentColumn" style="width:80px; text-align:right" sortBy="paymentSentAmount">
+                                <f:facet name="header">
+                                    <h:outputText value="#{bundle.TotalPaymentAmount}" title="#{bundle.TotalPaymentAmount} #{bundle.forCustomer}" />
+                                </f:facet>
+                                <h:outputText value="#{item.paymentSentAmount}" >
+                                    <f:convertNumber pattern="#,##0" />
+                                </h:outputText> 
+                            </p:column>
+
+                            <p:column id="stockOutColumn" style="width:80px; text-align:right" sortBy="saleAmount">
+                                <f:facet name="header">
+                                    <h:outputText value="#{bundle.TotalStockOutAmount}" title="#{bundle.TotalStockOutAmount} #{bundle.forCustomer}" />
+                                </f:facet>
+                                <h:outputText value="#{item.saleAmount}" >
+                                    <f:convertNumber pattern="#,##0" />
+                                </h:outputText> 
+                            </p:column>
+
+                            <p:column id="receiptColumn" style="width:80px; text-align:right" sortBy="paymentReceivedAmount">
+                                <f:facet name="header">
+                                    <h:outputText value="#{bundle.TotalReceiptAmount}" title="#{bundle.TotalReceiptAmount} #{bundle.forCustomer}" />
+                                </f:facet>
+                                <h:outputText value="#{item.paymentReceivedAmount}" >
+                                    <f:convertNumber pattern="#,##0" />
+                                </h:outputText> 
+                            </p:column>
+
+                            <p:column id="balanceColumn" style="width:80px; text-align:right" sortBy="balance">
+                                <f:facet name="header">
+                                    <h:outputText value="#{bundle.BalanceInHand}" title="#{bundle.BalanceInHand} #{bundle.forCustomer}" />
+                                </f:facet>
+                                <h:outputText value="#{item.balance}" >
+                                    <f:convertNumber pattern="#,##0" />
+                                </h:outputText> 
+                            </p:column>
+
+                        </p:dataTable>  
+                    </p:column>
+                </p:row>
+            </p:panelGrid> 
+        </p:dialog>
+    </h:form>  
+</ui:composition>

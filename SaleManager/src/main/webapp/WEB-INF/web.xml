@@ -22,6 +22,7 @@
         <welcome-file>faces/index.xhtml</welcome-file>
     </welcome-file-list>
     
+    <!--
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>secured</web-resource-name>
@@ -41,7 +42,7 @@
         <realm-name>file</realm-name>
     </login-config>
     <security-role>
-        <role-name>users</role-name>
+        <role-name>users</role-name>        
     </security-role>
-    
+    -->
 </web-app>
