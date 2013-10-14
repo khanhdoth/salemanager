@@ -19,7 +19,7 @@
         </f:facet>
 
         <p:column style="width:52px" exportable="false">  
-            <p:commandButton id="deleteButton" update="iStockOutTable, :mainForm:messages" action="#{stockOutController.delete}" icon="ui-icon-trash" title="#{bundle.Delete}" >  
+            <p:commandButton id="deleteButton" update="#{contactController.updateReportString}, :mainForm:messages" action="#{stockOutController.delete}" icon="ui-icon-trash" title="#{bundle.Delete}" >  
                 <p:confirm header="#{bundle.Confirmation}" message="#{bundle.Delete_Confirm_Message}" icon="ui-icon-alert" />  
                 <f:setPropertyActionListener value="#{item}" target="#{stockOutController.selectedT}" />  
             </p:commandButton> 
