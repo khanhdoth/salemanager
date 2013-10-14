@@ -7,9 +7,9 @@ onload = function() {
 };
 
 function MyDialog(iDialog){
-    this.dialog = iDialog;
-    this.isOpen = false;    
-    this.uString = "createContactForm:pgContact";
+    var dialog = iDialog;
+    var isOpen = false;    
+    var updateString = "createContactForm:pgContact";
     
     this.onHide=onHide;
     function onHide(){
@@ -20,22 +20,22 @@ function MyDialog(iDialog){
     this.show=show;
     function show(){        
         updateDialog();        
-        this.dialog.show();
-        this.isOpen = true;           
+        dialog.show();
+        isOpen = true;           
     }
     
     this.hide=hide;
     function hide(){        
-        this.dialog.hide();
-        this.isOpen = false;
+        dialog.hide();
+        isOpen = false;
         //alert('hide: ' +  this.isOpen);
     }   
     
     this.updateDialog=updateDialog;
     function updateDialog(){        
         //rcUpdateClient();
-        alert('updateDialog: ' +  uText);
-        ercUpdateString(uText);
+        alert('updateDialog: ' +  updateString + " isOpen" + isOpen);
+        ercUpdateString(updateString);
     }   
     
 }
