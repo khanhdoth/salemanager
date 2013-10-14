@@ -1,0 +1,58 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"   
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <p:dataTable id="iPaymentTable" var="item" value="#{contactController.viewT.listOfPaymentReceived}"
+                 widgetVar="wContactPaymentTable" rowKey="#{item.paymentTransactionId}" scrollable="true" scrollHeight="400"
+                 emptyMessage="No payment found with given criteria"
+                 filteredValue="#{paymentController.filterList}"                                 
+                 resizableColumns="true" liveResize="true" >   
+
+        <f:facet name="header">  
+            <p:outputPanel style="text-align:left"> 
+                <p:commandButton id="createButton" update=":createPaymentForm:iDlgPayment" icon="ui-icon-circle-plus" title="#{bundle.AddNewItem}" oncomplete="wDlgPayment.show()">
+                    <f:setPropertyActionListener value="#{contactController.viewT}" target="#{paymentController.newT.contact}" />  
+                </p:commandButton>                
+            </p:outputPanel>
+        </f:facet>
+
+        <p:column style="width:52px">  
+            <p:commandButton id="deleteButton" update="#{contactController.updateReportString}, :mainForm:messages" action="#{paymentController.delete}" icon="ui-icon-trash" title="#{bundle.Delete}" >  
+                <p:confirm header="#{bundle.Confirmation}" message="#{bundle.Delete_Confirm_Message}" icon="ui-icon-alert" />  
+                <f:setPropertyActionListener value="#{item}" target="#{paymentController.selectedT}" />  
+            </p:commandButton> 
+            <p:commandButton id="editButton" update=":createPaymentForm:iDlgPayment" action="#{paymentController.setEdit}" 
+                             icon="ui-icon-search" title="#{bundle.Edit}" oncomplete="wDlgPayment.show()" >                                  
+                <f:setPropertyActionListener value="#{item}" target="#{paymentController.selectedT}" />  
+            </p:commandButton> 
+
+        </p:column> 
+
+        <p:column id="paymentTransactionIdColumn" sortBy="paymentTransactionId" headerText="#{bundle.ID}" style="width:60px">  
+            <h:outputText value="#{item.paymentTransactionId}" />  
+        </p:column>  
+
+        <p:column id="contactColumn" sortBy="contact.name" headerText="#{bundle.ModuleContact}">                              
+            <h:outputText value="#{item.contact.contactId} - #{item.contact.name}" />  
+        </p:column> 
+
+        <p:column id="dateColumn" sortBy="date" headerText="#{bundle.Date}" style="width:70px">                                    
+            <h:outputText value="#{item.date}"> 
+                <f:convertDateTime pattern="dd.MM.yyyy" />
+            </h:outputText>                                      
+        </p:column>  
+
+        <p:column id="amountColumn" sortBy="amount" headerText="#{bundle.Amount}" style="width:80px; text-align:right">  
+            <h:outputText value="#{item.amount}" >
+                <f:convertNumber pattern="#,##0" />
+            </h:outputText> 
+        </p:column>  
+
+        <p:column id="paymentReasonColumn" sortBy="paymentReason" headerText="#{bundle.Reason}" style="width:150px" >  
+            <h:outputText value="#{item.paymentReason}" />  
+        </p:column> 
+    </p:dataTable>  
+</ui:composition>
