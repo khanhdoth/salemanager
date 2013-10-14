@@ -34,7 +34,7 @@ function MyDialog(iDialog){
     this.updateDialog=updateDialog;
     function updateDialog(){        
         //rcUpdateClient();
-        alert('updateDialog: ' +  updateString + " isOpen" + isOpen);
+        //alert('updateDialog: ' +  updateString + " isOpen" + isOpen);
         ercUpdateString(updateString);
     }   
     
