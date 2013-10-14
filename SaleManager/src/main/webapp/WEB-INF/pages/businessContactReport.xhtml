@@ -5,9 +5,9 @@
     xmlns:p="http://primefaces.org/ui"
     xmlns:f="http://xmlns.jcp.org/jsf/core">
 
-    <h:form id="businessContactForm" onkeypress="return event.keyCode != 13;">
-        <p:dialog id="iDlgBusinessContactList" header="#{bundle.ReportContact}" widgetVar="wDlgBusinessContactList" >                                        
-
+    <h:form id="businessContactForm" onkeypress="return event.keyCode != 13;">        
+        <p:remoteCommand name="updateDialog" action="#{contactController.hello}" update="iPGBusinessContactList, :businessContactForm:apContactDetail:iStockOutTable"/>
+        <p:dialog id="iDlgBusinessContactList" header="#{bundle.ReportContact}" widgetVar="wDlgBusinessContactList" onShow="updateDialog()">                                                    
             <p:panelGrid id="iPGBusinessContactList" style="width: 100%">
                 <p:row>
                     <p:column  style="width:100px; text-align:right; font-weight:bold">
@@ -34,6 +34,9 @@
                             <p:column style="width:25px"> #{p.country} </p:column>
 
                         </p:selectOneMenu> 
+                        <p:commandButton id="refreshButton" update="iPGBusinessContactList, :businessContactForm:apContactDetail:iStockOutTable"
+                                         action="#{contactController.refreshViewT}" icon="ui-icon-refresh" title="#{bundle.Reresh}" /> 
+
                     </p:column>
                     <p:column  style="width:100px; text-align:right; font-weight:bold">
                         <h:outputLabel value="#{bundle.TotalStockInAmount}" />  

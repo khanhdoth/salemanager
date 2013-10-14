@@ -5,12 +5,14 @@
     xmlns:p="http://primefaces.org/ui">
 
     <h:form id="createContactForm" onkeypress="return event.keyCode != 13;">
-        <p:dialog id="iDlgContact" header="#{contactController.dialogTitle}" widgetVar="wDlgContact"  modal="true" >  
-            <p:ajax event="close" update=":createContactForm:iDlgContact" listener="#{contactController.closeDialog}"/>
+        <p:remoteCommand name="updateCreateContactForm" update=":createContactForm:pgContact"/>
+        
+        <p:dialog id="iDlgContact" header="#{contactController.dialogTitle}" widgetVar="wDlgContact"  
+                  modal="true" onHide="jDlgContact.onHide()">              
 
-            <h:panelGrid columns="2" cellpadding="5">  
+            <h:panelGrid id="pgContact" columns="2" cellpadding="5">  
                 <h:outputLabel value="#{bundle.Contact_Name}" />  
-                <p:inputText value="#{contactController.newT.name}" />  
+                <p:inputText id="iName" value="#{contactController.newT.name}" />  
 
                 <h:outputLabel value="#{bundle.Contact_Address}" />  
                 <p:inputText value="#{contactController.newT.address}" />  
@@ -34,7 +36,7 @@
                                  onclick="saveContactButton.disable()"
                                  actionListener="#{contactController.createOrEdit}" 
                                  update="iDlgContact, :ContactListForm:iContactTable, :mainForm:messages" 
-                                 oncomplete="saveContactButton.enable(); wDlgContact.hide()" />  
+                                 oncomplete="saveContactButton.enable(); jDlgContact.hide()" />  
 
             </h:panelGrid>  
         </p:dialog>

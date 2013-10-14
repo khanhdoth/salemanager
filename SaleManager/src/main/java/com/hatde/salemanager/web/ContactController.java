@@ -17,7 +17,6 @@ import javax.inject.Named;
 @Named(value = "contactController")
 @SessionScoped
 public class ContactController extends FacadeController<Contact> implements Serializable {
-
     private Contact viewT = new Contact();
 
     @EJB
@@ -32,6 +31,7 @@ public class ContactController extends FacadeController<Contact> implements Seri
     }
 
     public ContactController() {
+        
     }
 
     @Override
@@ -130,4 +130,17 @@ public class ContactController extends FacadeController<Contact> implements Seri
     public void setViewT(Contact viewT) {
         this.viewT = viewT;
     }
+    
+    public void refreshViewT() {
+        if(viewT instanceof Contact){
+            viewT = bean.find(viewT.getContactId());
+        }
+    }
+    
+    public void hello() {
+        System.out.println("+++++++++++++++++++++++++++++++ Hello! ++++++++++++++++++++++++++++++++++++++++++");
+    }
+    
+    
+    
 }

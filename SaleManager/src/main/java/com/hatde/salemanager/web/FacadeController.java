@@ -11,6 +11,7 @@ import java.util.ResourceBundle;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import org.primefaces.component.datatable.DataTable;
+import org.primefaces.context.RequestContext;
 import org.primefaces.event.CellEditEvent;
 
 /**
@@ -20,7 +21,6 @@ import org.primefaces.event.CellEditEvent;
 public abstract class FacadeController<T> {
 
     public enum DialogMode {
-
         CREATE, EDIT
     }
     protected DialogMode dialogMode = DialogMode.CREATE;
@@ -35,6 +35,8 @@ public abstract class FacadeController<T> {
     protected List<T> filterList;
     protected T selectedT;
     protected T newT;
+    protected String param;
+
     protected ResourceBundle bundle;
 
     //@PostConstruct
@@ -121,6 +123,7 @@ public abstract class FacadeController<T> {
         } else {
             edit();
         }
+        closeDialog();
     }
 
     public void create() {
@@ -189,20 +192,37 @@ public abstract class FacadeController<T> {
         this.newT = newT;
     }
 
-    public void closeDialog() {
-        System.out.println("---- closeDialog ----" + this.toString());
-        initListandNewT();
+    public String getParam() {
+        return param;
     }
+
+    public void setParam(String param) {
+        this.param = param;
+    }
+
+    
+    
+    public void closeDialog() {
+        //initListandNewT();
+        initNewT();        
+        System.out.println("----closeDialog----" + this.toString());
+    }    
 
     public void setEdit() {
         newT = selectedT;
         dialogMode = DialogMode.EDIT;
+        System.out.println("--------param=" + param);
+        
+        //RequestContext requestContext = RequestContext.getCurrentInstance();  
+        //requestContext.update("createContactForm");
     }
-    
+
     public String getDialogTitle() {
         return dialogMode == DialogMode.CREATE
                 ? bundle.getString("New")
                 : bundle.getString("Edit");
 
     }
+    
+    
 }

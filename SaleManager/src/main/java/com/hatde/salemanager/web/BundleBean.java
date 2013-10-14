@@ -6,6 +6,7 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
+import org.primefaces.context.RequestContext;
 
 /**
  *
@@ -15,7 +16,8 @@ import javax.inject.Named;
 @SessionScoped
 public class BundleBean implements Serializable {
 
-    private ResourceBundle bundle;
+    private ResourceBundle bundle;    
+    
 
     @PostConstruct
     public void init() {
@@ -28,5 +30,17 @@ public class BundleBean implements Serializable {
 
     public void setBundle(ResourceBundle bundle) {
         this.bundle = bundle;
+    }
+    
+    /*public void updateClient(){        
+        FacesContext context = FacesContext.getCurrentInstance();
+        Map map = context.getExternalContext().getRequestParameterMap();
+        String updateString = (String) map.get("updateString");
+        System.out.println("--------------updateClient: " + updateString);
+    }*/
+    
+    public void updateClient(final String updateString){        
+        System.out.println("--------------updateClient: " + updateString);
+        RequestContext.getCurrentInstance().update(updateString);
     }
 }

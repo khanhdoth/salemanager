@@ -9,7 +9,7 @@
             <p:submenu label="#{bundle.ModuleStockOut}">  
                 <p:menuitem value="#{bundle.StockOut_NewStockOut}" icon="ui-icon-document" onclick="wDlgSale.show()" /> 
                 <p:menuitem value="#{bundle.StockOut_StockOutList}" icon="ui-icon-document" 
-                            onclick="wDlgSaleList.show()" action="#{stockOutController.refreshList}" 
+                            onclick="wDlgSaleList. wDlgSaleList.show()" action="#{stockOutController.refreshList}" 
                             update=":saleListForm:iStockOutTable" />
             </p:submenu>  
 
@@ -39,7 +39,7 @@
             </p:submenu>  
 
             <p:submenu label="#{bundle.ModuleContact}" >  
-                <p:menuitem value="#{bundle.Contact_NewContact}" icon="ui-icon-document" onclick="wDlgContact.show()" />  
+                <p:menuitem value="#{bundle.Contact_NewContact}" icon="ui-icon-document" onclick="jDlgContact.show()" />  
                 <p:menuitem value="#{bundle.Contact_ContactList}" icon="ui-icon-document" 
                             onclick="wDlgContactList.show()" action="#{contactController.refreshList}" 
                             update=":ContactListForm:iContactTable" /> 
