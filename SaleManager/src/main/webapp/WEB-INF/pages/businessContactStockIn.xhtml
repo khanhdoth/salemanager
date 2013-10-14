@@ -5,27 +5,27 @@
     xmlns:p="http://primefaces.org/ui"
     xmlns:f="http://xmlns.jcp.org/jsf/core">
 
-    <p:dataTable id="iStockOutTable" var="item" value="#{contactController.viewT.listOfBuy}" 
-                 widgetVar="wContactStockOutTable" rowKey="#{item.productTransactionId}" scrollable="true" scrollHeight="400"
-                 emptyMessage="No stockOut found with given criteria" 
-                 filteredValue="#{stockOutController.filterList}"                                 
+    <p:dataTable id="iStockInTable" var="item" value="#{contactController.viewT.listOfSale}" 
+                 widgetVar="wContactStockInTable" rowKey="#{item.productTransactionId}" scrollable="true" scrollHeight="400"
+                 emptyMessage="No stockIn found with given criteria" 
+                 filteredValue="#{stockInController.filterList}"                                 
                  resizableColumns="true" liveResize="true" >   
         <f:facet name="header">  
             <p:outputPanel style="text-align:left"> 
-                <p:commandButton id="createButton" update=":createSaleForm:iDlgSale" icon="ui-icon-circle-plus" title="#{bundle.AddNewItem}" oncomplete="wDlgSale.show()">
-                    <f:setPropertyActionListener value="#{contactController.viewT}" target="#{stockOutController.newT.contact}" />  
+                <p:commandButton id="createButton" update=":createBuyForm:iDlgBuy" icon="ui-icon-circle-plus" title="#{bundle.AddNewItem}" oncomplete="wDlgBuy.show()">
+                    <f:setPropertyActionListener value="#{contactController.viewT}" target="#{stockInController.newT.contact}" />  
                 </p:commandButton> 
             </p:outputPanel>
         </f:facet>
 
         <p:column style="width:52px" exportable="false">  
-            <p:commandButton id="deleteButton" update="iStockOutTable, :mainForm:messages" action="#{stockOutController.delete}" icon="ui-icon-trash" title="#{bundle.Delete}" >  
+            <p:commandButton id="deleteButton" update="iStockInTable, :mainForm:messages" action="#{stockInController.delete}" icon="ui-icon-trash" title="#{bundle.Delete}" >  
                 <p:confirm header="#{bundle.Confirmation}" message="#{bundle.Delete_Confirm_Message}" icon="ui-icon-alert" />  
-                <f:setPropertyActionListener value="#{item}" target="#{stockOutController.selectedT}" />  
+                <f:setPropertyActionListener value="#{item}" target="#{stockInController.selectedT}" />  
             </p:commandButton> 
-            <p:commandButton id="editButton" update=":createSaleForm:iDlgSale" action="#{stockOutController.setEdit}" 
-                             icon="ui-icon-search" title="#{bundle.Edit}" oncomplete="wDlgSale.show()" >                                  
-                <f:setPropertyActionListener value="#{item}" target="#{stockOutController.selectedT}" />  
+            <p:commandButton id="editButton" update=":createBuyForm:iDlgBuy" action="#{stockInController.setEdit}" 
+                             icon="ui-icon-search" title="#{bundle.Edit}" oncomplete="wDlgBuy.show()" >                                  
+                <f:setPropertyActionListener value="#{item}" target="#{stockInController.selectedT}" />  
             </p:commandButton> 
         </p:column> 
 

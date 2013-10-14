@@ -18,6 +18,7 @@ import javax.inject.Named;
 @SessionScoped
 public class ContactController extends FacadeController<Contact> implements Serializable {
     private Contact viewT = new Contact();
+    private final String updateReportString = "iPGBusinessContactList, :businessContactForm:apContactDetail:iStockOutTable, :businessContactForm:apContactDetail:iStockInTable";
 
     @EJB
     private ContactFacadeREST bean;
@@ -52,6 +53,10 @@ public class ContactController extends FacadeController<Contact> implements Seri
 
     }
 
+    public String getUpdateReportString() {
+        return updateReportString;
+    }
+    
     public double getBusinessStockInAmount() {
         if (list == null) {
             return 0;

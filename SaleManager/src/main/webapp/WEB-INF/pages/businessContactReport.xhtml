@@ -6,12 +6,13 @@
     xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <h:form id="businessContactForm" onkeypress="return event.keyCode != 13;">        
-        <p:remoteCommand name="updateDialog" action="#{contactController.hello}" update="iPGBusinessContactList, :businessContactForm:apContactDetail:iStockOutTable"/>
+        <p:remoteCommand name="updateDialog" action="#{contactController.hello}" 
+                         update="#{contactController.updateReportString}"/>
         <p:dialog id="iDlgBusinessContactList" widgetVar="wDlgBusinessContactList" onShow="updateDialog()">   
             <f:facet name="header">  
                 <h:outputLabel value="#{bundle.ReportContact}" />  
                 <p:spacer width="10"/>
-                <p:commandButton id="refreshButton2" update="iPGBusinessContactList, :businessContactForm:apContactDetail:iStockOutTable"
+                <p:commandButton id="refreshButton2" update="#{contactController.updateReportString}"
                                  action="#{contactController.refreshViewT}" icon="ui-icon-refresh" title="#{bundle.Reresh}" /> 
             </f:facet>
             <p:panelGrid id="iPGBusinessContactList" style="width: 100%">
@@ -30,7 +31,7 @@
                                          filter="true" filterMatchMode="contains" required="true">                              
                             <f:selectItem itemLabel="#{bundle.SelectOne}" itemValue="" />  
                             <f:selectItems value="#{contactController.listOne}" var="c" itemLabel="#{c.contactId} - #{c.name}" itemValue="#{c}"/>  
-                            <p:ajax update="iPGBusinessContactList, :businessContactForm:apContactDetail:iStockOutTable"/>
+                            <p:ajax update="#{contactController.updateReportString}"/>
 
                             <p:column style="width:15px"> #{p.contactId} </p:column>
                             <p:column> #{p.name} </p:column>
@@ -101,11 +102,12 @@
                     <ui:include src="/WEB-INF/pages/businessContactStockOut.xhtml" />
                 </p:tab>  
                 <p:tab title="#{bundle.ModuleReceipt}">  
-
                 </p:tab>  
-                <p:tab title="#{bundle.ModuleStockIn}">  
 
+                <p:tab title="#{bundle.ModuleStockIn}">  
+                    <ui:include src="/WEB-INF/pages/businessContactStockIn.xhtml" />
                 </p:tab>
+
                 <p:tab title="#{bundle.ModulePayment}">  
 
                 </p:tab>  
