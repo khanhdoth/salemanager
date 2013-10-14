@@ -18,7 +18,7 @@ import javax.inject.Named;
 @SessionScoped
 public class ContactController extends FacadeController<Contact> implements Serializable {
     private Contact viewT = new Contact();
-    private final String updateReportString = ":businessContactForm:iPGBusinessContactList, :businessContactForm:apContactDetail:iStockOutTable, :businessContactForm:apContactDetail:iStockInTable, :businessContactForm:apContactDetail:iPaymentTable";
+    private final String updateReportString = ":businessContactForm:iPGBusinessContactList, :businessContactForm:apContactDetail:iStockOutTable, :businessContactForm:apContactDetail:iStockInTable, :businessContactForm:apContactDetail:iPaymentTable, :businessContactForm:apContactDetail:iReceiptTable";
 
     @EJB
     private ContactFacadeREST bean;
