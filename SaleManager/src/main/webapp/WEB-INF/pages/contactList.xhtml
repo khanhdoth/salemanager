@@ -30,8 +30,8 @@
                         <p:confirm header="#{bundle.Confirmation}" message="#{bundle.Delete_Confirm_Message}" icon="ui-icon-alert" />  
                         <f:setPropertyActionListener value="#{item}" target="#{contactController.selectedT}" />  
                     </p:commandButton>
-                    <p:commandButton id="editButton" action="#{contactController.setEdit}" 
-                                     icon="ui-icon-search" title="#{bundle.Edit}" oncomplete="jDlgContact.show()" >                                  
+                    <p:commandButton id="editButton" update=":createContactForm:iDlgContact" action="#{contactController.setEdit}" 
+                                     icon="ui-icon-search" title="#{bundle.Edit}" oncomplete="wDlgContact.show()" >                                  
                         <f:setPropertyActionListener value="#{item}" target="#{contactController.selectedT}" />                          
                     </p:commandButton> 
                 </p:column> 

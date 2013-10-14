@@ -205,16 +205,11 @@ public abstract class FacadeController<T> {
     public void closeDialog() {
         //initListandNewT();
         initNewT();        
-        System.out.println("----closeDialog----" + this.toString());
     }    
 
     public void setEdit() {
         newT = selectedT;
         dialogMode = DialogMode.EDIT;
-        System.out.println("--------param=" + param);
-        
-        //RequestContext requestContext = RequestContext.getCurrentInstance();  
-        //requestContext.update("createContactForm");
     }
 
     public String getDialogTitle() {

@@ -6,12 +6,9 @@
     xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <h:form id="createContactForm" onkeypress="return event.keyCode != 13;">
-        <p:dialog id="iDlgContact" widgetVar="wDlgContact" modal="true" onHide="jDlgContact.onHide()">              
-            <p:ajax event="close" listener="#{contactController.closeDialog}"/>
+        <p:dialog id="iDlgContact" header="#{contactController.dialogTitle}" widgetVar="wDlgContact" modal="true" onHide="jDlgContact.onHide()">              
+            <p:ajax event="close" update=":createContactForm:iDlgContact" listener="#{contactController.closeDialog}"/>
             
-            <f:facet name="header">
-                <h:outputText id="hdContact" value="#{contactController.dialogTitle}" />
-            </f:facet>
             <h:panelGrid id="pgContact" columns="2" cellpadding="5">  
                 <h:outputLabel value="#{bundle.Contact_Name}" />  
                 <p:inputText id="iName" value="#{contactController.newT.name}" />  
@@ -38,7 +35,7 @@
                                  onclick="saveContactButton.disable()"
                                  actionListener="#{contactController.createOrEdit}" 
                                  update="iDlgContact, :ContactListForm:iContactTable, :mainForm:messages" 
-                                 oncomplete="saveContactButton.enable(); jDlgContact.hide()" />  
+                                 oncomplete="saveContactButton.enable(); wDlgContact.hide()" />  
 
             </h:panelGrid>  
         </p:dialog>

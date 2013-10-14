@@ -39,7 +39,7 @@
             </p:submenu>  
 
             <p:submenu label="#{bundle.ModuleContact}" >  
-                <p:menuitem value="#{bundle.Contact_NewContact}" icon="ui-icon-document" oncomplete="jDlgContact.show()" />  
+                <p:menuitem value="#{bundle.Contact_NewContact}" icon="ui-icon-document" onclick="wDlgContact.show()" />  
                 <p:menuitem value="#{bundle.Contact_ContactList}" icon="ui-icon-document" 
                             onclick="wDlgContactList.show()" action="#{contactController.refreshList}" 
                             update=":ContactListForm:iContactTable" /> 
