@@ -28,14 +28,10 @@ function MyDialog(iDialog){
     function hide(){        
         dialog.hide();
         isOpen = false;
-        //alert('hide: ' +  this.isOpen);
     }   
     
     this.updateDialog=updateDialog;
     function updateDialog(){        
-        //rcUpdateClient();
-        //alert('updateDialog: ' +  updateString + " isOpen" + isOpen);
         ercUpdateString(updateString);
-    }   
-    
+    }
 }

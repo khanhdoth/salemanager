@@ -7,8 +7,6 @@
 
     <h:form id="mainForm" onkeypress="return event.keyCode != 13;">                
         <!-- remote commands -->        
-        <p:remoteCommand name="rcUpdateClient" actionListener="#{bundleBean.updateClient}"/>
-
         <pe:remoteCommand id="iUpdateString" name="ercUpdateString" process="@this" actionListener="#{bundleBean.updateClient}">  
             <pe:methodSignature parameters="java.lang.String" />  
             <pe:methodParam name="updateString"/>  
