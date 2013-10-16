@@ -1,0 +1,32 @@
+<FormDiagram appType="1" animation="Tower/TowerOfHanoi.swf" runAnimation="1" runTest="0" disableAusgabe="1" maxFunctionCalled="10" maxInstruction="20" maxIf="1" maxWhile="0">
+  <Diagram dName="hanoi" dX="5" dY="10" tip="Aufruf der Funktion für anzahlRinge Ringe, die von „start“ nach „ziel“ über „über“ transportiert werden" internal="0">
+    <param>
+      <v name="anzahlRinge" tip="anzahl Ringe" combo="1" min="3" max="6" default="4" x="100" y="0" alias="Transportiere die Ringe von ? nach ?  :"/>
+      <v name="start" tip="Start Stapel" combo="2" x="150" y="0" alias="start"/>
+      <v name="ziel" tip="Ziel Stapel" combo="2" x="250" y="0" alias="ziel"/>
+      <v name="über" tip="Über Stapel" combo="2" x="350" y="0" alias="über"/>
+    </param>
+    <variable>
+    </variable>
+    <_do>
+      <if condition="anzahlRinge=1" tip="Es wird geprüft, ob der oberste Ring des Stapels an der Reihe ist." tipTrue="Die Rekursion ist beim obersten Ring angekommen." tipFalse="Die Rekursion hat die Abbruchbedingung nicht erreicht. Es ist ein Turm von mindestens 2 Ringen zu bewegen." unmodifiable="0" uiT="0" uiB="0">
+        <_true>
+          <instruction i="bewege Ring von start nach ziel" isText="1" tip="Der oberste Ring des Stapels „start“ wird nach „ziel“ befördert" unmodifiable="0" uiT="0" uiB="0"/>
+        </_true>
+        <_false>
+          <instruction i="hanoi(anzahlRinge - 1, start, über, ziel)" tip="Aufruf der Funktion hanoi für „anzahlRinge - 1“ Ringe, die von „start“ nach „über“ über „ziel“ transportiert werden." unmodifiable="0" uiT="0" uiB="0"/>
+          <instruction i="bewege Ring von start nach ziel" isText="1" tip="Der oberste Ring des Stapels „start“ wird nach „ziel“ befördert" unmodifiable="0" uiT="0" uiB="0"/>
+          <instruction i="hanoi(anzahlRinge - 1, über, ziel, start)" tip="Aufruf der Funktion hanoi für „anzahlRinge - 1“ Ringe, die von „über“ nach „ziel“ über „start“ transportiert werden." unmodifiable="0" uiT="0" uiB="0"/>
+        </_false>
+      </if>
+    </_do>
+  </Diagram>
+  <Diagram dName="bewegeRing" dX="244" dY="8" tip="Move a ring from start to ziel" internal="1">
+    <param>
+      <v name="start" tip="" x="0" y="0" alias=""/>
+      <v name="ziel" tip="" x="0" y="0" alias=""/>
+    </param>
+    <variable/>
+    <_do/>
+  </Diagram>
+</FormDiagram>

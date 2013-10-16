@@ -1,0 +1,32 @@
+<FormDiagram animation="Schneckenhaus/Schneckenhaus.swf" runAnimation="1" runTest="1" disableAusgabe="1" maxFunctionCalled="10"  maxInstruction="20" maxIf="1" maxWhile="0">
+  <Diagram dName="schneckenhaus" dX="8" dY="11" tip="berechnet die Fläche des Schneckenhauses für die Zahl n" internal="0">
+    <param>
+      <v name="n" tip="Zahl für welche die Fläche des Fibonacci-Schneckenhauses berechnet werden soll" combo="1" min="1" max="7" default="5" x="180" y="0" alias="n ="/>
+    </param>
+    <variable>
+      <v name="flaeche" tip="Fläche des Fibonacci-Schneckenhauses"/>
+    </variable>
+    <_do>
+      <instruction i="Ausgabe flaeche" unmodifiable="1" uiB="1"/>
+    </_do>
+  </Diagram>
+  <Diagram dName="fibonacci" dX="244" dY="8" tip="berechnet die Fibonacci-Zahl für die Zahl n" internal="1">
+    <param>
+      <v name="n" tip=""/>
+    </param>
+    <variable/>
+    <_do/>
+  </Diagram>
+  <TestCase result="1">
+    <i value="1"/>
+  </TestCase>
+  <TestCase result="2">
+    <i value="2"/>
+  </TestCase>
+  <TestCase result="6">
+    <i value="3"/>
+  </TestCase>
+  <TestCase result="15">
+    <i value="4"/>
+  </TestCase>
+</FormDiagram>

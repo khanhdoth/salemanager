@@ -1,0 +1,34 @@
+<FormDiagram animation="VisitFriends/VisitFriends.swf" runAnimation="1" runTest="1" disableAusgabe="1" maxFunctionCalled="10" maxInstruction="20" maxIf="1" maxWhile="0">
+  <Diagram dName="besuche" dX="8" dY="10" tip="Ermittelt die Anzahl der Fahrtrouten, wenn Du besucheFreunde Freunde von insgesamt meineFreunde Freunden besuchst." internal="0">
+    <param>
+      <v name="meineFreunde" tip="Gesamtanzahl Deiner Freunde" combo="1" min="3" max="7" default="6" x="0" y="0" alias="meineFreunde ="/>
+      <v name="besucheFreunde" tip="Anzahl der besuchten Freunde" combo="1" min="1" max="7"  default="4" x="220" y="0" alias="besucheFreunde ="/>
+    </param>
+    <variable>
+      <v name="fahrtrouten" tip="Mögliche Fahrtrouten zu Deinen besuchten Freunden"/>
+    </variable>
+    <_do>
+      <if condition="besucheFreunde > 1">
+        <_true>
+          <instruction i="fahrtrouten := meineFreunde * besuche(meineFreunde-1, besucheFreunde-1)"/>
+        </_true>
+        <_false>
+          <instruction i="fahrtrouten := meineFreunde"/>
+        </_false>
+      </if>
+      <instruction i="Ausgabe fahrtrouten" unmodifiable="1" uiB="1"/>
+    </_do>
+  </Diagram>
+  <TestCase result="60">
+    <i value="5"/>
+    <i value="3"/>
+  </TestCase>
+  <TestCase result="2">
+    <i value="2"/>
+    <i value="1"/>
+  </TestCase>
+  <TestCase result="840">
+    <i value="7"/>
+    <i value="4"/>
+  </TestCase>
+</FormDiagram>
