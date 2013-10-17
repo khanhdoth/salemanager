@@ -5,9 +5,10 @@
     xmlns:p="http://primefaces.org/ui"
     xmlns:f="http://xmlns.jcp.org/jsf/core">
 
-    <h:form id="saleListForm" onkeypress="return event.keyCode != 13;">
-        <p:dialog id="iDlgSaleList" header="#{bundle.StockOut_StockOutList}" widgetVar="wDlgSaleList" position="bottom" >
-            
+    <h:form id="virtlabForm" onkeypress="return event.keyCode != 13;">
+        <p:dialog id="iVirtlab" header="Virtual Labor" widgetVar="wVirtlab" >            
+            <embed src="virtlab/virtlab_preload.swf" width="1000" height="600"/>
         </p:dialog>  
+        
     </h:form>            
 </ui:composition>

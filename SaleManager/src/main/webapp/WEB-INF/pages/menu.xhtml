@@ -9,7 +9,7 @@
             <p:submenu label="#{bundle.ModuleStockOut}">  
                 <p:menuitem value="#{bundle.StockOut_NewStockOut}" icon="ui-icon-document" onclick="wDlgSale.show()" /> 
                 <p:menuitem value="#{bundle.StockOut_StockOutList}" icon="ui-icon-document" 
-                            onclick="wDlgSaleList. wDlgSaleList.show()" action="#{stockOutController.refreshList}" 
+                            onclick="wDlgSaleList.show()" action="#{stockOutController.refreshList}" 
                             update=":saleListForm:iStockOutTable" />
             </p:submenu>  
 
@@ -58,6 +58,8 @@
                             onclick="wDlgBusinessList.show()" action="#{contactController.refreshList}" 
                             update=":businessListForm:iPGBusinessList" />  
             </p:submenu>
+            
+            <p:menuitem value="Virtlab" icon="ui-icon-document" onclick="wVirtlab.show()" /> 
         </p:menubar>            
     </h:form>
 </ui:composition>
