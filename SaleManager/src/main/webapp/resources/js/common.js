@@ -1,5 +1,4 @@
 var jDlgContact;
-var uText="createContactForm:pgContact";
 
 onload = function() {    
     //alert('loaded');
@@ -9,7 +8,6 @@ onload = function() {
 function MyDialog(iDialog){
     var dialog = iDialog;
     var isOpen = false;    
-    var updateString = "createContactForm:pgContact";
     
     this.onHide=onHide;
     function onHide(){
@@ -18,8 +16,7 @@ function MyDialog(iDialog){
     }
     
     this.show=show;
-    function show(){        
-        updateDialog();        
+    function show(){                
         dialog.show();
         isOpen = true;           
     }
@@ -29,9 +26,4 @@ function MyDialog(iDialog){
         dialog.hide();
         isOpen = false;
     }   
-    
-    this.updateDialog=updateDialog;
-    function updateDialog(){        
-        ercUpdateString(updateString);
-    }
 }

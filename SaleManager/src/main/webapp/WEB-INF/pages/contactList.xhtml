@@ -6,7 +6,7 @@
     xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <h:form id="ContactListForm" onkeypress="return event.keyCode != 13;">
-        <p:dialog id="iDlgContactList" header="#{bundle.Contact_ContactList}" widgetVar="wDlgContactList" position="bottom">
+        <p:dialog id="iDlgContactList" header="#{bundle.Contact_ContactList}" widgetVar="wDlgContactList">
             <p:dataTable id="iContactTable" var="item" value="#{contactController.list}" editable="true"
                          widgetVar="wContactTable" rowKey="#{item.contactId}" scrollable="true" scrollHeight="400"
                          emptyMessage="No contact found with given criteria" editMode="cell" 

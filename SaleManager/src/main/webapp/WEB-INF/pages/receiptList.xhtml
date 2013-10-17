@@ -6,7 +6,7 @@
     xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <h:form id="receiptListForm" onkeypress="return event.keyCode != 13;">
-        <p:dialog id="iDlgReceiptList" header="#{bundle.Receipt_ReceiptList}" widgetVar="wDlgReceiptList" position="bottom" >
+        <p:dialog id="iDlgReceiptList" header="#{bundle.Receipt_ReceiptList}" widgetVar="wDlgReceiptList">
             <p:dataTable id="iReceiptTable" var="item" value="#{receiptController.list}" editable="true"
                          widgetVar="wReceiptTable" rowKey="#{item.paymentTransactionId}" scrollable="true" scrollHeight="400"
                          emptyMessage="No receipt found with given criteria" editMode="cell" 

@@ -1,6 +1,8 @@
 package com.hatde.salemanager.web;
 
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import javax.annotation.PostConstruct;
@@ -17,8 +19,8 @@ import org.primefaces.context.RequestContext;
 @SessionScoped
 public class BundleBean implements Serializable {
     private ResourceBundle bundle;
-    private String updateString=":menuForm, :saleListForm, :buyListForm, :receiptListForm, :productListForm, :paymentListForm, :mainForm, :createSaleForm, :createBuyForm, :createReceiptForm, :createProductForm, :createPaymentForm, :createContactForm, :ContactListForm, :businessListForm, :businessContactForm";
-
+    private List updateStrings = Arrays.asList("menuForm", "saleListForm", "buyListForm", "receiptListForm", "productListForm", "paymentListForm", "mainForm", "createSaleForm", "createBuyForm", "createReceiptForm", "createProductForm", "createPaymentForm", "createContactForm", "ContactListForm", "businessListForm", "businessContactForm");
+    
     @PostConstruct
     public void init() {
         bundle = ResourceBundle.getBundle("lang", FacesContext.getCurrentInstance().getViewRoot().getLocale());
@@ -32,26 +34,20 @@ public class BundleBean implements Serializable {
         this.bundle = bundle;
     }
 
-    public String getUpdateString() {
-        return updateString;
-    }
-
-    public void setUpdateString(String updateString) {
-        this.updateString = updateString;
-    }    
-    
-    public void updateClient(final String updateString) {
-        RequestContext.getCurrentInstance().update(updateString);
-    }
-
     public void changeLanguageVI() {
-        FacesContext.getCurrentInstance().getViewRoot().setLocale(new Locale("vi"));
-        init();
+        setLanguage("vi");
     }
 
     public void changeLanguageEN() {
-        FacesContext.getCurrentInstance().getViewRoot().setLocale(new Locale("en"));
-        init();
+        setLanguage("en");
     }
 
+    public void setLanguage(String language) {
+        String currentLanguage = FacesContext.getCurrentInstance().getViewRoot().getLocale().getLanguage();
+        if(!currentLanguage.equals(language)){
+            FacesContext.getCurrentInstance().getViewRoot().setLocale(new Locale(language));
+            init();                        
+            RequestContext.getCurrentInstance().update(updateStrings);
+        }       
+    }
 }

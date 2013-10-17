@@ -6,7 +6,7 @@
     xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <h:form id="menuForm">
-        <p:menubar autoDisplay="false">                       
+        <p:menubar>                       
             <p:submenu label="#{bundle.ModuleStockOut}">  
                 <p:menuitem value="#{bundle.StockOut_NewStockOut}" icon="ui-icon-document" onclick="wDlgSale.show()" /> 
                 <p:menuitem value="#{bundle.StockOut_StockOutList}" icon="ui-icon-document" 
@@ -61,12 +61,12 @@
             </p:submenu>
 
             <f:facet name="options">
-                <p:commandLink id="lgVN" update="#{bundleBean.updateString}" actionListener="#{bundleBean.changeLanguageVI}">  
-                    <h:outputText value="VN" title="Tiếng Việt"/>  
+                <p:commandLink id="lgVN" actionListener="#{bundleBean.changeLanguageVI}">                      
+                    <h:graphicImage value="images/vn.png" title="Tiếng Việt"/>                      
                 </p:commandLink> 
-                <p:spacer width="10"/>
-                <p:commandLink id="lgEN" update="#{bundleBean.updateString}" actionListener="#{bundleBean.changeLanguageEN}">  
-                    <h:outputText value="EN" title="English"/>  
+                <p:spacer width="5"/>
+                <p:commandLink id="lgEN" actionListener="#{bundleBean.changeLanguageEN}">                      
+                    <h:graphicImage value="images/us.png" title="English"/>                     
                 </p:commandLink> 
             </f:facet>
         </p:menubar>            

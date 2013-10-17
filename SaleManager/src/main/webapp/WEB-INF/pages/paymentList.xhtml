@@ -6,7 +6,7 @@
     xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <h:form id="paymentListForm" onkeypress="return event.keyCode != 13;">
-        <p:dialog id="iDlgPaymentList" header="#{bundle.Payment_PaymentList}" widgetVar="wDlgPaymentList" position="bottom" >
+        <p:dialog id="iDlgPaymentList" header="#{bundle.Payment_PaymentList}" widgetVar="wDlgPaymentList">
             <p:dataTable id="iPaymentTable" var="item" value="#{paymentController.list}" editable="true"
                          widgetVar="wPaymentTable" rowKey="#{item.paymentTransactionId}" scrollable="true" scrollHeight="400"
                          emptyMessage="No payment found with given criteria" editMode="cell" 
