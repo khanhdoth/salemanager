@@ -12,6 +12,7 @@
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <glassfish.embedded-static-shell.jar>C:\glassfish4\glassfish\lib\embedded\glassfish-embedded-static-shell.jar</glassfish.embedded-static-shell.jar>
     </properties>
     
     <dependencies>
@@ -34,6 +35,13 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>org.glassfish.main.extras</groupId>
+            <artifactId>glassfish-embedded-static-shell</artifactId>
+            <version>4.0</version>
+            <scope>system</scope>
+            <systemPath>${glassfish.embedded-static-shell.jar}</systemPath>
+        </dependency>
+        <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-web-api</artifactId>
             <version>7.0</version>
@@ -49,17 +57,6 @@
             <artifactId>primefaces-extensions</artifactId>
             <version>1.0.0.RC1</version>
         </dependency>    
-        
-        <dependency>
-            <groupId>org.glassfish.extras</groupId>
-            <artifactId>glassfish-embedded-static-shell</artifactId>
-            <version>${project.version}</version>
-            <scope>system</scope>
-            <systemPath>
-                C:\glassfish4\glassfish\lib\embedded\glassfish-embedded-static-shell.jar
-            </systemPath>
-        </dependency>
-        
         <dependency>
             <groupId>com.lowagie</groupId>
             <artifactId>itext</artifactId>
