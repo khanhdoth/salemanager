@@ -77,7 +77,7 @@ public class ContactFacadeRESTTest {
         assertTrue(entity.equals(entity2));
         
         List listContact = instance.findAll();                
-        assertTrue(listContact.size()>0);
+        assertTrue(listContact.size()==0);
         System.out.println("list size: " + listContact.size());
         
     }
