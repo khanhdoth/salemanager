@@ -27,3 +27,12 @@ function MyDialog(iDialog){
         isOpen = false;
     }   
 }
+
+function start() {  
+    statusDialog.show();  
+}  
+  
+function stop() {  
+    statusDialog.hide();  
+}  
+    

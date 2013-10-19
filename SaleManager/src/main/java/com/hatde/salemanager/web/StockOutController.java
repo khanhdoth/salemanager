@@ -38,6 +38,9 @@ public class StockOutController extends FacadeController<Sale> implements Serial
     @Inject
     private BundleBean bundleBean;
 
+    @Inject
+    private ReportBean reportBean;
+    
     @PostConstruct
     public void init() {
         super.init(Sale.class);
@@ -96,6 +99,10 @@ public class StockOutController extends FacadeController<Sale> implements Serial
 
     public void addSaleItem() {
         newT.getListOfSaleItem().add(new SaleItem());
+    }
+
+    public void print() {
+        reportBean.createStockOutForm(selectedT);
     }
 
     @Override
