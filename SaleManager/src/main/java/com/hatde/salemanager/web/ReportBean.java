@@ -10,6 +10,7 @@ import java.io.FileNotFoundException;
 import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
@@ -27,8 +28,10 @@ import org.docx4j.openpackaging.exceptions.Docx4JException;
 import org.docx4j.openpackaging.exceptions.InvalidFormatException;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
 import org.docx4j.openpackaging.parts.WordprocessingML.MainDocumentPart;
+import org.docx4j.wml.ContentAccessor;
 import org.docx4j.wml.ObjectFactory;
 import org.docx4j.wml.P;
+import org.docx4j.wml.R;
 import org.docx4j.wml.Tbl;
 import org.docx4j.wml.Tc;
 import org.docx4j.wml.Text;
@@ -119,12 +122,19 @@ public class ReportBean implements Serializable {
                 Tr cRow = (Tr) rows.get(rowIndex);
                 List cols = cRow.getContent();
 
-                fillCellContent(wordMLPackage, cols, 0, customFormatNumber(quantityFormat, si.getQuantity()));
-                fillCellContent(wordMLPackage, cols, 1, si.getProduct().getName());
-                fillCellContent(wordMLPackage, cols, 3, customFormatNumber(amountFormat, si.getPrice()));
-                fillCellContent(wordMLPackage, cols, 4, customFormatNumber(percentFormat, si.getDiscount() / 100));
-                fillCellContent(wordMLPackage, cols, 5, customFormatNumber(amountFormat, si.getAmount()));
+                Hashtable<String, String> tableFill = new Hashtable<>();
+                tableFill.put("=Quantity", customFormatNumber(quantityFormat, si.getQuantity()));
+                tableFill.put("=ItemName", si.getProduct().getName());
+                tableFill.put("=Price", customFormatNumber(amountFormat, si.getPrice()));
+                tableFill.put("=Discount", customFormatNumber(percentFormat, si.getDiscount() / 100));
+                tableFill.put("=LineTotal", customFormatNumber(amountFormat, si.getAmount()));
+                fillRowContent(wordMLPackage, cols, tableFill);
 
+                /*fillCellContent(wordMLPackage, cols, 0, customFormatNumber(quantityFormat, si.getQuantity()));
+                 fillCellContent(wordMLPackage, cols, 1, si.getProduct().getName());
+                 fillCellContent(wordMLPackage, cols, 3, customFormatNumber(amountFormat, si.getPrice()));
+                 fillCellContent(wordMLPackage, cols, 4, customFormatNumber(percentFormat, si.getDiscount() / 100));
+                 fillCellContent(wordMLPackage, cols, 5, customFormatNumber(amountFormat, si.getAmount()));*/
                 rowIndex++;
             }
             ((JAXBElement) list.get(tableIndex)).setValue(dataTable);
@@ -141,12 +151,13 @@ public class ReportBean implements Serializable {
                 t.setValue(targetString != null ? targetString : "---");
             }
 
-            //String outFile = bundleBean.getBundle().getString("PathSalesOrderResult") + ".docx";
+            //Save to temporary file
             String outFileName = "temp" + (new Random()).nextInt(100000000) + ".docx";
             System.out.println("*************** outFile=" + outFileName);
             File outFile = new File(outFileName);
             wordMLPackage.save(outFile);
 
+            //Prepare file to download
             InputStream stream = new FileInputStream(outFile);
             stockOutFile = new DefaultStreamedContent(stream, "application/docx", bundleBean.getBundle().getString("SalesOrderDownloadName") + sale.getProductTransactionId() + ".docx");
             outFile.deleteOnExit();
@@ -154,13 +165,7 @@ public class ReportBean implements Serializable {
             /*PdfConversion c = new Conversion(wordMLPackage);
              OutputStream out = new FileOutputStream(bundleBean.getBundle().getString("PathSalesOrderResult") + ".pdf");
              c.output(out, new PdfSettings() );*/
-        } catch (InvalidFormatException ex) {
-            Logger.getLogger(ReportBean.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (Docx4JException ex) {
-            Logger.getLogger(ReportBean.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (JAXBException ex) {
-            Logger.getLogger(ReportBean.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (FileNotFoundException ex) {
+        } catch (Exception ex) {
             Logger.getLogger(ReportBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -179,6 +184,42 @@ public class ReportBean implements Serializable {
         Tc colnew = (Tc) XmlUtils.deepCopy(col);
         colnew.getContent().add(wordMLPackage.getMainDocumentPart().createParagraphOfText(content));
         ((JAXBElement) cols.get(colIndex)).setValue(colnew);
+    }
+
+    public void fillRowContent(WordprocessingMLPackage wordMLPackage, List cols, Hashtable<String, String> tableFill) {
+        for (Object cell : cols) {
+            List texts = getAllElementFromObject(cell, Text.class);
+            for (Object text : texts) {
+                Text cellText = (Text) text;                
+                String targetString = tableFill.get(cellText.getValue());
+                cellText.setValue(targetString != null ? targetString : "---");
+            }
+            int a = 0;
+        }
+        /*
+         Text cellText = (Text) ((JAXBElement) ((R) (((P) (((Tc) ((JAXBElement) cell).getValue()).getContent().get(0))).getContent().get(0))).getContent().get(0)).getValue();
+         Tc col = (Tc) ((JAXBElement) cols.get(colIndex)).getValue();
+         Tc colnew = (Tc) XmlUtils.deepCopy(col);
+         colnew.getContent().add(wordMLPackage.getMainDocumentPart().createParagraphOfText(content));
+         ((JAXBElement) cols.get(colIndex)).setValue(colnew);*/
+    }
+
+    public List<Object> getAllElementFromObject(Object obj, Class<?> toSearch) {
+        List<Object> result = new ArrayList<Object>();
+        if (obj instanceof JAXBElement) {
+            obj = ((JAXBElement<?>) obj).getValue();
+        }
+
+        if (obj.getClass().equals(toSearch)) {
+            result.add(obj);
+        } else if (obj instanceof ContentAccessor) {
+            List<?> children = ((ContentAccessor) obj).getContent();
+            for (Object child : children) {
+                result.addAll(getAllElementFromObject(child, toSearch));
+            }
+
+        }
+        return result;
     }
 
     public String customFormatNumber(String pattern, double value) {
