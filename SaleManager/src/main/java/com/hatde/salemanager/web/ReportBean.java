@@ -19,6 +19,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
+import org.docx4j.XmlUtils;
 import org.docx4j.jaxb.Context;
 import org.docx4j.openpackaging.exceptions.Docx4JException;
 import org.docx4j.openpackaging.exceptions.InvalidFormatException;
@@ -135,7 +136,8 @@ public class ReportBean implements Serializable {
             //Get table
             xpath = "//w:tbl";
             list = mdp.getJAXBNodesViaXPath(xpath, false);
-            Tbl dataTable = (Tbl) ((JAXBElement) list.get(3)).getValue();
+            int tableIndex = Integer.parseInt(bundleBean.getBundle().getString("SalesOrderTableIndex"));
+            Tbl dataTable = (Tbl) ((JAXBElement) list.get(tableIndex)).getValue();
             List rows = dataTable.getContent();
             Tr row1 = (Tr) rows.get(1);
 
@@ -144,7 +146,8 @@ public class ReportBean implements Serializable {
             int rowNumnerToFill = sale.getListOfSaleItem().size();
             if(rowNumber < rowNumnerToFill){
                 for(int i=0; i< rowNumnerToFill-rowNumber; i++){
-                    rows.add(1, row1);
+                    Tr tableRow = (Tr)  XmlUtils.deepCopy(row1);
+                    rows.add(1, tableRow);
                 }
             }            
             
@@ -176,7 +179,7 @@ public class ReportBean implements Serializable {
                 rowIndex++;
             }
             
-            ((JAXBElement) list.get(3)).setValue(dataTable);
+            ((JAXBElement) list.get(tableIndex)).setValue(dataTable);
 
             String outFile = bundleBean.getBundle().getString("PathSalesOrderResult") + ".docx";
             wordMLPackage.save(new java.io.File(outFile));
@@ -197,7 +200,7 @@ public class ReportBean implements Serializable {
             Logger.getLogger(ReportBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
     public Tc createCellContent(WordprocessingMLPackage wordMLPackage, Tc colToReplace, String content) {
         Tc tableCell = factory.createTc();
         tableCell.getContent().add(
