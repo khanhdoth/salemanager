@@ -6,13 +6,12 @@ import com.hatde.salemanager.entities.SaleItem;
 import java.io.File;
 import java.io.InputStream;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 import java.util.logging.Level;
@@ -21,17 +20,14 @@ import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.xml.bind.JAXBElement;
-import javax.xml.bind.JAXBException;
 import org.docx4j.XmlUtils;
 import org.docx4j.jaxb.Context;
 import org.docx4j.openpackaging.exceptions.Docx4JException;
-import org.docx4j.openpackaging.exceptions.InvalidFormatException;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
 import org.docx4j.openpackaging.parts.WordprocessingML.MainDocumentPart;
 import org.docx4j.wml.ContentAccessor;
 import org.docx4j.wml.ObjectFactory;
 import org.docx4j.wml.P;
-import org.docx4j.wml.R;
 import org.docx4j.wml.Tbl;
 import org.docx4j.wml.Tc;
 import org.docx4j.wml.Text;
@@ -74,7 +70,7 @@ public class ReportBean implements Serializable {
     public void createStockOutForm(Sale sale) {
         try {
             // create hastable for single variables to fill
-            Hashtable<String, String> variableFill = new Hashtable<>();
+            HashMap<String, String> variableFill = new HashMap<>();
             variableFill.put("=SID", Integer.toString(sale.getProductTransactionId()));
             variableFill.put("=DATE", customFormatDate(sale.getDate()));
             variableFill.put("=Contact Name", sale.getContact().getName());
@@ -122,19 +118,14 @@ public class ReportBean implements Serializable {
                 Tr cRow = (Tr) rows.get(rowIndex);
                 List cols = cRow.getContent();
 
-                Hashtable<String, String> tableFill = new Hashtable<>();
+                HashMap<String, String> tableFill = new HashMap<>();
                 tableFill.put("Quantity", customFormatNumber(quantityFormat, si.getQuantity()));
                 tableFill.put("ItemName", si.getProduct().getName());
                 tableFill.put("Price", customFormatNumber(amountFormat, si.getPrice()));
                 tableFill.put("Discount", customFormatNumber(percentFormat, si.getDiscount() / 100));
                 tableFill.put("LineTotal", customFormatNumber(amountFormat, si.getAmount()));
+                
                 fillRowContent(wordMLPackage, cols, tableFill);
-
-                /*fillCellContent(wordMLPackage, cols, 0, customFormatNumber(quantityFormat, si.getQuantity()));
-                 fillCellContent(wordMLPackage, cols, 1, si.getProduct().getName());
-                 fillCellContent(wordMLPackage, cols, 3, customFormatNumber(amountFormat, si.getPrice()));
-                 fillCellContent(wordMLPackage, cols, 4, customFormatNumber(percentFormat, si.getDiscount() / 100));
-                 fillCellContent(wordMLPackage, cols, 5, customFormatNumber(amountFormat, si.getAmount()));*/
                 rowIndex++;
             }
             ((JAXBElement) list.get(tableIndex)).setValue(dataTable);
@@ -186,28 +177,26 @@ public class ReportBean implements Serializable {
         ((JAXBElement) cols.get(colIndex)).setValue(colnew);
     }
 
-    public void fillRowContent(WordprocessingMLPackage wordMLPackage, List cols, Hashtable<String, String> tableFill) {
+    public void fillRowContent(WordprocessingMLPackage wordMLPackage, List cols, HashMap<String, String> tableFill) {
         for (Object cell : cols) {
-            List texts = getAllElementFromObject(cell, Text.class);
-            for (Object text : texts) {
-                Text cellText = (Text) text;
+            List<Text> texts = getAllElementFromObject(cell, Text.class);
+            for (Text cellText : texts) {                
                 String targetString = tableFill.get(cellText.getValue());
                 cellText.setValue(targetString != null ? targetString : "---");
-            }
-            int a = 0;
-        }        
+            }            
+        }
     }
 
-    public List<Object> getAllElementFromObject(Object obj, Class<?> toSearch) {
-        List<Object> result = new ArrayList<Object>();
+    public <T> List<T> getAllElementFromObject(Object obj, Class<T> toSearch) {
+        List<T> result = new ArrayList<>();
         if (obj instanceof JAXBElement) {
             obj = ((JAXBElement<?>) obj).getValue();
         }
 
         if (obj.getClass().equals(toSearch)) {
-            result.add(obj);
+            result.add((T) obj);
         } else if (obj instanceof ContentAccessor) {
-            List<?> children = ((ContentAccessor) obj).getContent();
+            List children = ((ContentAccessor) obj).getContent();
             for (Object child : children) {
                 result.addAll(getAllElementFromObject(child, toSearch));
             }
@@ -227,9 +216,6 @@ public class ReportBean implements Serializable {
 
     public StreamedContent getStockOutFile() {
         createStockOutForm(stockOutController.getSelectedT());
-        //InputStream stream = ((ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext()).getResourceAsStream("/images/loading.gif");
-        //stockOutFile = new DefaultStreamedContent(stream, "image/gif", "loading.gif");
-
         return stockOutFile;
     }
 }
