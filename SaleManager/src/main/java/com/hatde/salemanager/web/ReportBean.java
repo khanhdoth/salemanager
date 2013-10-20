@@ -48,6 +48,7 @@ public class ReportBean implements Serializable {
 
     private String amountFormat = "#,##0";
     private String quantityFormat = "#,##0.##";
+    private String percentFormat = "#.##%";
     private StreamedContent stockOutFile;
     private ObjectFactory factory;    
 
@@ -129,9 +130,28 @@ public class ReportBean implements Serializable {
                 Tr cRow = (Tr) rows.get(rowIndex);
                 //addTableCell(wordMLPackage, cRow, si.getQuantity() + "");
                 List cols = cRow.getContent();
+                
                 Tc col0 = (Tc) ((JAXBElement) cols.get(0)).getValue();
                 Tc col0new = createCellContent(wordMLPackage, customFormatNumber(quantityFormat, si.getQuantity()));
                 ((JAXBElement) cols.get(0)).setValue(col0new);                
+                
+                Tc col1 = (Tc) ((JAXBElement) cols.get(1)).getValue();
+                Tc col1new = createCellContent(wordMLPackage, si.getProduct().getName());
+                ((JAXBElement) cols.get(1)).setValue(col1new);                
+
+                Tc col3 = (Tc) ((JAXBElement) cols.get(3)).getValue();
+                Tc col3new = createCellContent(wordMLPackage, customFormatNumber(amountFormat, si.getPrice()));
+                ((JAXBElement) cols.get(3)).setValue(col3new);                
+
+                Tc col4 = (Tc) ((JAXBElement) cols.get(4)).getValue();
+                Tc col4new = createCellContent(wordMLPackage, customFormatNumber(percentFormat, si.getDiscount()/100));
+                ((JAXBElement) cols.get(4)).setValue(col4new);                
+
+                Tc col5 = (Tc) ((JAXBElement) cols.get(5)).getValue();
+                Tc col5new = createCellContent(wordMLPackage, customFormatNumber(amountFormat, si.getAmount()));
+                ((JAXBElement) cols.get(5)).setValue(col5new);                
+
+                
                 /*Text col0Text = (Text) ((JAXBElement) ((R) (((P) col0.getContent().get(0)).getContent().get(0))).getContent().get(0)).getValue();
                 col0Text.setValue(si.getQuantity() + "");*/
                 
