@@ -195,13 +195,7 @@ public class ReportBean implements Serializable {
                 cellText.setValue(targetString != null ? targetString : "---");
             }
             int a = 0;
-        }
-        /*
-         Text cellText = (Text) ((JAXBElement) ((R) (((P) (((Tc) ((JAXBElement) cell).getValue()).getContent().get(0))).getContent().get(0))).getContent().get(0)).getValue();
-         Tc col = (Tc) ((JAXBElement) cols.get(colIndex)).getValue();
-         Tc colnew = (Tc) XmlUtils.deepCopy(col);
-         colnew.getContent().add(wordMLPackage.getMainDocumentPart().createParagraphOfText(content));
-         ((JAXBElement) cols.get(colIndex)).setValue(colnew);*/
+        }        
     }
 
     public List<Object> getAllElementFromObject(Object obj, Class<?> toSearch) {
