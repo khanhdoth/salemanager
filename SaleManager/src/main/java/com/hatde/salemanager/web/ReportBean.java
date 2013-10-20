@@ -11,6 +11,7 @@ import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Random;
 import java.util.logging.Level;
@@ -69,70 +70,28 @@ public class ReportBean implements Serializable {
 
     public void createStockOutForm(Sale sale) {
         try {
+            // create hastable for single variables to fill
+            Hashtable<String, String> variableFill = new Hashtable<>();
+            variableFill.put("=SID", Integer.toString(sale.getProductTransactionId()));
+            variableFill.put("=DATE", customFormatDate(sale.getDate()));
+            variableFill.put("=Contact Name", sale.getContact().getName());
+            variableFill.put("=Subtotal", customFormatNumber(amountFormat, sale.getSubTotal()));
+            variableFill.put("=ADiscountrate", customFormatNumber(percentFormat, sale.getDiscount() / 100));
+            variableFill.put("=ADiscount", customFormatNumber(amountFormat, sale.getAmountDiscount()));
+            variableFill.put("=TAXRATE", customFormatNumber(percentFormat, sale.getVAT() / 100));
+            variableFill.put("=Tax", customFormatNumber(amountFormat, sale.getAmountVAT()));
+            variableFill.put("=Total", customFormatNumber(amountFormat, sale.getAmount()));
+            variableFill.put("=Paid", (sale.getPayment() instanceof PaymentTransaction) ? ("-" + customFormatNumber(amountFormat, sale.getPayment().getAmount())) : "");
+            variableFill.put("=BalanceDue", customFormatNumber(amountFormat, sale.getAmountAfterPayment()));
+            variableFill.put("", "");
+
+            //open the docx template file
             System.out.println("modifyDoc");
             WordprocessingMLPackage wordMLPackage = WordprocessingMLPackage.load(new File(bundleBean.getBundle().getString("PathSalesOrderTemplate")));
             System.out.println("load ok!");
             MainDocumentPart mdp = wordMLPackage.getMainDocumentPart();
-
-            String xpath = "//w:t[contains(text(),'=')]";
-            List<Object> list = mdp.getJAXBNodesViaXPath(xpath, false);
-            for (Object e : list) {
-                Text t = (Text) ((JAXBElement) e).getValue();
-
-                String replacedText = "";
-                switch (t.getValue()) {
-                    case "=SID":
-                        replacedText = sale.getProductTransactionId() + "";
-                        break;
-
-                    case "=DATE":
-                        replacedText = customFormatDate(sale.getDate());
-                        break;
-
-                    case "=Contact Name":
-                        replacedText = sale.getContact().getName();
-                        break;
-
-                    case "=Subtotal":
-                        replacedText = customFormatNumber(amountFormat, sale.getSubTotal());
-                        break;
-
-                    case "=ADiscountrate":
-                        replacedText = customFormatNumber(percentFormat, sale.getDiscount() / 100);
-                        break;
-
-                    case "=ADiscount":
-                        replacedText = "-" + customFormatNumber(amountFormat, sale.getAmountDiscount());
-                        break;
-
-                    case "=TAXRATE":
-                        replacedText = customFormatNumber(percentFormat, sale.getVAT() / 100);
-                        break;
-
-                    case "=Tax":
-                        replacedText = customFormatNumber(amountFormat, sale.getAmountVAT());
-                        break;
-
-                    case "=Total":
-                        replacedText = customFormatNumber(amountFormat, sale.getAmount());
-                        break;
-
-                    case "=Paid":
-                        if (sale.getPayment() instanceof PaymentTransaction) {
-                            replacedText = "-" + customFormatNumber(amountFormat, sale.getPayment().getAmount());
-                        }
-                        break;
-
-                    case "=BalanceDue":
-                        replacedText = customFormatNumber(amountFormat, sale.getAmountAfterPayment());
-                        break;
-
-                    default:
-                        replacedText = "----";
-                }
-
-                t.setValue(replacedText);
-            }
+            String xpath = "";
+            List<Object> list;
 
             //Get table
             xpath = "//w:tbl";
@@ -152,41 +111,35 @@ public class ReportBean implements Serializable {
                 }
             }
 
+            /*
+             * fill table data
+             */
             int rowIndex = 1;
             for (SaleItem si : sale.getListOfSaleItem()) {
                 Tr cRow = (Tr) rows.get(rowIndex);
                 List cols = cRow.getContent();
 
-                /*Tc col0 = (Tc) ((JAXBElement) cols.get(0)).getValue();
-                 Tc col0new = createCellContent(wordMLPackage, col0, customFormatNumber(quantityFormat, si.getQuantity()));
-                 ((JAXBElement) cols.get(0)).setValue(col0new);
-
-                 Tc col1 = (Tc) ((JAXBElement) cols.get(1)).getValue();
-                 Tc col1new = createCellContent(wordMLPackage, col1, si.getProduct().getName());
-                 ((JAXBElement) cols.get(1)).setValue(col1new);
-
-                 Tc col3 = (Tc) ((JAXBElement) cols.get(3)).getValue();
-                 Tc col3new = createCellContent(wordMLPackage, col3, customFormatNumber(amountFormat, si.getPrice()));
-                 ((JAXBElement) cols.get(3)).setValue(col3new);
-
-                 Tc col4 = (Tc) ((JAXBElement) cols.get(4)).getValue();
-                 Tc col4new = createCellContent(wordMLPackage, col4, customFormatNumber(percentFormat, si.getDiscount() / 100));
-                 ((JAXBElement) cols.get(4)).setValue(col4new);
-
-                 Tc col5 = (Tc) ((JAXBElement) cols.get(5)).getValue();
-                 Tc col5new = createCellContent(wordMLPackage, col5, customFormatNumber(amountFormat, si.getAmount()));
-                 ((JAXBElement) cols.get(5)).setValue(col5new);*/
-                
-                fillCellContent(wordMLPackage, cols, 0, customFormatNumber(quantityFormat, si.getQuantity()) );
-                fillCellContent(wordMLPackage, cols, 1, si.getProduct().getName() );
-                fillCellContent(wordMLPackage, cols, 3, customFormatNumber(amountFormat, si.getPrice()) );
-                fillCellContent(wordMLPackage, cols, 4, customFormatNumber(percentFormat, si.getDiscount() / 100) );
-                fillCellContent(wordMLPackage, cols, 5, customFormatNumber(amountFormat, si.getAmount()) );                
+                fillCellContent(wordMLPackage, cols, 0, customFormatNumber(quantityFormat, si.getQuantity()));
+                fillCellContent(wordMLPackage, cols, 1, si.getProduct().getName());
+                fillCellContent(wordMLPackage, cols, 3, customFormatNumber(amountFormat, si.getPrice()));
+                fillCellContent(wordMLPackage, cols, 4, customFormatNumber(percentFormat, si.getDiscount() / 100));
+                fillCellContent(wordMLPackage, cols, 5, customFormatNumber(amountFormat, si.getAmount()));
 
                 rowIndex++;
             }
-
             ((JAXBElement) list.get(tableIndex)).setValue(dataTable);
+
+            /*
+             * replace single variables
+             */
+            xpath = "//w:t[contains(text(),'=')]";
+            list = mdp.getJAXBNodesViaXPath(xpath, false);
+
+            for (Object e : list) {
+                Text t = (Text) ((JAXBElement) e).getValue();
+                String targetString = variableFill.get(t.getValue());
+                t.setValue(targetString != null ? targetString : "---");
+            }
 
             //String outFile = bundleBean.getBundle().getString("PathSalesOrderResult") + ".docx";
             String outFileName = "temp" + (new Random()).nextInt(100000000) + ".docx";
