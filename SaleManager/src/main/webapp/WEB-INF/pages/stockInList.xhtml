@@ -25,7 +25,7 @@
 
                 <p:ajax event="cellEdit" listener="#{stockInController.onCellEdit}" update=":mainForm:messages" /> 
 
-                <p:column style="width:52px" exportable="false">  
+                <p:column style="width:80px" exportable="false">  
                     <p:commandButton id="deleteButton" update="iStockInTable, :mainForm:messages" action="#{stockInController.delete}" icon="ui-icon-trash" title="#{bundle.Delete}" >  
                         <p:confirm header="#{bundle.Confirmation}" message="#{bundle.Delete_Confirm_Message}" icon="ui-icon-alert" />  
                         <f:setPropertyActionListener value="#{item}" target="#{stockInController.selectedT}" />  
@@ -33,6 +33,10 @@
                     <p:commandButton id="editButton" update=":createBuyForm:iDlgBuy" action="#{stockInController.setEdit}" 
                                      icon="ui-icon-search" title="#{bundle.Edit}" oncomplete="wDlgBuy.show()" >                                  
                         <f:setPropertyActionListener value="#{item}" target="#{stockInController.selectedT}" />  
+                    </p:commandButton> 
+                    <p:commandButton id="printButton" ajax="false" icon="ui-icon-print" title="#{bundle.Print}" >                                  
+                        <f:setPropertyActionListener value="#{item}" target="#{stockInController.selectedT}" />  
+                        <p:fileDownload value="#{buyReport.file}" /> 
                     </p:commandButton> 
                 </p:column> 
 

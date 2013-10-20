@@ -37,13 +37,13 @@ public class SaleReport extends StockReport implements Serializable {
 
     @Override
     public void init() {
-        PathSalesOrderTemplate = bundleBean.getBundle().getString("PathSalesOrderTemplate");
-        SalesOrderTableIndex = bundleBean.getBundle().getString("SalesOrderTableIndex");
-        SalesOrderRows = bundleBean.getBundle().getString("SalesOrderRows");
-        SalesOrderDownloadName = bundleBean.getBundle().getString("SalesOrderDownloadName");
+        PathTemplate = bundleBean.getBundle().getString("PathSalesOrderTemplate");
+        TableIndex = bundleBean.getBundle().getString("SalesOrderTableIndex");
+        Rows = bundleBean.getBundle().getString("SalesOrderRows");
+        DownloadName = bundleBean.getBundle().getString("SalesOrderDownloadName");
         
         try {
-            WordprocessingMLPackage wordMLPackage = WordprocessingMLPackage.load(new File(PathSalesOrderTemplate));
+            WordprocessingMLPackage wordMLPackage = WordprocessingMLPackage.load(new File(PathTemplate));
             factory = Context.getWmlObjectFactory();
         } catch (Docx4JException ex) {
             Logger.getLogger(SaleReport.class.getName()).log(Level.SEVERE, null, ex);

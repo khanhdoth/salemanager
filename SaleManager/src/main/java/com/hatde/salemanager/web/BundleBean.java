@@ -1,5 +1,6 @@
 package com.hatde.salemanager.web;
 
+import com.hatde.salemanager.reports.BuyReport;
 import com.hatde.salemanager.reports.SaleReport;
 import java.io.Serializable;
 import java.util.Arrays;
@@ -20,16 +21,20 @@ import org.primefaces.context.RequestContext;
 @Named(value = "bundleBean")
 @SessionScoped
 public class BundleBean implements Serializable {
+
     @Inject
     SaleReport saleReport;
-    
+    @Inject
+    BuyReport buyReport;
+
     private ResourceBundle bundle;
-    private List updateStrings = Arrays.asList("menuForm", "saleListForm", "buyListForm", "receiptListForm", "productListForm", "paymentListForm", "mainForm", "createSaleForm", "createBuyForm", "createReceiptForm", "createProductForm", "createPaymentForm", "createContactForm", "ContactListForm", "businessListForm", "businessContactForm");    
-    
+    private List updateStrings = Arrays.asList("menuForm", "saleListForm", "buyListForm", "receiptListForm", "productListForm", "paymentListForm", "mainForm", "createSaleForm", "createBuyForm", "createReceiptForm", "createProductForm", "createPaymentForm", "createContactForm", "ContactListForm", "businessListForm", "businessContactForm");
+
     @PostConstruct
     public void init() {
         bundle = ResourceBundle.getBundle("lang", FacesContext.getCurrentInstance().getViewRoot().getLocale());
         saleReport.init();
+        buyReport.init();
     }
 
     public ResourceBundle getBundle() {
@@ -50,10 +55,10 @@ public class BundleBean implements Serializable {
 
     public void setLanguage(String language) {
         String currentLanguage = FacesContext.getCurrentInstance().getViewRoot().getLocale().getLanguage();
-        if(!currentLanguage.equals(language)){
+        if (!currentLanguage.equals(language)) {
             FacesContext.getCurrentInstance().getViewRoot().setLocale(new Locale(language));
-            init();                        
+            init();
             RequestContext.getCurrentInstance().update(updateStrings);
-        }       
+        }
     }
 }

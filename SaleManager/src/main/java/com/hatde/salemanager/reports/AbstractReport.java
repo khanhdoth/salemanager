@@ -41,10 +41,10 @@ public abstract class AbstractReport<V, T> {
     private StreamedContent file;
     protected ObjectFactory factory;
 
-    protected String PathSalesOrderTemplate;
-    protected String SalesOrderTableIndex;
-    protected String SalesOrderRows;
-    protected String SalesOrderDownloadName;
+    protected String PathTemplate;
+    protected String TableIndex;
+    protected String Rows;
+    protected String DownloadName;
     protected int id;
 
     public abstract HashMap<String, String> getVariableMap(V entity);
@@ -66,7 +66,7 @@ public abstract class AbstractReport<V, T> {
             HashMap<String, String> variableFill = getVariableMap(entity);
 
             //open the docx template file            
-            WordprocessingMLPackage wordMLPackage = WordprocessingMLPackage.load(new File(PathSalesOrderTemplate));
+            WordprocessingMLPackage wordMLPackage = WordprocessingMLPackage.load(new File(PathTemplate));
             MainDocumentPart mdp = wordMLPackage.getMainDocumentPart();
             String xpath = "";
             List<Object> list;
@@ -74,13 +74,13 @@ public abstract class AbstractReport<V, T> {
             //Get table
             xpath = "//w:tbl";
             list = mdp.getJAXBNodesViaXPath(xpath, false);
-            int tableIndex = Integer.parseInt(SalesOrderTableIndex);
+            int tableIndex = Integer.parseInt(TableIndex);
             Tbl dataTable = (Tbl) ((JAXBElement) list.get(tableIndex)).getValue();
             List rows = dataTable.getContent();
             Tr row1 = (Tr) rows.get(1);
 
             //insert additional rows in form table if the detail list is larger than the table form rows
-            int rowNumber = Integer.parseInt(SalesOrderRows);
+            int rowNumber = Integer.parseInt(Rows);
             int rowNumnerToFill = details.size();
             if (rowNumber < rowNumnerToFill) {
                 for (int i = 0; i < rowNumnerToFill - rowNumber; i++) {
@@ -124,7 +124,7 @@ public abstract class AbstractReport<V, T> {
 
             //Prepare file to download
             InputStream stream = new FileInputStream(outFile);
-            file = new DefaultStreamedContent(stream, "application/docx", SalesOrderDownloadName + id + ".docx");
+            file = new DefaultStreamedContent(stream, "application/docx", DownloadName + id + ".docx");
             outFile.deleteOnExit();
 
             /*PdfConversion c = new Conversion(wordMLPackage);
