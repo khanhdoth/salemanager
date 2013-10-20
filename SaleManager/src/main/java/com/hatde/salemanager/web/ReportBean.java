@@ -123,11 +123,11 @@ public class ReportBean implements Serializable {
                 List cols = cRow.getContent();
 
                 Hashtable<String, String> tableFill = new Hashtable<>();
-                tableFill.put("=Quantity", customFormatNumber(quantityFormat, si.getQuantity()));
-                tableFill.put("=ItemName", si.getProduct().getName());
-                tableFill.put("=Price", customFormatNumber(amountFormat, si.getPrice()));
-                tableFill.put("=Discount", customFormatNumber(percentFormat, si.getDiscount() / 100));
-                tableFill.put("=LineTotal", customFormatNumber(amountFormat, si.getAmount()));
+                tableFill.put("Quantity", customFormatNumber(quantityFormat, si.getQuantity()));
+                tableFill.put("ItemName", si.getProduct().getName());
+                tableFill.put("Price", customFormatNumber(amountFormat, si.getPrice()));
+                tableFill.put("Discount", customFormatNumber(percentFormat, si.getDiscount() / 100));
+                tableFill.put("LineTotal", customFormatNumber(amountFormat, si.getAmount()));
                 fillRowContent(wordMLPackage, cols, tableFill);
 
                 /*fillCellContent(wordMLPackage, cols, 0, customFormatNumber(quantityFormat, si.getQuantity()));
@@ -190,7 +190,7 @@ public class ReportBean implements Serializable {
         for (Object cell : cols) {
             List texts = getAllElementFromObject(cell, Text.class);
             for (Object text : texts) {
-                Text cellText = (Text) text;                
+                Text cellText = (Text) text;
                 String targetString = tableFill.get(cellText.getValue());
                 cellText.setValue(targetString != null ? targetString : "---");
             }
