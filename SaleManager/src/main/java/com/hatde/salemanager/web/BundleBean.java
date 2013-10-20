@@ -1,5 +1,6 @@
 package com.hatde.salemanager.web;
 
+import com.hatde.salemanager.reports.SaleReport;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
@@ -22,6 +23,9 @@ public class BundleBean implements Serializable {
     @Inject
     ReportBean reportBean;
     
+    @Inject
+    SaleReport saleReport;
+    
     private ResourceBundle bundle;
     private List updateStrings = Arrays.asList("menuForm", "saleListForm", "buyListForm", "receiptListForm", "productListForm", "paymentListForm", "mainForm", "createSaleForm", "createBuyForm", "createReceiptForm", "createProductForm", "createPaymentForm", "createContactForm", "ContactListForm", "businessListForm", "businessContactForm");    
     
@@ -29,6 +33,7 @@ public class BundleBean implements Serializable {
     public void init() {
         bundle = ResourceBundle.getBundle("lang", FacesContext.getCurrentInstance().getViewRoot().getLocale());
         reportBean.init();
+        saleReport.init();
     }
 
     public ResourceBundle getBundle() {

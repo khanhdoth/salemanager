@@ -1,29 +1,21 @@
-package com.hatde.salemanager.web;
+package com.hatde.salemanager.reports;
 
-import com.hatde.salemanager.entities.PaymentTransaction;
-import com.hatde.salemanager.entities.ProductTransaction;
-import com.hatde.salemanager.entities.Sale;
-import com.hatde.salemanager.entities.SaleItem;
+import com.hatde.salemanager.web.ReportBean;
 import java.io.File;
-import java.io.InputStream;
 import java.io.FileInputStream;
-import java.io.Serializable;
+import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.enterprise.context.SessionScoped;
-import javax.inject.Inject;
-import javax.inject.Named;
 import javax.xml.bind.JAXBElement;
 import org.docx4j.XmlUtils;
-import org.docx4j.jaxb.Context;
-import org.docx4j.openpackaging.exceptions.Docx4JException;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
 import org.docx4j.openpackaging.parts.WordprocessingML.MainDocumentPart;
 import org.docx4j.wml.ContentAccessor;
@@ -38,72 +30,38 @@ import org.primefaces.model.StreamedContent;
 
 /**
  *
- * @author Khanh
+ * @author Do
  */
-@Named(value = "reportBean")
-@SessionScoped
-public class ReportBean implements Serializable {
+public abstract class AbstractReport<V, T> {
+    protected String amountFormat = "#,##0";
+    protected String quantityFormat = "#,##0.##";
+    protected String percentFormat = "#.##%";
+    
+    private StreamedContent file;
+    protected ObjectFactory factory;
+    
+    protected String PathSalesOrderTemplate;
+    protected String SalesOrderTableIndex;
+    protected String SalesOrderRows;
+    protected String SalesOrderDownloadName;
+    protected int id;
 
-    @Inject
-    private BundleBean bundleBean;
+    public abstract HashMap<String, String> getVariableMap(V entity);
+    public abstract HashMap<String, String> getTableMap(T entityDetail);
+    public abstract V getEntity();
+    public abstract Collection<T> getDetails();    
+    public abstract void init();    
 
-    @Inject
-    private StockOutController stockOutController;
-
-    private String amountFormat = "#,##0";
-    private String quantityFormat = "#,##0.##";
-    private String percentFormat = "#.##%";
-    private StreamedContent stockOutFile;
-    private ObjectFactory factory;
-
-    public void init() {
-        try {
-            WordprocessingMLPackage wordMLPackage = WordprocessingMLPackage.load(new File(bundleBean.getBundle().getString("PathSalesOrderTemplate")));
-            factory = Context.getWmlObjectFactory();
-        } catch (Docx4JException ex) {
-            Logger.getLogger(ReportBean.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    public AbstractReport() {
     }
 
-    public ReportBean() {
-    }
-
-    public HashMap<String, String> getStockVariableMap(ProductTransaction pt) {
-        HashMap<String, String> variableFill = new HashMap<>();
-        variableFill.put("=SID", Integer.toString(pt.getProductTransactionId()));
-        variableFill.put("=DATE", customFormatDate(pt.getDate()));
-        variableFill.put("=Contact Name", pt.getContact().getName());
-        variableFill.put("=Subtotal", customFormatNumber(amountFormat, pt.getSubTotal()));
-        variableFill.put("=ADiscountrate", customFormatNumber(percentFormat, pt.getDiscount() / 100));
-        variableFill.put("=ADiscount", customFormatNumber(amountFormat, pt.getAmountDiscount()));
-        variableFill.put("=TAXRATE", customFormatNumber(percentFormat, pt.getVAT() / 100));
-        variableFill.put("=Tax", customFormatNumber(amountFormat, pt.getAmountVAT()));
-        variableFill.put("=Total", customFormatNumber(amountFormat, pt.getAmount()));
-        variableFill.put("=Paid", (pt.getPayment() instanceof PaymentTransaction) ? ("-" + customFormatNumber(amountFormat, pt.getPayment().getAmount())) : "");
-        variableFill.put("=BalanceDue", customFormatNumber(amountFormat, pt.getAmountAfterPayment()));
-        variableFill.put("", "");
-
-        return variableFill;
-    }
-
-    public HashMap<String, String> getStockTableMap(SaleItem si) {
-        HashMap<String, String> tableFill = new HashMap<>();
-        tableFill.put("Quantity", customFormatNumber(quantityFormat, si.getQuantity()));
-        tableFill.put("ItemName", si.getProduct().getName());
-        tableFill.put("Price", customFormatNumber(amountFormat, si.getPrice()));
-        tableFill.put("Discount", customFormatNumber(percentFormat, si.getDiscount() / 100));
-        tableFill.put("LineTotal", customFormatNumber(amountFormat, si.getAmount()));
-        
-        return tableFill;
-    }
-
-    public void createStockOutForm(Sale sale) {
+    public void createForm(V entity, Collection<T> details) {
         try {
             // create hastable for single variables to fill
-            HashMap<String, String> variableFill = getStockVariableMap(sale);
+            HashMap<String, String> variableFill = getVariableMap(entity);
 
             //open the docx template file            
-            WordprocessingMLPackage wordMLPackage = WordprocessingMLPackage.load(new File(bundleBean.getBundle().getString("PathSalesOrderTemplate")));            
+            WordprocessingMLPackage wordMLPackage = WordprocessingMLPackage.load(new File(PathSalesOrderTemplate));
             MainDocumentPart mdp = wordMLPackage.getMainDocumentPart();
             String xpath = "";
             List<Object> list;
@@ -111,14 +69,14 @@ public class ReportBean implements Serializable {
             //Get table
             xpath = "//w:tbl";
             list = mdp.getJAXBNodesViaXPath(xpath, false);
-            int tableIndex = Integer.parseInt(bundleBean.getBundle().getString("SalesOrderTableIndex"));
+            int tableIndex = Integer.parseInt(SalesOrderTableIndex);
             Tbl dataTable = (Tbl) ((JAXBElement) list.get(tableIndex)).getValue();
             List rows = dataTable.getContent();
             Tr row1 = (Tr) rows.get(1);
 
-            //insert additional rows in form table if the ListOfSaleItems is larger than the table form rows
-            int rowNumber = Integer.parseInt(bundleBean.getBundle().getString("SalesOrderRows"));
-            int rowNumnerToFill = sale.getListOfSaleItem().size();
+            //insert additional rows in form table if the detail list is larger than the table form rows
+            int rowNumber = Integer.parseInt(SalesOrderRows);
+            int rowNumnerToFill = details.size();
             if (rowNumber < rowNumnerToFill) {
                 for (int i = 0; i < rowNumnerToFill - rowNumber; i++) {
                     Tr tableRow = (Tr) XmlUtils.deepCopy(row1);
@@ -130,11 +88,11 @@ public class ReportBean implements Serializable {
              * fill table data
              */
             int rowIndex = 1;
-            for (SaleItem si : sale.getListOfSaleItem()) {
+            for (T si : details) {
                 Tr cRow = (Tr) rows.get(rowIndex);
                 List cols = cRow.getContent();
 
-                HashMap<String, String> tableFill = getStockTableMap(si);
+                HashMap<String, String> tableFill = getTableMap(si);
 
                 fillRowContent(wordMLPackage, cols, tableFill);
                 rowIndex++;
@@ -161,7 +119,7 @@ public class ReportBean implements Serializable {
 
             //Prepare file to download
             InputStream stream = new FileInputStream(outFile);
-            stockOutFile = new DefaultStreamedContent(stream, "application/docx", bundleBean.getBundle().getString("SalesOrderDownloadName") + sale.getProductTransactionId() + ".docx");
+            file = new DefaultStreamedContent(stream, "application/docx", SalesOrderDownloadName + id + ".docx");
             outFile.deleteOnExit();
 
             /*PdfConversion c = new Conversion(wordMLPackage);
@@ -171,7 +129,7 @@ public class ReportBean implements Serializable {
             Logger.getLogger(ReportBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public Tc createCellContent(WordprocessingMLPackage wordMLPackage, Tc colToReplace, String content) {
         Tc tableCell = factory.createTc();
         tableCell.getContent().add(
@@ -225,8 +183,8 @@ public class ReportBean implements Serializable {
         return new SimpleDateFormat("dd.MM.yyyy").format(date);
     }
 
-    public StreamedContent getStockOutFile() {
-        createStockOutForm(stockOutController.getSelectedT());
-        return stockOutFile;
+    public StreamedContent getFile() {
+        createForm(getEntity(), getDetails());
+        return file;
     }
 }
