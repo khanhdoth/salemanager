@@ -25,6 +25,7 @@ import org.docx4j.openpackaging.exceptions.InvalidFormatException;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
 import org.docx4j.openpackaging.parts.WordprocessingML.MainDocumentPart;
 import org.docx4j.wml.ObjectFactory;
+import org.docx4j.wml.P;
 import org.docx4j.wml.Tbl;
 import org.docx4j.wml.Tc;
 import org.docx4j.wml.Text;
@@ -177,7 +178,8 @@ public class ReportBean implements Serializable {
         Tc tableCell = factory.createTc();
         tableCell.getContent().add(
                 wordMLPackage.getMainDocumentPart().createParagraphOfText(content));
-        tableCell.setTcPr(colToReplace.getTcPr());
+        tableCell.setTcPr(colToReplace.getTcPr());   
+        ((P) tableCell.getContent().get(0)).setPPr(((P) colToReplace.getContent().get(0)).getPPr());
         return tableCell;
     }
     
