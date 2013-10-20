@@ -33,13 +33,14 @@ import org.primefaces.model.StreamedContent;
  * @author Do
  */
 public abstract class AbstractReport<V, T> {
+
     protected String amountFormat = "#,##0";
     protected String quantityFormat = "#,##0.##";
     protected String percentFormat = "#.##%";
-    
+
     private StreamedContent file;
     protected ObjectFactory factory;
-    
+
     protected String PathSalesOrderTemplate;
     protected String SalesOrderTableIndex;
     protected String SalesOrderRows;
@@ -47,10 +48,14 @@ public abstract class AbstractReport<V, T> {
     protected int id;
 
     public abstract HashMap<String, String> getVariableMap(V entity);
+
     public abstract HashMap<String, String> getTableMap(T entityDetail);
+
     public abstract V getEntity();
-    public abstract Collection<T> getDetails();    
-    public abstract void init();    
+
+    public abstract Collection<T> getDetails();
+
+    public abstract void init();
 
     public AbstractReport() {
     }

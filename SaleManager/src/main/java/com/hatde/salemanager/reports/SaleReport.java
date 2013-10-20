@@ -69,8 +69,7 @@ public class SaleReport extends AbstractReport<Sale, SaleItem> implements Serial
         variableFill.put("=Tax", customFormatNumber(amountFormat, entity.getAmountVAT()));
         variableFill.put("=Total", customFormatNumber(amountFormat, entity.getAmount()));
         variableFill.put("=Paid", (entity.getPayment() instanceof PaymentTransaction) ? ("-" + customFormatNumber(amountFormat, entity.getPayment().getAmount())) : "");
-        variableFill.put("=BalanceDue", customFormatNumber(amountFormat, entity.getAmountAfterPayment()));
-        variableFill.put("", "");
+        variableFill.put("=BalanceDue", customFormatNumber(amountFormat, entity.getAmountAfterPayment()));        
 
         return variableFill;
     }
@@ -97,5 +96,5 @@ public class SaleReport extends AbstractReport<Sale, SaleItem> implements Serial
     public Collection<SaleItem> getDetails() {
         return stockOutController.getSelectedT().getListOfSaleItem();
     }
-
+    
 }
