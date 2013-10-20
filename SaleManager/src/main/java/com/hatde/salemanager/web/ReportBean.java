@@ -12,6 +12,7 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.enterprise.context.SessionScoped;
@@ -52,7 +53,7 @@ public class ReportBean implements Serializable {
     private String quantityFormat = "#,##0.##";
     private String percentFormat = "#.##%";
     private StreamedContent stockOutFile;
-    private ObjectFactory factory;    
+    private ObjectFactory factory;
 
     public void init() {
         try {
@@ -97,7 +98,7 @@ public class ReportBean implements Serializable {
                         break;
 
                     case "=ADiscountrate":
-                        replacedText = customFormatNumber(percentFormat, sale.getDiscount()/100);
+                        replacedText = customFormatNumber(percentFormat, sale.getDiscount() / 100);
                         break;
 
                     case "=ADiscount":
@@ -105,7 +106,7 @@ public class ReportBean implements Serializable {
                         break;
 
                     case "=TAXRATE":
-                        replacedText = customFormatNumber(percentFormat, sale.getVAT()/100);
+                        replacedText = customFormatNumber(percentFormat, sale.getVAT() / 100);
                         break;
 
                     case "=Tax":
@@ -142,50 +143,60 @@ public class ReportBean implements Serializable {
             Tr row1 = (Tr) rows.get(1);
 
             //insert additional rows in form table if the ListOfSaleItems is larger than the table form rows
-            int rowNumber =Integer.parseInt(bundleBean.getBundle().getString("SalesOrderRows"));
+            int rowNumber = Integer.parseInt(bundleBean.getBundle().getString("SalesOrderRows"));
             int rowNumnerToFill = sale.getListOfSaleItem().size();
-            if(rowNumber < rowNumnerToFill){
-                for(int i=0; i< rowNumnerToFill-rowNumber; i++){
-                    Tr tableRow = (Tr)  XmlUtils.deepCopy(row1);
+            if (rowNumber < rowNumnerToFill) {
+                for (int i = 0; i < rowNumnerToFill - rowNumber; i++) {
+                    Tr tableRow = (Tr) XmlUtils.deepCopy(row1);
                     rows.add(1, tableRow);
                 }
-            }            
-            
+            }
+
             int rowIndex = 1;
             for (SaleItem si : sale.getListOfSaleItem()) {
                 Tr cRow = (Tr) rows.get(rowIndex);
                 List cols = cRow.getContent();
-                
-                Tc col0 = (Tc) ((JAXBElement) cols.get(0)).getValue();                
-                Tc col0new = createCellContent(wordMLPackage, col0, customFormatNumber(quantityFormat, si.getQuantity()));
-                ((JAXBElement) cols.get(0)).setValue(col0new);                
-                
-                Tc col1 = (Tc) ((JAXBElement) cols.get(1)).getValue();
-                Tc col1new = createCellContent(wordMLPackage, col1, si.getProduct().getName());
-                ((JAXBElement) cols.get(1)).setValue(col1new);                
 
-                Tc col3 = (Tc) ((JAXBElement) cols.get(3)).getValue();
-                Tc col3new = createCellContent(wordMLPackage, col3, customFormatNumber(amountFormat, si.getPrice()));
-                ((JAXBElement) cols.get(3)).setValue(col3new);                
+                /*Tc col0 = (Tc) ((JAXBElement) cols.get(0)).getValue();
+                 Tc col0new = createCellContent(wordMLPackage, col0, customFormatNumber(quantityFormat, si.getQuantity()));
+                 ((JAXBElement) cols.get(0)).setValue(col0new);
 
-                Tc col4 = (Tc) ((JAXBElement) cols.get(4)).getValue();
-                Tc col4new = createCellContent(wordMLPackage, col4, customFormatNumber(percentFormat, si.getDiscount()/100));
-                ((JAXBElement) cols.get(4)).setValue(col4new);                
+                 Tc col1 = (Tc) ((JAXBElement) cols.get(1)).getValue();
+                 Tc col1new = createCellContent(wordMLPackage, col1, si.getProduct().getName());
+                 ((JAXBElement) cols.get(1)).setValue(col1new);
 
-                Tc col5 = (Tc) ((JAXBElement) cols.get(5)).getValue();
-                Tc col5new = createCellContent(wordMLPackage, col5, customFormatNumber(amountFormat, si.getAmount()));
-                ((JAXBElement) cols.get(5)).setValue(col5new);                
+                 Tc col3 = (Tc) ((JAXBElement) cols.get(3)).getValue();
+                 Tc col3new = createCellContent(wordMLPackage, col3, customFormatNumber(amountFormat, si.getPrice()));
+                 ((JAXBElement) cols.get(3)).setValue(col3new);
+
+                 Tc col4 = (Tc) ((JAXBElement) cols.get(4)).getValue();
+                 Tc col4new = createCellContent(wordMLPackage, col4, customFormatNumber(percentFormat, si.getDiscount() / 100));
+                 ((JAXBElement) cols.get(4)).setValue(col4new);
+
+                 Tc col5 = (Tc) ((JAXBElement) cols.get(5)).getValue();
+                 Tc col5new = createCellContent(wordMLPackage, col5, customFormatNumber(amountFormat, si.getAmount()));
+                 ((JAXBElement) cols.get(5)).setValue(col5new);*/
                 
+                fillCellContent(wordMLPackage, cols, 0, customFormatNumber(quantityFormat, si.getQuantity()) );
+                fillCellContent(wordMLPackage, cols, 1, si.getProduct().getName() );
+                fillCellContent(wordMLPackage, cols, 3, customFormatNumber(amountFormat, si.getPrice()) );
+                fillCellContent(wordMLPackage, cols, 4, customFormatNumber(percentFormat, si.getDiscount() / 100) );
+                fillCellContent(wordMLPackage, cols, 5, customFormatNumber(amountFormat, si.getAmount()) );                
+
                 rowIndex++;
             }
-            
+
             ((JAXBElement) list.get(tableIndex)).setValue(dataTable);
 
-            String outFile = bundleBean.getBundle().getString("PathSalesOrderResult") + ".docx";
-            wordMLPackage.save(new java.io.File(outFile));
+            //String outFile = bundleBean.getBundle().getString("PathSalesOrderResult") + ".docx";
+            String outFileName = "temp" + (new Random()).nextInt(100000000) + ".docx";
+            System.out.println("*************** outFile=" + outFileName);
+            File outFile = new File(outFileName);
+            wordMLPackage.save(outFile);
 
             InputStream stream = new FileInputStream(outFile);
             stockOutFile = new DefaultStreamedContent(stream, "application/docx", bundleBean.getBundle().getString("SalesOrderDownloadName") + sale.getProductTransactionId() + ".docx");
+            outFile.deleteOnExit();
 
             /*PdfConversion c = new Conversion(wordMLPackage);
              OutputStream out = new FileOutputStream(bundleBean.getBundle().getString("PathSalesOrderResult") + ".pdf");
@@ -200,16 +211,23 @@ public class ReportBean implements Serializable {
             Logger.getLogger(ReportBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public Tc createCellContent(WordprocessingMLPackage wordMLPackage, Tc colToReplace, String content) {
         Tc tableCell = factory.createTc();
         tableCell.getContent().add(
                 wordMLPackage.getMainDocumentPart().createParagraphOfText(content));
-        tableCell.setTcPr(colToReplace.getTcPr());   
+        tableCell.setTcPr(colToReplace.getTcPr());
         ((P) tableCell.getContent().get(0)).setPPr(((P) colToReplace.getContent().get(0)).getPPr());
         return tableCell;
     }
-    
+
+    public void fillCellContent(WordprocessingMLPackage wordMLPackage, List cols, int colIndex, String content) {
+        Tc col = (Tc) ((JAXBElement) cols.get(colIndex)).getValue();
+        Tc colnew = (Tc) XmlUtils.deepCopy(col);
+        colnew.getContent().add(wordMLPackage.getMainDocumentPart().createParagraphOfText(content));
+        ((JAXBElement) cols.get(colIndex)).setValue(colnew);
+    }
+
     public String customFormatNumber(String pattern, double value) {
         DecimalFormat myFormatter = new DecimalFormat(pattern);
         return myFormatter.format(value);

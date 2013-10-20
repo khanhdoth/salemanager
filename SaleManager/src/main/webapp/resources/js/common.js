@@ -1,8 +1,7 @@
 var jDlgContact;
 
-onload = function() {    
-    //alert('loaded');
-    jDlgContact = new MyDialog(wDlgContact);
+onload = function() {        
+    jDlgContact = new MyDialog(wDlgContact);    
 };
 
 function MyDialog(iDialog){
@@ -35,4 +34,3 @@ function start() {
 function stop() {  
     statusDialog.hide();  
 }  
-    
