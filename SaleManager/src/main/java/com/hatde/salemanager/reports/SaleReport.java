@@ -5,7 +5,6 @@
  */
 package com.hatde.salemanager.reports;
 
-import com.hatde.salemanager.entities.PaymentTransaction;
 import com.hatde.salemanager.entities.Sale;
 import com.hatde.salemanager.entities.SaleItem;
 import com.hatde.salemanager.web.BundleBean;
@@ -13,7 +12,6 @@ import com.hatde.salemanager.web.StockOutController;
 import java.io.File;
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.enterprise.context.SessionScoped;
@@ -29,7 +27,7 @@ import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
  */
 @Named(value = "saleReport")
 @SessionScoped
-public class SaleReport extends AbstractReport<Sale, SaleItem> implements Serializable {
+public class SaleReport extends StockReport implements Serializable {
 
     @Inject
     private BundleBean bundleBean;
@@ -53,37 +51,7 @@ public class SaleReport extends AbstractReport<Sale, SaleItem> implements Serial
     }
 
     public SaleReport() {        
-    }
-
-    @Override
-    public HashMap<String, String> getVariableMap(Sale entity) {
-        HashMap<String, String> variableFill = new HashMap<>();
-        variableFill.put("=SID", Integer.toString(entity.getProductTransactionId()));
-        variableFill.put("=DATE", customFormatDate(entity.getDate()));
-        variableFill.put("=Contact Name", entity.getContact().getName());
-        variableFill.put("=Subtotal", customFormatNumber(amountFormat, entity.getSubTotal()));
-        variableFill.put("=ADiscountrate", customFormatNumber(percentFormat, entity.getDiscount() / 100));
-        variableFill.put("=ADiscount", customFormatNumber(amountFormat, entity.getAmountDiscount()));
-        variableFill.put("=TAXRATE", customFormatNumber(percentFormat, entity.getVAT() / 100));
-        variableFill.put("=Tax", customFormatNumber(amountFormat, entity.getAmountVAT()));
-        variableFill.put("=Total", customFormatNumber(amountFormat, entity.getAmount()));
-        variableFill.put("=Paid", (entity.getPayment() instanceof PaymentTransaction) ? ("-" + customFormatNumber(amountFormat, entity.getPayment().getAmount())) : "");
-        variableFill.put("=BalanceDue", customFormatNumber(amountFormat, entity.getAmountAfterPayment()));        
-
-        return variableFill;
-    }
-
-    @Override
-    public HashMap<String, String> getTableMap(SaleItem entityDetail) {
-        HashMap<String, String> tableFill = new HashMap<>();
-        tableFill.put("Quantity", customFormatNumber(quantityFormat, entityDetail.getQuantity()));
-        tableFill.put("ItemName", entityDetail.getProduct().getName());
-        tableFill.put("Price", customFormatNumber(amountFormat, entityDetail.getPrice()));
-        tableFill.put("Discount", customFormatNumber(percentFormat, entityDetail.getDiscount() / 100));
-        tableFill.put("LineTotal", customFormatNumber(amountFormat, entityDetail.getAmount()));
-
-        return tableFill;
-    }
+    }   
 
     @Override
     public Sale getEntity() {
