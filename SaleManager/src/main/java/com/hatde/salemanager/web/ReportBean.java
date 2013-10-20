@@ -128,32 +128,27 @@ public class ReportBean implements Serializable {
             int rowIndex = 1;
             for (SaleItem si : sale.getListOfSaleItem()) {
                 Tr cRow = (Tr) rows.get(rowIndex);
-                //addTableCell(wordMLPackage, cRow, si.getQuantity() + "");
                 List cols = cRow.getContent();
                 
-                Tc col0 = (Tc) ((JAXBElement) cols.get(0)).getValue();
-                Tc col0new = createCellContent(wordMLPackage, customFormatNumber(quantityFormat, si.getQuantity()));
+                Tc col0 = (Tc) ((JAXBElement) cols.get(0)).getValue();                
+                Tc col0new = createCellContent(wordMLPackage, col0, customFormatNumber(quantityFormat, si.getQuantity()));
                 ((JAXBElement) cols.get(0)).setValue(col0new);                
                 
                 Tc col1 = (Tc) ((JAXBElement) cols.get(1)).getValue();
-                Tc col1new = createCellContent(wordMLPackage, si.getProduct().getName());
+                Tc col1new = createCellContent(wordMLPackage, col1, si.getProduct().getName());
                 ((JAXBElement) cols.get(1)).setValue(col1new);                
 
                 Tc col3 = (Tc) ((JAXBElement) cols.get(3)).getValue();
-                Tc col3new = createCellContent(wordMLPackage, customFormatNumber(amountFormat, si.getPrice()));
+                Tc col3new = createCellContent(wordMLPackage, col3, customFormatNumber(amountFormat, si.getPrice()));
                 ((JAXBElement) cols.get(3)).setValue(col3new);                
 
                 Tc col4 = (Tc) ((JAXBElement) cols.get(4)).getValue();
-                Tc col4new = createCellContent(wordMLPackage, customFormatNumber(percentFormat, si.getDiscount()/100));
+                Tc col4new = createCellContent(wordMLPackage, col4, customFormatNumber(percentFormat, si.getDiscount()/100));
                 ((JAXBElement) cols.get(4)).setValue(col4new);                
 
                 Tc col5 = (Tc) ((JAXBElement) cols.get(5)).getValue();
-                Tc col5new = createCellContent(wordMLPackage, customFormatNumber(amountFormat, si.getAmount()));
+                Tc col5new = createCellContent(wordMLPackage, col5, customFormatNumber(amountFormat, si.getAmount()));
                 ((JAXBElement) cols.get(5)).setValue(col5new);                
-
-                
-                /*Text col0Text = (Text) ((JAXBElement) ((R) (((P) col0.getContent().get(0)).getContent().get(0))).getContent().get(0)).getValue();
-                col0Text.setValue(si.getQuantity() + "");*/
                 
                 rowIndex++;
             }
@@ -161,7 +156,6 @@ public class ReportBean implements Serializable {
             String outFile = bundleBean.getBundle().getString("PathSalesOrderResult") + ".docx";
             wordMLPackage.save(new java.io.File(outFile));
 
-            //InputStream stream = ((ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext()).getResourceAsStream(outFile);
             InputStream stream = new FileInputStream(outFile);
             stockOutFile = new DefaultStreamedContent(stream, "application/docx", "stockOut_" + sale.getProductTransactionId() + ".docx");
 
@@ -179,17 +173,11 @@ public class ReportBean implements Serializable {
         }
     }
 
-    public void addTableCell(WordprocessingMLPackage wordMLPackage, Tr tableRow, String content) {
+    public Tc createCellContent(WordprocessingMLPackage wordMLPackage, Tc colToReplace, String content) {
         Tc tableCell = factory.createTc();
         tableCell.getContent().add(
                 wordMLPackage.getMainDocumentPart().createParagraphOfText(content));
-        tableRow.getContent().add(tableCell);
-    }
-
-    public Tc createCellContent(WordprocessingMLPackage wordMLPackage, String content) {
-        Tc tableCell = factory.createTc();
-        tableCell.getContent().add(
-                wordMLPackage.getMainDocumentPart().createParagraphOfText(content));
+        tableCell.setTcPr(colToReplace.getTcPr());
         return tableCell;
     }
     
