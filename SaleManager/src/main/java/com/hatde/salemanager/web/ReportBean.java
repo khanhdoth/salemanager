@@ -95,6 +95,18 @@ public class ReportBean implements Serializable {
                         replacedText = customFormatNumber(amountFormat, sale.getSubTotal());
                         break;
 
+                    case "=ADiscountrate":
+                        replacedText = customFormatNumber(percentFormat, sale.getDiscount()/100);
+                        break;
+
+                    case "=ADiscount":
+                        replacedText = "-" + customFormatNumber(amountFormat, sale.getAmountDiscount());
+                        break;
+
+                    case "=TAXRATE":
+                        replacedText = customFormatNumber(percentFormat, sale.getVAT()/100);
+                        break;
+
                     case "=Tax":
                         replacedText = customFormatNumber(amountFormat, sale.getAmountVAT());
                         break;
@@ -124,8 +136,18 @@ public class ReportBean implements Serializable {
             xpath = "//w:tbl";
             list = mdp.getJAXBNodesViaXPath(xpath, false);
             Tbl dataTable = (Tbl) ((JAXBElement) list.get(3)).getValue();
-
             List rows = dataTable.getContent();
+            Tr row1 = (Tr) rows.get(1);
+
+            //insert additional rows in form table if the ListOfSaleItems is larger than the table form rows
+            int rowNumber =Integer.parseInt(bundleBean.getBundle().getString("SalesOrderRows"));
+            int rowNumnerToFill = sale.getListOfSaleItem().size();
+            if(rowNumber < rowNumnerToFill){
+                for(int i=0; i< rowNumnerToFill-rowNumber; i++){
+                    rows.add(1, row1);
+                }
+            }            
+            
             int rowIndex = 1;
             for (SaleItem si : sale.getListOfSaleItem()) {
                 Tr cRow = (Tr) rows.get(rowIndex);
@@ -153,12 +175,14 @@ public class ReportBean implements Serializable {
                 
                 rowIndex++;
             }
+            
+            ((JAXBElement) list.get(3)).setValue(dataTable);
 
             String outFile = bundleBean.getBundle().getString("PathSalesOrderResult") + ".docx";
             wordMLPackage.save(new java.io.File(outFile));
 
             InputStream stream = new FileInputStream(outFile);
-            stockOutFile = new DefaultStreamedContent(stream, "application/docx", "stockOut_" + sale.getProductTransactionId() + ".docx");
+            stockOutFile = new DefaultStreamedContent(stream, "application/docx", bundleBean.getBundle().getString("SalesOrderDownloadName") + sale.getProductTransactionId() + ".docx");
 
             /*PdfConversion c = new Conversion(wordMLPackage);
              OutputStream out = new FileOutputStream(bundleBean.getBundle().getString("PathSalesOrderResult") + ".pdf");
