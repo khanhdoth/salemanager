@@ -19,12 +19,12 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
+import org.docx4j.jaxb.Context;
 import org.docx4j.openpackaging.exceptions.Docx4JException;
 import org.docx4j.openpackaging.exceptions.InvalidFormatException;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
 import org.docx4j.openpackaging.parts.WordprocessingML.MainDocumentPart;
-import org.docx4j.wml.P;
-import org.docx4j.wml.R;
+import org.docx4j.wml.ObjectFactory;
 import org.docx4j.wml.Tbl;
 import org.docx4j.wml.Tc;
 import org.docx4j.wml.Text;
@@ -47,17 +47,20 @@ public class ReportBean implements Serializable {
     private StockOutController stockOutController;
 
     private String amountFormat = "#,##0";
+    private String quantityFormat = "#,##0.##";
     private StreamedContent stockOutFile;
+    private ObjectFactory factory;    
 
     public void init() {
         try {
             WordprocessingMLPackage wordMLPackage = WordprocessingMLPackage.load(new File(bundleBean.getBundle().getString("PathSalesOrderTemplate")));
+            factory = Context.getWmlObjectFactory();
         } catch (Docx4JException ex) {
             Logger.getLogger(ReportBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    public ReportBean() {       
+
+    public ReportBean() {
     }
 
     public void createStockOutForm(Sale sale) {
@@ -114,24 +117,27 @@ public class ReportBean implements Serializable {
 
                 t.setValue(replacedText);
             }
-            
+
             //Get table
             xpath = "//w:tbl";
             list = mdp.getJAXBNodesViaXPath(xpath, false);
             Tbl dataTable = (Tbl) ((JAXBElement) list.get(3)).getValue();
-            
+
             List rows = dataTable.getContent();
             int rowIndex = 1;
-            for(SaleItem si: sale.getListOfSaleItem()){
-                Tr cRow = (Tr) rows.get(rowIndex);                
+            for (SaleItem si : sale.getListOfSaleItem()) {
+                Tr cRow = (Tr) rows.get(rowIndex);
+                //addTableCell(wordMLPackage, cRow, si.getQuantity() + "");
                 List cols = cRow.getContent();
-                Tc col0 = (Tc) ((JAXBElement)cols.get(0)).getValue();
-                Text col0Text = (Text)((JAXBElement) ((R)(((P) col0.getContent().get(0)).getContent().get(0))).getContent().get(0)).getValue();
-                col0Text.setValue(si.getQuantity()+"");
+                Tc col0 = (Tc) ((JAXBElement) cols.get(0)).getValue();
+                Tc col0new = createCellContent(wordMLPackage, customFormatNumber(quantityFormat, si.getQuantity()));
+                ((JAXBElement) cols.get(0)).setValue(col0new);                
+                /*Text col0Text = (Text) ((JAXBElement) ((R) (((P) col0.getContent().get(0)).getContent().get(0))).getContent().get(0)).getValue();
+                col0Text.setValue(si.getQuantity() + "");*/
+                
                 rowIndex++;
             }
-            
-            
+
             String outFile = bundleBean.getBundle().getString("PathSalesOrderResult") + ".docx";
             wordMLPackage.save(new java.io.File(outFile));
 
@@ -151,9 +157,22 @@ public class ReportBean implements Serializable {
         } catch (FileNotFoundException ex) {
             Logger.getLogger(ReportBean.class.getName()).log(Level.SEVERE, null, ex);
         }
-
     }
 
+    public void addTableCell(WordprocessingMLPackage wordMLPackage, Tr tableRow, String content) {
+        Tc tableCell = factory.createTc();
+        tableCell.getContent().add(
+                wordMLPackage.getMainDocumentPart().createParagraphOfText(content));
+        tableRow.getContent().add(tableCell);
+    }
+
+    public Tc createCellContent(WordprocessingMLPackage wordMLPackage, String content) {
+        Tc tableCell = factory.createTc();
+        tableCell.getContent().add(
+                wordMLPackage.getMainDocumentPart().createParagraphOfText(content));
+        return tableCell;
+    }
+    
     public String customFormatNumber(String pattern, double value) {
         DecimalFormat myFormatter = new DecimalFormat(pattern);
         return myFormatter.format(value);
