@@ -21,9 +21,6 @@ import org.primefaces.context.RequestContext;
 @SessionScoped
 public class BundleBean implements Serializable {
     @Inject
-    ReportBean reportBean;
-    
-    @Inject
     SaleReport saleReport;
     
     private ResourceBundle bundle;
@@ -32,7 +29,6 @@ public class BundleBean implements Serializable {
     @PostConstruct
     public void init() {
         bundle = ResourceBundle.getBundle("lang", FacesContext.getCurrentInstance().getViewRoot().getLocale());
-        reportBean.init();
         saleReport.init();
     }
 

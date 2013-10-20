@@ -9,7 +9,6 @@ import com.hatde.salemanager.entities.PaymentTransaction;
 import com.hatde.salemanager.entities.Sale;
 import com.hatde.salemanager.entities.SaleItem;
 import com.hatde.salemanager.web.BundleBean;
-import com.hatde.salemanager.web.ReportBean;
 import com.hatde.salemanager.web.StockOutController;
 import java.io.File;
 import java.io.Serializable;
@@ -49,7 +48,7 @@ public class SaleReport extends AbstractReport<Sale, SaleItem> implements Serial
             WordprocessingMLPackage wordMLPackage = WordprocessingMLPackage.load(new File(PathSalesOrderTemplate));
             factory = Context.getWmlObjectFactory();
         } catch (Docx4JException ex) {
-            Logger.getLogger(ReportBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SaleReport.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

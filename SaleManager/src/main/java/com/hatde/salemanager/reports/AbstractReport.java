@@ -1,6 +1,6 @@
 package com.hatde.salemanager.reports;
 
-import com.hatde.salemanager.web.ReportBean;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -131,7 +131,7 @@ public abstract class AbstractReport<V, T> {
              OutputStream out = new FileOutputStream(bundleBean.getBundle().getString("PathSalesOrderResult") + ".pdf");
              c.output(out, new PdfSettings() );*/
         } catch (Exception ex) {
-            Logger.getLogger(ReportBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AbstractReport.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
