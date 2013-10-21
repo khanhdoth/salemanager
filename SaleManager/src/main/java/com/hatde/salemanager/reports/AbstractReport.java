@@ -2,9 +2,7 @@ package com.hatde.salemanager.reports;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.DecimalFormat;
@@ -22,7 +20,6 @@ import org.docx4j.XmlUtils;
 import org.docx4j.convert.out.pdf.PdfConversion;
 import org.docx4j.convert.out.pdf.viaXSLFO.Conversion;
 import org.docx4j.convert.out.pdf.viaXSLFO.PdfSettings;
-import org.docx4j.openpackaging.exceptions.Docx4JException;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
 import org.docx4j.openpackaging.parts.WordprocessingML.MainDocumentPart;
 import org.docx4j.wml.ContentAccessor;
@@ -73,8 +70,11 @@ public abstract class AbstractReport<V, T> {
             // create hastable for single variables to fill
             HashMap<String, String> variableFill = getVariableMap(entity);
 
-            //open the docx template file            
-            wordMLPackage = WordprocessingMLPackage.load(new File(PathTemplate));
+            //open the docx template file
+            InputStream is = getClass().getClassLoader().getResourceAsStream(PathTemplate);
+            wordMLPackage = WordprocessingMLPackage.load(is);
+            
+            //wordMLPackage = WordprocessingMLPackage.load(new File(PathTemplate));
             MainDocumentPart mdp = wordMLPackage.getMainDocumentPart();
             String xpath = "";
             List<Object> list;

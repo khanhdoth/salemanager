@@ -9,7 +9,7 @@ import com.hatde.salemanager.entities.Sale;
 import com.hatde.salemanager.entities.SaleItem;
 import com.hatde.salemanager.web.BundleBean;
 import com.hatde.salemanager.web.StockOutController;
-import java.io.File;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.logging.Level;
@@ -33,7 +33,7 @@ public class SaleReport extends StockReport implements Serializable {
     private BundleBean bundleBean;
 
     @Inject
-    private StockOutController stockOutController;
+    private StockOutController stockOutController;   
 
     @Override
     public void init() {
@@ -43,15 +43,16 @@ public class SaleReport extends StockReport implements Serializable {
         DownloadName = bundleBean.getBundle().getString("SalesOrderDownloadName");
         
         try {
-            WordprocessingMLPackage wordMLPackage = WordprocessingMLPackage.load(new File(PathTemplate));
+            InputStream is = getClass().getClassLoader().getResourceAsStream(PathTemplate);
+            WordprocessingMLPackage wordMLPackage = WordprocessingMLPackage.load(is);
             factory = Context.getWmlObjectFactory();
         } catch (Docx4JException ex) {
             Logger.getLogger(SaleReport.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    public SaleReport() {        
-    }   
+    public SaleReport() {
+    }
 
     @Override
     public Sale getEntity() {
@@ -63,5 +64,5 @@ public class SaleReport extends StockReport implements Serializable {
     public Collection<SaleItem> getDetails() {
         return stockOutController.getSelectedT().getListOfSaleItem();
     }
-    
+
 }
