@@ -1,9 +1,10 @@
 package com.hatde.salemanager.reports;
 
-
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -16,6 +17,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.bind.JAXBElement;
 import org.docx4j.XmlUtils;
+import org.docx4j.convert.out.pdf.PdfConversion;
+import org.docx4j.convert.out.pdf.viaXSLFO.Conversion;
+import org.docx4j.convert.out.pdf.viaXSLFO.PdfSettings;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
 import org.docx4j.openpackaging.parts.WordprocessingML.MainDocumentPart;
 import org.docx4j.wml.ContentAccessor;
@@ -125,11 +129,11 @@ public abstract class AbstractReport<V, T> {
             //Prepare file to download
             InputStream stream = new FileInputStream(outFile);
             file = new DefaultStreamedContent(stream, "application/docx", DownloadName + id + ".docx");
-            outFile.deleteOnExit();
-
-            /*PdfConversion c = new Conversion(wordMLPackage);
-             OutputStream out = new FileOutputStream(bundleBean.getBundle().getString("PathSalesOrderResult") + ".pdf");
-             c.output(out, new PdfSettings() );*/
+            outFile.deleteOnExit();            
+            
+            PdfConversion c = new Conversion(wordMLPackage);
+            OutputStream out = new FileOutputStream("temp" + (new Random()).nextInt(100000000) + ".pdf");
+            c.output(out, new PdfSettings());
         } catch (Exception ex) {
             Logger.getLogger(AbstractReport.class.getName()).log(Level.SEVERE, null, ex);
         }
