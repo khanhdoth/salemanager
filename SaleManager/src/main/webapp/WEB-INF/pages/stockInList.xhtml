@@ -36,7 +36,7 @@
                     </p:commandButton> 
                     <p:commandButton id="printButton" ajax="false" icon="ui-icon-print" title="#{bundle.Print}" >                                  
                         <f:setPropertyActionListener value="#{item}" target="#{stockInController.selectedT}" />  
-                        <p:fileDownload value="#{buyReport.file}" /> 
+                        <p:fileDownload value="#{buyReport.docx}" /> 
                     </p:commandButton> 
                 </p:column> 
 

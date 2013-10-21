@@ -2,7 +2,9 @@ package com.hatde.salemanager.reports;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.DecimalFormat;
@@ -20,6 +22,7 @@ import org.docx4j.XmlUtils;
 import org.docx4j.convert.out.pdf.PdfConversion;
 import org.docx4j.convert.out.pdf.viaXSLFO.Conversion;
 import org.docx4j.convert.out.pdf.viaXSLFO.PdfSettings;
+import org.docx4j.openpackaging.exceptions.Docx4JException;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
 import org.docx4j.openpackaging.parts.WordprocessingML.MainDocumentPart;
 import org.docx4j.wml.ContentAccessor;
@@ -42,7 +45,6 @@ public abstract class AbstractReport<V, T> {
     protected String quantityFormat = "#,##0.##";
     protected String percentFormat = "#.##%";
 
-    private StreamedContent file;
     protected ObjectFactory factory;
 
     protected String PathTemplate;
@@ -64,13 +66,15 @@ public abstract class AbstractReport<V, T> {
     public AbstractReport() {
     }
 
-    public void createForm(V entity, Collection<T> details) {
+    public WordprocessingMLPackage createForm(V entity, Collection<T> details) {
+        WordprocessingMLPackage wordMLPackage = null; 
+        
         try {
             // create hastable for single variables to fill
             HashMap<String, String> variableFill = getVariableMap(entity);
 
             //open the docx template file            
-            WordprocessingMLPackage wordMLPackage = WordprocessingMLPackage.load(new File(PathTemplate));
+            wordMLPackage = WordprocessingMLPackage.load(new File(PathTemplate));
             MainDocumentPart mdp = wordMLPackage.getMainDocumentPart();
             String xpath = "";
             List<Object> list;
@@ -118,25 +122,13 @@ public abstract class AbstractReport<V, T> {
                 Text t = (Text) ((JAXBElement) e).getValue();
                 String targetString = variableFill.get(t.getValue());
                 t.setValue(targetString != null ? targetString : "---");
-            }
+            }          
 
-            //Save to temporary file
-            String outFileName = "temp" + (new Random()).nextInt(100000000) + ".docx";
-            System.out.println("*************** outFile=" + outFileName);
-            File outFile = new File(outFileName);
-            wordMLPackage.save(outFile);
-
-            //Prepare file to download
-            InputStream stream = new FileInputStream(outFile);
-            file = new DefaultStreamedContent(stream, "application/docx", DownloadName + id + ".docx");
-            outFile.deleteOnExit();            
-            
-            PdfConversion c = new Conversion(wordMLPackage);
-            OutputStream out = new FileOutputStream("temp" + (new Random()).nextInt(100000000) + ".pdf");
-            c.output(out, new PdfSettings());
         } catch (Exception ex) {
             Logger.getLogger(AbstractReport.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        return wordMLPackage;
     }
 
     public Tc createCellContent(WordprocessingMLPackage wordMLPackage, Tc colToReplace, String content) {
@@ -192,8 +184,58 @@ public abstract class AbstractReport<V, T> {
         return new SimpleDateFormat("dd.MM.yyyy").format(date);
     }
 
-    public StreamedContent getFile() {
-        createForm(getEntity(), getDetails());
-        return file;
+    public StreamedContent downloadFile(File outFile, String extension) {                
+        StreamedContent sContent = null;
+
+        try {            
+            InputStream stream = new FileInputStream(outFile);
+            sContent = new DefaultStreamedContent(stream, "application/docx", DownloadName + id + extension);
+            outFile.deleteOnExit();
+        } catch (Exception ex) {
+            Logger.getLogger(AbstractReport.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+        return sContent;
     }
+
+    public StreamedContent getDocx() {
+        StreamedContent docx = null;
+        try {
+            WordprocessingMLPackage wordMLPackage = createForm(getEntity(), getDetails());
+
+            //Save to temporary file
+            String outFileName = "temp" + (new Random()).nextInt(100000000) + ".docx";
+            System.out.println("*************** outFile=" + outFileName);
+            File outFile = new File(outFileName);
+            wordMLPackage.save(outFile);
+            
+            docx = downloadFile(outFile, ".docx");
+        } catch (Exception ex) {
+            Logger.getLogger(AbstractReport.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return docx;
+    }
+
+    public StreamedContent getPdf() {
+        StreamedContent pdf = null;
+        try {
+            WordprocessingMLPackage wordMLPackage = createForm(getEntity(), getDetails());
+
+            PdfConversion c = new Conversion(wordMLPackage);
+            String outFileName = "temp" + (new Random()).nextInt(100000000) + ".pdf";
+            System.out.println("*************** outFile=" + outFileName);
+
+            OutputStream out = new FileOutputStream(outFileName);            
+            c.output(out, new PdfSettings());            
+            File outFile = new File(outFileName);
+            
+            pdf = downloadFile(outFile, ".pdf");
+
+        } catch (Exception ex) {
+            Logger.getLogger(AbstractReport.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return pdf;
+    }
+
 }
