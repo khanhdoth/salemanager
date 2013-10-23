@@ -6,7 +6,7 @@
     xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <p:dataTable id="iReceiptTable" var="item" value="#{contactController.viewT.listOfPaymentSent}"
-                 widgetVar="wContactReceiptTable" rowKey="#{item.paymentTransactionId}" scrollable="true" scrollHeight="400"
+                 widgetVar="wContactReceiptTable" rowKey="#{item.paymentTransactionId}" scrollable="true" scrollHeight="200"
                  emptyMessage="No receipt found with given criteria"
                  filteredValue="#{receiptController.filterList}"                                 
                  resizableColumns="true" liveResize="true" >   

@@ -9,7 +9,7 @@
     <h:form id="productListForm" onkeypress="return event.keyCode != 13;">
         <p:dialog id="iDlgProductList" header="#{bundle.Product_ProductList}" widgetVar="wDlgProductList" position="bottom" >                    
             <p:dataTable id="iProductTable" var="item" value="#{productController.list}" editable="true"
-                         widgetVar="wProductTable" rowKey="#{item.productId}" scrollable="true" scrollHeight="400"
+                         widgetVar="wProductTable" rowKey="#{item.productId}" scrollable="true" scrollHeight="200"
                          emptyMessage="No product found with given criteria" editMode="cell" 
                          filteredValue="#{productController.filterList}"                                 
                          resizableColumns="true" liveResize="true" >   

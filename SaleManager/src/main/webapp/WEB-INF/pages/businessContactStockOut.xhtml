@@ -6,7 +6,7 @@
     xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <p:dataTable id="iStockOutTable" var="item" value="#{contactController.viewT.listOfBuy}" 
-                 widgetVar="wContactStockOutTable" rowKey="#{item.productTransactionId}" scrollable="true" scrollHeight="400"
+                 widgetVar="wContactStockOutTable" rowKey="#{item.productTransactionId}" scrollable="true" scrollHeight="200"
                  emptyMessage="No stockOut found with given criteria" 
                  filteredValue="#{stockOutController.filterList}"                                 
                  resizableColumns="true" liveResize="true" >   

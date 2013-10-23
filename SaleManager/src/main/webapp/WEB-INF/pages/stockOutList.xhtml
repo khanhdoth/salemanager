@@ -8,7 +8,7 @@
     <h:form id="saleListForm" onkeypress="return event.keyCode != 13;">
         <p:dialog id="iDlgSaleList" header="#{bundle.StockOut_StockOutList}" widgetVar="wDlgSaleList">
             <p:dataTable id="iStockOutTable" var="item" value="#{stockOutController.list}" 
-                         widgetVar="wStockOutTable" rowKey="#{item.productTransactionId}" scrollable="true" scrollHeight="400"
+                         widgetVar="wStockOutTable" rowKey="#{item.productTransactionId}" scrollable="true" scrollHeight="200"
                          emptyMessage="No stockIn found with given criteria" 
                          filteredValue="#{stockOutController.filterList}"                                 
                          resizableColumns="true" liveResize="true" >   

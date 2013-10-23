@@ -6,7 +6,7 @@
     xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <p:dataTable id="iStockInTable" var="item" value="#{contactController.viewT.listOfSale}" 
-                 widgetVar="wContactStockInTable" rowKey="#{item.productTransactionId}" scrollable="true" scrollHeight="400"
+                 widgetVar="wContactStockInTable" rowKey="#{item.productTransactionId}" scrollable="true" scrollHeight="200"
                  emptyMessage="No stockIn found with given criteria" 
                  filteredValue="#{stockInController.filterList}"                                 
                  resizableColumns="true" liveResize="true" >   

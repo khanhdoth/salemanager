@@ -6,7 +6,7 @@
     xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <p:dataTable id="iPaymentTable" var="item" value="#{contactController.viewT.listOfPaymentReceived}"
-                 widgetVar="wContactPaymentTable" rowKey="#{item.paymentTransactionId}" scrollable="true" scrollHeight="400"
+                 widgetVar="wContactPaymentTable" rowKey="#{item.paymentTransactionId}" scrollable="true" scrollHeight="200"
                  emptyMessage="No payment found with given criteria"
                  filteredValue="#{paymentController.filterList}"                                 
                  resizableColumns="true" liveResize="true" >   

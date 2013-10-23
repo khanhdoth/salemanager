@@ -8,7 +8,7 @@
     <h:form id="receiptListForm" onkeypress="return event.keyCode != 13;">
         <p:dialog id="iDlgReceiptList" header="#{bundle.Receipt_ReceiptList}" widgetVar="wDlgReceiptList">
             <p:dataTable id="iReceiptTable" var="item" value="#{receiptController.list}" editable="true"
-                         widgetVar="wReceiptTable" rowKey="#{item.paymentTransactionId}" scrollable="true" scrollHeight="400"
+                         widgetVar="wReceiptTable" rowKey="#{item.paymentTransactionId}" scrollable="true" scrollHeight="200"
                          emptyMessage="No receipt found with given criteria" editMode="cell" 
                          filteredValue="#{receiptController.filterList}"                                 
                          resizableColumns="true" liveResize="true" >   
