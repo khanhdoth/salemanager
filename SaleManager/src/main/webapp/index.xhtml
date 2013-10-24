@@ -15,69 +15,69 @@
         <h:body>
             <h:outputStylesheet name="css/default.css" />
 
-            <p:ajaxStatus style="width:1px;height:1px;" id="ajaxStatusPanel">  
-                <f:facet name="start">  
-                    <h:graphicImage value="images/ajax_loader.gif" />  
-                </f:facet>  
-
-                <f:facet name="complete">   
-                    <h:outputText value="" />  
-                </f:facet>  
-            </p:ajaxStatus> 
-
             <h:outputScript name="js/common.js" target="head" />
 
-            <!-- menu -->
-            <ui:include src="/WEB-INF/pages/menu.xhtml" />
+            <p:layout fullPage="true">
+                <p:layoutUnit position="north" size="50"> 
+                    <!-- menu -->
+                    <ui:include src="/WEB-INF/pages/menu.xhtml" />
+                </p:layoutUnit>
 
-            <!-- Main form -->            
-            <ui:include src="/WEB-INF/pages/mainForm.xhtml" />
+                <p:layoutUnit position="center">
+                    
+                    <!-- Main form -->            
+                    <ui:include src="/WEB-INF/pages/mainForm.xhtml" />
 
-            <!-- Download form -->            
-            <ui:include src="/WEB-INF/pages/download.xhtml" />
+                    <!-- Download form -->            
+                    <ui:include src="/WEB-INF/pages/download.xhtml" />
 
-            <!-- Business contact report -->            
-            <ui:include src="/WEB-INF/pages/businessContactReport.xhtml" />
+                    <!-- Business contact report -->            
+                    <ui:include src="/WEB-INF/pages/businessContactReport.xhtml" />
 
-            <!-- Business report -->            
-            <ui:include src="/WEB-INF/pages/businessReport.xhtml" />    
+                    <!-- Business report -->            
+                    <ui:include src="/WEB-INF/pages/businessReport.xhtml" />    
 
-            <!-- Create contact -->            
-            <ui:include src="/WEB-INF/pages/createContact.xhtml" />
+                    <!-- Contact list -->            
+                    <ui:include src="/WEB-INF/pages/contactList.xhtml" />
 
-            <!-- Contact list -->            
-            <ui:include src="/WEB-INF/pages/contactList.xhtml" />
+                    <!-- Product list -->            
+                    <ui:include src="/WEB-INF/pages/productList.xhtml" />
 
-            <!-- Create product -->            
-            <ui:include src="/WEB-INF/pages/createProduct.xhtml" />
+                    <!-- stock-out list -->            
+                    <ui:include src="/WEB-INF/pages/stockOutList.xhtml" />
 
-            <!-- Product list -->            
-            <ui:include src="/WEB-INF/pages/productList.xhtml" />
+                    <!-- stock-in list -->            
+                    <ui:include src="/WEB-INF/pages/stockInList.xhtml" />
 
-            <!-- Create stock-out -->            
-            <ui:include src="/WEB-INF/pages/createStockOut.xhtml" />
+                    <!-- Receipt list -->            
+                    <ui:include src="/WEB-INF/pages/receiptList.xhtml" />
 
-            <!-- stock-out list -->            
-            <ui:include src="/WEB-INF/pages/stockOutList.xhtml" />
+                    <!-- payment list -->            
+                    <ui:include src="/WEB-INF/pages/paymentList.xhtml" />
+                    
+                    
 
-            <!-- Create stock-in -->            
-            <ui:include src="/WEB-INF/pages/createStockIn.xhtml" />
+                </p:layoutUnit>
 
-            <!-- stock-in list -->            
-            <ui:include src="/WEB-INF/pages/stockInList.xhtml" />
+                <!-- Create Receipt -->            
+                <ui:include src="/WEB-INF/pages/createReceipt.xhtml" />
 
-            <!-- Create Receipt -->            
-            <ui:include src="/WEB-INF/pages/createReceipt.xhtml" />
+                <!-- Create payment -->            
+                <ui:include src="/WEB-INF/pages/createPayment.xhtml" />
 
-            <!-- Receipt list -->            
-            <ui:include src="/WEB-INF/pages/receiptList.xhtml" />
+                <!-- Create stock-in -->            
+                <ui:include src="/WEB-INF/pages/createStockIn.xhtml" />
 
-            <!-- Create payment -->            
-            <ui:include src="/WEB-INF/pages/createPayment.xhtml" />
+                <!-- Create stock-out -->            
+                <ui:include src="/WEB-INF/pages/createStockOut.xhtml" />
 
-            <!-- payment list -->            
-            <ui:include src="/WEB-INF/pages/paymentList.xhtml" />
+                <!-- Create product -->            
+                <ui:include src="/WEB-INF/pages/createProduct.xhtml" />
 
+                <!-- Create contact -->            
+                <ui:include src="/WEB-INF/pages/createContact.xhtml" />
+
+            </p:layout>
         </h:body>        
     </ui:composition>        
 </html>
