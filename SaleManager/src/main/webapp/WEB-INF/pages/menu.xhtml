@@ -61,15 +61,7 @@
             </p:submenu>
 
             <f:facet name="options">
-                <p:ajaxStatus style="width:1px;height:1px" id="ajaxStatusPanel">  
-                    <f:facet name="start">  
-                        <h:graphicImage value="images/loader.gif" />  
-                    </f:facet>  
-
-                    <f:facet name="complete">   
-                        <h:outputText value="" />  
-                    </f:facet>  
-                </p:ajaxStatus> 
+               
                 <p:commandLink id="lgVN" actionListener="#{bundleBean.changeLanguageVI}">                      
                     <h:graphicImage value="images/vn.png" title="Tiếng Việt"/>                      
                 </p:commandLink> 
@@ -78,6 +70,14 @@
                     <h:graphicImage value="images/us.png" title="English"/>                     
                 </p:commandLink> 
             </f:facet>
-        </p:menubar>            
+        </p:menubar>
+        <p:ajaxStatus style="width:1px;height:1px" id="ajaxStatusPanel">
+            <f:facet name="start">                          
+                <h:graphicImage value="images/loader2.gif" />                                                  
+            </f:facet>  
+            <f:facet name="complete">   
+                <h:outputText value="" />  
+            </f:facet>  
+        </p:ajaxStatus>
     </h:form>
 </ui:composition>

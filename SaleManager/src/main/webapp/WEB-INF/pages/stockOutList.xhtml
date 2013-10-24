@@ -85,18 +85,7 @@
                         <f:convertNumber pattern="#,##0" />
                     </h:outputText> 
                 </p:column>  
-            </p:dataTable>   
-
-            <p:panel header="Export Data">  
-                <h:commandLink>  
-                    <p:graphicImage value="/images/excel.png" />  
-                    <p:dataExporter type="xls" target="iStockOutTable" fileName="StockOutList"/>  
-                </h:commandLink>  
-                <h:commandLink>  
-                    <p:graphicImage value="/images/pdf.png" />  
-                    <p:dataExporter type="pdf" target="iStockOutTable" fileName="StockOutList"/>  
-                </h:commandLink>  
-            </p:panel>  
+            </p:dataTable>               
         </p:dialog>  
     </h:form>            
 </ui:composition>
