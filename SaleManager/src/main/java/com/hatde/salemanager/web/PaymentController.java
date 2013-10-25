@@ -15,13 +15,15 @@ import javax.inject.Inject;
  *
  * @author Khanh
  */
-
 @Named(value = "paymentController")
 @SessionScoped
 public class PaymentController extends FacadeController<PaymentSent> implements Serializable {
 
     @EJB
     private PaymentSentFacadeREST bean;
+    
+    @Inject
+    private ContactController contactControllerBean;
 
     @Inject
     private BundleBean bundleBean;
@@ -45,11 +47,17 @@ public class PaymentController extends FacadeController<PaymentSent> implements 
     }
 
     @Override
+    public void setEdit() {
+        contactControllerBean.refreshList();
+        super.setEdit();
+    }
+
+    @Override
     public void initNewT() {
         super.initNewT();
         newT.setDate(new Date());
     }
-    
+
     @Override
     public String getDialogTitle() {
         return dialogMode == DialogMode.CREATE

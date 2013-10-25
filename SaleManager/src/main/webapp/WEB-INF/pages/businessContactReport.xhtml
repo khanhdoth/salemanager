@@ -6,8 +6,7 @@
     xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <h:form id="businessContactForm" onkeypress="return event.keyCode != 13;">        
-        <p:remoteCommand name="updateDialog" action="#{contactController.hello}" 
-                         update="#{contactController.updateReportString}"/>
+        <p:remoteCommand name="updateDialog" update="#{contactController.updateReportString}"/>
         <p:dialog id="iDlgBusinessContactList" widgetVar="wDlgBusinessContactList" onShow="updateDialog()">   
             <f:facet name="header">  
                 <h:outputLabel value="#{bundle.ReportContact}" />  

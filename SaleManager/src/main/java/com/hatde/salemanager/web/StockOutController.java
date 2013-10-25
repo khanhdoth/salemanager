@@ -77,7 +77,7 @@ public class StockOutController extends FacadeController<Sale> implements Serial
     }
 
     public void setEdit() {
-        refreshList();
+        refresh();
         super.setEdit();                
     }
     

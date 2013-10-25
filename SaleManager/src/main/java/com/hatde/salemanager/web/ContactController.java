@@ -142,10 +142,4 @@ public class ContactController extends FacadeController<Contact> implements Seri
         }
     }
     
-    public void hello() {
-        System.out.println("+++++++++++++++++++++++++++++++ Hello! ++++++++++++++++++++++++++++++++++++++++++");
-    }
-    
-    
-    
 }

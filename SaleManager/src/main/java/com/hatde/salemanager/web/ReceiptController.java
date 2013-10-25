@@ -26,6 +26,9 @@ public class ReceiptController extends FacadeController<PaymentReceived> impleme
 
     @EJB
     private PaymentReceivedFacadeREST bean;
+    
+    @Inject
+    private ContactController contactControllerBean;
 
     @Inject
     private BundleBean bundleBean;
@@ -48,6 +51,12 @@ public class ReceiptController extends FacadeController<PaymentReceived> impleme
         return bundleBean;
     }
 
+    @Override
+    public void setEdit() {
+        contactControllerBean.refreshList();
+        super.setEdit();                
+    }
+    
     @Override
     public void initNewT() {
         super.initNewT();

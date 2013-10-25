@@ -78,7 +78,7 @@ public class StockInController extends FacadeController<Buy> implements Serializ
     }
     
     public void setEdit() {
-        refreshList();
+        refresh();
         super.setEdit();                
     }
     
