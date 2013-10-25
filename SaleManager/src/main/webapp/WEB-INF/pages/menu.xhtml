@@ -16,7 +16,8 @@
             </p:submenu>  
 
             <p:submenu label="#{bundle.ModuleStockIn}">  
-                <p:menuitem value="#{bundle.StockIn_NewStockIn}" icon="ui-icon-document" onclick="wDlgBuy.show()" /> 
+                <p:menuitem value="#{bundle.StockIn_NewStockIn}" icon="ui-icon-document" onclick="wDlgBuy.show()" 
+                            action="#{stockInController.refresh}" update=":createBuyForm:soContactMenu :createBuyForm:iSIInTable" /> 
                 <p:menuitem value="#{bundle.StockIn_StockInList}" icon="ui-icon-document" 
                             onclick="wDlgBuyList.show()" action="#{stockInController.refreshList}" 
                             update=":buyListForm:iStockInTable" /> 
@@ -24,7 +25,8 @@
 
             <p:submenu label="#{bundle.ModuleReceipt}">  
                 <p:menuitem value="#{bundle.Receipt_NewReceipt}" icon="ui-icon-document" 
-                            onclick="wDlgReceipt.show()" /> 
+                            onclick="wDlgReceipt.show()" action="#{contactController.refreshList}" 
+                            update=":createReceiptForm:soMenu" /> 
                 <p:menuitem value="#{bundle.Receipt_ReceiptList}" icon="ui-icon-document" 
                             onclick="wDlgReceiptList.show()" action="#{receiptController.refreshList}" 
                             update=":receiptListForm:iReceiptTable" /> 

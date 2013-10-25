@@ -8,7 +8,7 @@
     <h:form id="createSaleForm" onkeypress="return event.keyCode != 13;">
         <p:dialog id="iDlgSale" header="#{stockOutController.dialogTitle}" widgetVar="wDlgSale"  modal="true" >     
 
-            <p:ajax event="close" update=":createSaleForm:iDlgSale" listener="#{stockOutController.closeDialog}"/>
+            <p:ajax event="close" listener="#{stockOutController.closeDialog}"/>
             <p:messages id="msgs" autoUpdate="true"/>
             <p:panel>    
                 <h:panelGrid columns="5">  
