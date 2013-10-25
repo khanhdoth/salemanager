@@ -8,7 +8,8 @@
     <h:form id="menuForm">
         <p:menubar autoDisplay="false">                       
             <p:submenu label="#{bundle.ModuleStockOut}">  
-                <p:menuitem value="#{bundle.StockOut_NewStockOut}" icon="ui-icon-document" onclick="wDlgSale.show()" /> 
+                <p:menuitem value="#{bundle.StockOut_NewStockOut}" icon="ui-icon-document" onclick="wDlgSale.show()" 
+                            action="#{stockOutController.refresh}" update=":createSaleForm:soContactMenu :createSaleForm:iSIOutTable" /> 
                 <p:menuitem value="#{bundle.StockOut_StockOutList}" icon="ui-icon-document" 
                             onclick="wDlgSaleList.show()" action="#{stockOutController.refreshList}" 
                             update=":saleListForm:iStockOutTable" />

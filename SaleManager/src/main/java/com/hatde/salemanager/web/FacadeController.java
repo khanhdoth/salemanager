@@ -157,9 +157,10 @@ public abstract class FacadeController<T> {
 
     public List<T> getListOne() {
         System.out.println("----getListOne----" + this.toString());
+        /*
         if (list == null) {
             refreshList();
-        }
+        }*/
         return list;
     }
 

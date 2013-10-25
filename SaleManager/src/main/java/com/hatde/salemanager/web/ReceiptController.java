@@ -20,7 +20,6 @@ import javax.inject.Inject;
  *
  * @author Khanh
  */
-
 @Named(value = "receiptController")
 @SessionScoped
 public class ReceiptController extends FacadeController<PaymentReceived> implements Serializable {
@@ -62,4 +61,5 @@ public class ReceiptController extends FacadeController<PaymentReceived> impleme
                 : bundleBean.getBundle().getString("Receipt_EditReceipt");
 
     }
+
 }

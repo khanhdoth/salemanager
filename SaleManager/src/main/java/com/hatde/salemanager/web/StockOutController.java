@@ -19,7 +19,6 @@ import org.primefaces.event.CellEditEvent;
  *
  * @author Khanh
  */
-
 @Named(value = "stockOutController")
 @SessionScoped
 public class StockOutController extends FacadeController<Sale> implements Serializable {
@@ -76,7 +75,7 @@ public class StockOutController extends FacadeController<Sale> implements Serial
                 + " X " + c.getPrice() + " _ " + c.getDiscount()
                 + "% = " + c.getAmount());
     }
-    
+
     public void deleteSI() {
         newT.getListOfSaleItem().remove(selectedSI);
     }
