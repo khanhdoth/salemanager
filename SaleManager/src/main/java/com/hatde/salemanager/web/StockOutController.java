@@ -76,6 +76,11 @@ public class StockOutController extends FacadeController<Sale> implements Serial
                 + "% = " + c.getAmount());
     }
 
+    public void setEdit() {
+        refreshList();
+        super.setEdit();                
+    }
+    
     public void deleteSI() {
         newT.getListOfSaleItem().remove(selectedSI);
     }

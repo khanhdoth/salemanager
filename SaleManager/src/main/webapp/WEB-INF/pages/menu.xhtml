@@ -57,7 +57,8 @@
             </p:submenu>  
 
             <p:submenu label="#{bundle.Report}">  
-                <p:menuitem value="#{bundle.ReportContact}" icon="ui-icon-document" onclick="wDlgBusinessContactList.show()" /> 
+                <p:menuitem value="#{bundle.ReportContact}" icon="ui-icon-document" onclick="wDlgBusinessContactList.show()" 
+                            action="#{contactController.refreshList}" update=":businessContactForm:soContactMenu"/> 
                 <p:menuitem value="#{bundle.ReportBusiness}" icon="ui-icon-document" 
                             onclick="wDlgBusinessList.show()" action="#{contactController.refreshList}" 
                             update=":businessListForm:iPGBusinessList" />  

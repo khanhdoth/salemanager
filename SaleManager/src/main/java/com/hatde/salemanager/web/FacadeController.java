@@ -143,6 +143,7 @@ public abstract class FacadeController<T> {
     }
 
     public void refreshList() {
+        System.out.println("----refreshList----" + this.toString());
         initDataList();
     }
 

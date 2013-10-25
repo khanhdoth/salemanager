@@ -6,7 +6,9 @@
     xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <h:form id="createBuyForm" onkeypress="return event.keyCode != 13;">
-        <p:dialog id="iDlgBuy" header="#{stockInController.dialogTitle}" widgetVar="wDlgBuy" modal="true" >
+        <p:remoteCommand name="updateDlgBuy" update=":createBuyForm:soContactMenu, :createBuyForm:iSIInTable"/>
+        <p:dialog id="iDlgBuy" header="#{stockInController.dialogTitle}" widgetVar="wDlgBuy" modal="true" 
+                  onShow="updateDlgBuy" >
             
             <p:ajax event="close" listener="#{stockInController.closeDialog}"/>
             <p:messages id="msgs" autoUpdate="true"/>

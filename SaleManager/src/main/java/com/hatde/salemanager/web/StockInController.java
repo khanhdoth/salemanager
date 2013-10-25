@@ -77,6 +77,11 @@ public class StockInController extends FacadeController<Buy> implements Serializ
                 + "% = " + c.getAmount());
     }
     
+    public void setEdit() {
+        refreshList();
+        super.setEdit();                
+    }
+    
     public void deleteSI() {
         newT.getListOfSaleItem().remove(selectedSI);
     }
