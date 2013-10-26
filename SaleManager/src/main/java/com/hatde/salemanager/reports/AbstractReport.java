@@ -189,7 +189,7 @@ public abstract class AbstractReport<V, T> {
 
         try {            
             InputStream stream = new FileInputStream(outFile);
-            sContent = new DefaultStreamedContent(stream, "application/docx", DownloadName + id + extension);
+            sContent = new DefaultStreamedContent(stream, "application/" + extension, DownloadName + id + "." + extension);
             outFile.deleteOnExit();
         } catch (Exception ex) {
             Logger.getLogger(AbstractReport.class.getName()).log(Level.SEVERE, null, ex);
@@ -208,7 +208,7 @@ public abstract class AbstractReport<V, T> {
             File outFile = new File(outFileName);
             wordMLPackage.save(outFile);
             
-            docx = downloadFile(outFile, ".docx");
+            docx = downloadFile(outFile, "docx");
         } catch (Exception ex) {
             Logger.getLogger(AbstractReport.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -229,7 +229,7 @@ public abstract class AbstractReport<V, T> {
             c.output(out, new PdfSettings());            
             File outFile = new File(outFileName);
             
-            pdf = downloadFile(outFile, ".pdf");
+            pdf = downloadFile(outFile, "pdf");
 
         } catch (Exception ex) {
             Logger.getLogger(AbstractReport.class.getName()).log(Level.SEVERE, null, ex);
