@@ -1,7 +1,7 @@
-var jDlgContact;
+//var jDlgContact;
 
 onload = function() {        
-    jDlgContact = new MyDialog(wDlgContact);    
+    //jDlgContact = new MyDialog(wDlgContact);    
 };
 
 function MyDialog(iDialog){
@@ -26,11 +26,3 @@ function MyDialog(iDialog){
         isOpen = false;
     }   
 }
-
-function start() {  
-    statusDialog.show();  
-}  
-  
-function stop() {  
-    statusDialog.hide();  
-}  
