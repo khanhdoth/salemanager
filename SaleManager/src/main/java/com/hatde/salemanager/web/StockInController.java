@@ -9,8 +9,8 @@ import java.io.Serializable;
 import java.util.Date;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.view.ViewScoped;
 import javax.inject.Named;
-import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.event.CellEditEvent;
@@ -21,7 +21,7 @@ import org.primefaces.event.CellEditEvent;
  */
 
 @Named(value = "stockInController")
-@SessionScoped
+@ViewScoped
 public class StockInController extends FacadeController<Buy> implements Serializable {
 
     private SaleItem selectedSI;

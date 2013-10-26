@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.primefaces.context.RequestContext;
@@ -19,7 +19,7 @@ import org.primefaces.context.RequestContext;
  * @author Khanh
  */
 @Named(value = "bundleBean")
-@SessionScoped
+@ViewScoped
 public class BundleBean implements Serializable {
 
     @Inject

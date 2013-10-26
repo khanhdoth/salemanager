@@ -14,7 +14,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.enterprise.context.SessionScoped;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.docx4j.jaxb.Context;
@@ -26,7 +26,7 @@ import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
  * @author Do
  */
 @Named(value = "saleReport")
-@SessionScoped
+@ViewScoped
 public class SaleReport extends StockReport implements Serializable {
 
     @Inject

@@ -6,7 +6,7 @@ import com.hatde.salemanager.services.ContactFacadeREST;
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.enterprise.context.SessionScoped;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -15,7 +15,7 @@ import javax.inject.Named;
  * @author Do
  */
 @Named(value = "contactController")
-@SessionScoped
+@ViewScoped
 public class ContactController extends FacadeController<Contact> implements Serializable {
     private Contact viewT = new Contact();
     private final String updateReportString = ":businessContactForm:iPGBusinessContactList, :businessContactForm:apContactDetail:iStockOutTable, :businessContactForm:apContactDetail:iStockInTable, :businessContactForm:apContactDetail:iPaymentTable, :businessContactForm:apContactDetail:iReceiptTable";

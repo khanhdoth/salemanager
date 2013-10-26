@@ -7,8 +7,8 @@ import java.io.Serializable;
 import java.util.Date;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.view.ViewScoped;
 import javax.inject.Named;
-import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 
 /**
@@ -16,7 +16,7 @@ import javax.inject.Inject;
  * @author Khanh
  */
 @Named(value = "paymentController")
-@SessionScoped
+@ViewScoped
 public class PaymentController extends FacadeController<PaymentSent> implements Serializable {
 
     @EJB

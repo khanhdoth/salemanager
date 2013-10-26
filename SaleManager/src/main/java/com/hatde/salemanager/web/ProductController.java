@@ -6,7 +6,7 @@ import com.hatde.salemanager.services.ProductFacadeREST;
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.enterprise.context.SessionScoped;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -16,7 +16,7 @@ import javax.inject.Named;
  */
 
 @Named(value = "productController")
-@SessionScoped
+@ViewScoped
 public class ProductController extends FacadeController<Product> implements Serializable {
 
     @EJB

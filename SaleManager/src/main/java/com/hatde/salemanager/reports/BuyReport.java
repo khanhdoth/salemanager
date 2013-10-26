@@ -6,7 +6,7 @@ import com.hatde.salemanager.web.BundleBean;
 import com.hatde.salemanager.web.StockInController;
 import java.io.Serializable;
 import java.util.Collection;
-import javax.enterprise.context.SessionScoped;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -15,7 +15,7 @@ import javax.inject.Named;
  * @author Do
  */
 @Named(value = "buyReport")
-@SessionScoped
+@ViewScoped
 public class BuyReport extends StockReport implements Serializable {
 
     @Inject
