@@ -6,7 +6,7 @@
     xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <h:form id="buyListForm" onkeypress="return event.keyCode != 13;">
-        <p:dialog id="iDlgBuyList" header="#{bundle.StockIn_StockInList}" widgetVar="wDlgBuyList" position="bottom" >                    
+        <p:dialog id="iDlgBuyList" header="#{bundle.StockIn_StockInList}" widgetVar="wDlgBuyList">                    
             <p:dataTable id="iStockInTable" var="item" value="#{stockInController.list}" 
                          widgetVar="wStockInTable" rowKey="#{item.productTransactionId}" scrollable="true" scrollHeight="200"
                          emptyMessage="No stockIn found with given criteria" 
