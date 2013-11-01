@@ -15,6 +15,8 @@ public class Product implements java.io.Serializable {
     private String name;
     private String manufacturer;
     private String unit;
+    private double priceIn;
+    private double priceOut;
     /*private Collection<ProductTag> listOfProductTag = new ArrayList<>();
      private Collection<Unit> listOfUnit = new ArrayList<>();*/
 
@@ -59,11 +61,30 @@ public class Product implements java.io.Serializable {
     public String getUnit() {
         return unit;
     }
-
+    
     public void setUnit(String unit) {
         this.unit = unit;
     }
 
+    @Column(name = "PriceIn")
+    public double getPriceIn() {
+        return priceIn;
+    }
+
+    public void setPriceIn(double priceIn) {
+        this.priceIn = priceIn;
+    }
+
+    @Column(name = "PriceOut")
+    public double getPriceOut() {
+        return priceOut;
+    }
+
+    public void setPriceOut(double priceOut) {
+        this.priceOut = priceOut;
+    }
+
+    
     /*@ManyToMany(cascade = CascadeType.ALL)
      @JoinTable(name = "product_productTag", joinColumns = {
      @JoinColumn(name = "productId")}, inverseJoinColumns = {

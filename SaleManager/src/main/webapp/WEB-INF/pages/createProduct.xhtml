@@ -2,7 +2,8 @@
     xmlns="http://www.w3.org/1999/xhtml"   
     xmlns:h="http://java.sun.com/jsf/html"
     xmlns:ui="http://java.sun.com/jsf/facelets"
-    xmlns:p="http://primefaces.org/ui">
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <h:form id="createProductForm" onkeypress="return event.keyCode != 13;">
         <p:dialog id="iDlgProduct" header="#{productController.dialogTitle}" widgetVar="wDlgProduct"  modal="true" >                    
@@ -18,6 +19,18 @@
                 <h:outputLabel value="#{bundle.Product_Unit}" />  
                 <p:inputText value="#{productController.newT.unit}" />  
 
+                <h:outputLabel value="#{bundle.Product_PriceIn}" />  
+                <p:inputText id="iPrinceIn" value="#{productController.newT.priceIn}">   
+                    <f:convertNumber pattern="#,##0" maxIntegerDigits="12" />                                        
+                    <p:ajax event="blur" update="iPrinceIn"/>  
+                </p:inputText>   
+
+                <h:outputLabel value="#{bundle.Product_PriceOut}" />  
+                <p:inputText id="iPrinceOut" value="#{productController.newT.priceOut}">   
+                    <f:convertNumber pattern="#,##0" maxIntegerDigits="12" />                                        
+                    <p:ajax event="blur" update="iPrinceOut"/> 
+                </p:inputText>   
+                
                 <p:commandButton widgetVar="saveProductButton" value="#{bundle.Save}" 
                                  onclick="saveProductButton.disable()"
                                  actionListener="#{productController.createOrEdit}" 

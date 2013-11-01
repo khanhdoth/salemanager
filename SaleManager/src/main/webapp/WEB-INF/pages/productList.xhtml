@@ -78,8 +78,42 @@
                             <p:inputText value="#{item.unit}" />  
                         </f:facet>  
                     </p:cellEditor>                             
-
                 </p:column> 
+
+                <p:column id="priceInColumn" sortBy="unit" filterBy="unit"   
+                          headerText="#{bundle.Product_PriceIn}"
+                          filterMatchMode="contains" style="width:80px">  
+                    <p:cellEditor>  
+                        <f:facet name="output">  
+                            <h:outputText value="#{item.priceIn}">  
+                                <f:convertNumber pattern="#,##0" />
+                            </h:outputText> 
+                        </f:facet>  
+                        <f:facet name="input">  
+                            <p:inputText value="#{item.priceIn}">  
+                                <f:convertNumber pattern="#,##0" maxIntegerDigits="12" />                                
+                            </p:inputText>
+                        </f:facet>  
+                    </p:cellEditor>        
+                </p:column> 
+
+                <p:column id="priceOutColumn" sortBy="unit" filterBy="unit"   
+                          headerText="#{bundle.Product_PriceOut}"
+                          filterMatchMode="contains" style="width:80px">  
+                    <p:cellEditor>  
+                        <f:facet name="output">  
+                            <h:outputText value="#{item.priceOut}" >  
+                                <f:convertNumber pattern="#,##0" />
+                            </h:outputText>   
+                        </f:facet>  
+                        <f:facet name="input">  
+                            <p:inputText value="#{item.priceOut}" >  
+                                <f:convertNumber pattern="#,##0" maxIntegerDigits="12" />                                
+                            </p:inputText>  
+                        </f:facet>  
+                    </p:cellEditor>                             
+                </p:column>         
+                
             </p:dataTable>  
         </p:dialog>  
     </h:form>
