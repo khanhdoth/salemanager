@@ -7,9 +7,10 @@
 
     <h:form id="createBuyForm" onkeypress="return event.keyCode != 13;">
         <p:remoteCommand name="updateDlgBuy" update=":createBuyForm:soContactMenu, :createBuyForm:iSIInTable"/>
+        <p:remoteCommand name="updateDBTable" update=":createBuyForm:iSIInTable"/>
         <p:dialog id="iDlgBuy" header="#{stockInController.dialogTitle}" widgetVar="wDlgBuy" modal="true" 
                   onShow="updateDlgBuy" >
-            
+
             <p:ajax event="close" listener="#{stockInController.closeDialog}"/>
             <p:messages id="msgs" autoUpdate="true"/>
             <p:panel>    
@@ -41,7 +42,7 @@
                         <p:dataTable id="iSIInTable" var="item" value="#{stockInController.newT.listOfSaleItem}" editable="true"
                                      widgetVar="wSIInTable" rowKey="#{item.saleItemId}" scrollable="true" scrollHeight="150"
                                      emptyMessage="No sale item found with given criteria" editMode="cell"                                  
-                                     resizableColumns="true" liveResize="true" >   
+                                     resizableColumns="true" liveResize="true" rowIndexVar="rowIndex">   
 
                             <f:facet name="header">  
                                 <p:outputPanel style="text-align:left"> 
@@ -60,7 +61,7 @@
                                                  :createBuyForm:oTotal, :createBuyForm:oAmountAfterPayment"
                                                  action="#{stockInController.deleteSI}" icon="ui-icon-trash" title="#{bundle.Delete}" >  
                                     <p:confirm header="#{bundle.Confirmation}" message="#{bundle.Delete_Confirm_Message}" icon="ui-icon-alert" />  
-                                    <f:setPropertyActionListener value="#{item}" target="#{stockInController.selectedSI}" />  
+                                    
                                 </p:commandButton> 
                             </p:column> 
 
@@ -74,11 +75,19 @@
                                                          panelStyle="width:500px" effect="fade" var="p" style="width:160px"  
                                                          filter="true" filterMatchMode="contains" required="true">                              
                                             <f:selectItems value="#{productController.listOne}" var="pi" itemLabel="#{pi.productId} - #{pi.name}" itemValue="#{pi}"/>  
+                                            
+                                            <f:param name="testParam" value="hello Baby" />
+                                            <f:param name="rowIndex" value="#{rowIndex}" />
+                                            <p:ajax event="change" listener="#{stockInController.processPrice}" update="oPrice, oAmount, 
+                                                    :createBuyForm:oSubTotal, :createBuyForm:oAmountDiscount, :createBuyForm:oAmountVAT, 
+                                                    :createBuyForm:oTotal, :createBuyForm:oAmountAfterPayment"/>                                             
 
                                             <p:column> #{p.productId} </p:column>
                                             <p:column> #{p.name} </p:column>
                                             <p:column> #{p.manufacturer} </p:column>
                                             <p:column> #{p.unit} </p:column>                                        
+                                            <p:column> #{p.priceIn} </p:column>
+                                            <p:column> #{p.priceOut} </p:column>
 
                                         </p:selectOneMenu>
                                     </f:facet>  
@@ -107,7 +116,7 @@
                             <p:column id="priceColumn" headerText="#{bundle.Price}" style="width:70px; text-align:right">                              
                                 <p:cellEditor>  
                                     <f:facet name="output">  
-                                        <h:outputText value="#{item.price}" >
+                                        <h:outputText id="oPrice" value="#{item.price}" >
                                             <f:convertNumber pattern="#,##0" />
                                         </h:outputText> 
                                     </f:facet>  

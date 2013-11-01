@@ -7,8 +7,11 @@ import com.hatde.salemanager.services.AbstractFacade;
 import com.hatde.salemanager.services.BuyFacadeREST;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import javax.inject.Inject;
@@ -19,12 +22,11 @@ import org.primefaces.event.CellEditEvent;
  *
  * @author Khanh
  */
-
 @Named(value = "stockInController")
 @ViewScoped
 public class StockInController extends FacadeController<Buy> implements Serializable {
-
-    private SaleItem selectedSI;
+    private SaleItem selectedSI;    
+    private String testString = "";
 
     @EJB
     private BuyFacadeREST bean;
@@ -67,21 +69,14 @@ public class StockInController extends FacadeController<Buy> implements Serializ
     }
 
     public void onSICellEdit(CellEditEvent event) {
-        System.out.println("Stock-in onSICellEdit");
-        Object oldValue = event.getOldValue();
-        Object newValue = event.getNewValue();
-        SaleItem c = (SaleItem) ((DataTable) event.getSource()).getRowData();
-
-        System.out.println(c.getProduct().getName() + " " + c.getQuantity()
-                + " X " + c.getPrice() + " _ " + c.getDiscount()
-                + "% = " + c.getAmount());
+        
     }
-    
+
     public void setEdit() {
         refresh();
-        super.setEdit();                
+        super.setEdit();
     }
-    
+
     public void deleteSI() {
         newT.getListOfSaleItem().remove(selectedSI);
     }
@@ -94,6 +89,14 @@ public class StockInController extends FacadeController<Buy> implements Serializ
         this.selectedSI = selectedSI;
     }
 
+    public String getTestString() {
+        return testString;
+    }
+
+    public void setTestString(String testString) {
+        this.testString = testString;
+    }
+
     public void refresh() {
         contactControllerBean.refreshList();
         productControllerBean.refreshList();
@@ -101,6 +104,28 @@ public class StockInController extends FacadeController<Buy> implements Serializ
 
     public void addSaleItem() {
         newT.getListOfSaleItem().add(new SaleItem());
+    }
+
+    public void processPrice() {
+        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+        String param = externalContext.getRequestParameterMap().get("testParam");
+        int rowIndex = Integer.parseInt(externalContext.getRequestParameterMap().get("rowIndex"));
+        
+        //SaleItem si = (SaleItem) event.getComponent().getAttributes().get("si");
+        System.out.println("New product selected: " + (selectedSI == null ? "null" : selectedSI.getProduct().getName()));
+        System.out.println("******* Test param: " + param);
+        System.out.println("******* rowIndex: " + rowIndex);
+        
+        SaleItem si = (SaleItem)((List) newT.getListOfSaleItem()).get(rowIndex);
+        si.setPrice((float) si.getProduct().getPriceIn());
+        
+        //System.out.println("New product selected2: " + si.getProduct().getName());
+        //si.setPrice((float) si.getProduct().getPriceIn());
+        
+        /*
+        for (SaleItem si : newT.getListOfSaleItem()) {
+            si.setPrice((float) (si.getProduct() == null ? 0 : si.getProduct().getPriceIn()));
+        }*/
     }
 
     @Override
