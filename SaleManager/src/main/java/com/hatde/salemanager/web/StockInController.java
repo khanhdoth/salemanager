@@ -15,7 +15,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import javax.inject.Inject;
-import org.primefaces.component.datatable.DataTable;
 import org.primefaces.event.CellEditEvent;
 
 /**
@@ -25,8 +24,7 @@ import org.primefaces.event.CellEditEvent;
 @Named(value = "stockInController")
 @ViewScoped
 public class StockInController extends FacadeController<Buy> implements Serializable {
-    private SaleItem selectedSI;    
-    private String testString = "";
+    private SaleItem selectedSI;        
 
     @EJB
     private BuyFacadeREST bean;
@@ -88,15 +86,7 @@ public class StockInController extends FacadeController<Buy> implements Serializ
     public void setSelectedSI(SaleItem selectedSI) {
         this.selectedSI = selectedSI;
     }
-
-    public String getTestString() {
-        return testString;
-    }
-
-    public void setTestString(String testString) {
-        this.testString = testString;
-    }
-
+    
     public void refresh() {
         contactControllerBean.refreshList();
         productControllerBean.refreshList();
@@ -108,24 +98,9 @@ public class StockInController extends FacadeController<Buy> implements Serializ
 
     public void processPrice() {
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-        String param = externalContext.getRequestParameterMap().get("testParam");
-        int rowIndex = Integer.parseInt(externalContext.getRequestParameterMap().get("rowIndex"));
-        
-        //SaleItem si = (SaleItem) event.getComponent().getAttributes().get("si");
-        System.out.println("New product selected: " + (selectedSI == null ? "null" : selectedSI.getProduct().getName()));
-        System.out.println("******* Test param: " + param);
-        System.out.println("******* rowIndex: " + rowIndex);
-        
+        int rowIndex = Integer.parseInt(externalContext.getRequestParameterMap().get("rowIndex"));        
         SaleItem si = (SaleItem)((List) newT.getListOfSaleItem()).get(rowIndex);
         si.setPrice((float) si.getProduct().getPriceIn());
-        
-        //System.out.println("New product selected2: " + si.getProduct().getName());
-        //si.setPrice((float) si.getProduct().getPriceIn());
-        
-        /*
-        for (SaleItem si : newT.getListOfSaleItem()) {
-            si.setPrice((float) (si.getProduct() == null ? 0 : si.getProduct().getPriceIn()));
-        }*/
     }
 
     @Override

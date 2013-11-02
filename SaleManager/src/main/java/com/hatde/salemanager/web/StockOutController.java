@@ -7,8 +7,11 @@ import com.hatde.salemanager.services.AbstractFacade;
 import com.hatde.salemanager.services.SaleFacadeREST;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import javax.inject.Inject;
@@ -66,14 +69,6 @@ public class StockOutController extends FacadeController<Sale> implements Serial
     }
 
     public void onSICellEdit(CellEditEvent event) {
-        System.out.println("Stock-out onSICellEdit");
-        Object oldValue = event.getOldValue();
-        Object newValue = event.getNewValue();
-        SaleItem c = (SaleItem) ((DataTable) event.getSource()).getRowData();
-
-        System.out.println(c.getProduct().getName() + " " + c.getQuantity()
-                + " X " + c.getPrice() + " _ " + c.getDiscount()
-                + "% = " + c.getAmount());
     }
 
     public void setEdit() {
@@ -100,6 +95,13 @@ public class StockOutController extends FacadeController<Sale> implements Serial
 
     public void addSaleItem() {
         newT.getListOfSaleItem().add(new SaleItem());
+    }
+    
+    public void processPrice() {
+        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+        int rowIndex = Integer.parseInt(externalContext.getRequestParameterMap().get("rowIndex"));        
+        SaleItem si = (SaleItem)((List) newT.getListOfSaleItem()).get(rowIndex);
+        si.setPrice((float) si.getProduct().getPriceOut());
     }
 
     @Override

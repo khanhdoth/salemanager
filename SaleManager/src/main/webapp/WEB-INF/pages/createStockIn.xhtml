@@ -6,10 +6,7 @@
     xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <h:form id="createBuyForm" onkeypress="return event.keyCode != 13;">
-        <p:remoteCommand name="updateDlgBuy" update=":createBuyForm:soContactMenu, :createBuyForm:iSIInTable"/>
-        <p:remoteCommand name="updateDBTable" update=":createBuyForm:iSIInTable"/>
-        <p:dialog id="iDlgBuy" header="#{stockInController.dialogTitle}" widgetVar="wDlgBuy" modal="true" 
-                  onShow="updateDlgBuy" >
+        <p:dialog id="iDlgBuy" header="#{stockInController.dialogTitle}" widgetVar="wDlgBuy" modal="true" >
 
             <p:ajax event="close" listener="#{stockInController.closeDialog}"/>
             <p:messages id="msgs" autoUpdate="true"/>
@@ -61,7 +58,7 @@
                                                  :createBuyForm:oTotal, :createBuyForm:oAmountAfterPayment"
                                                  action="#{stockInController.deleteSI}" icon="ui-icon-trash" title="#{bundle.Delete}" >  
                                     <p:confirm header="#{bundle.Confirmation}" message="#{bundle.Delete_Confirm_Message}" icon="ui-icon-alert" />  
-                                    
+                                    <f:setPropertyActionListener value="#{item}" target="#{stockInController.selectedSI}" />  
                                 </p:commandButton> 
                             </p:column> 
 
@@ -74,9 +71,8 @@
                                         <p:selectOneMenu id="soProductMenu" value="#{item.product}" converter="productConverter" 
                                                          panelStyle="width:500px" effect="fade" var="p" style="width:160px"  
                                                          filter="true" filterMatchMode="contains" required="true">                              
-                                            <f:selectItems value="#{productController.listOne}" var="pi" itemLabel="#{pi.productId} - #{pi.name}" itemValue="#{pi}"/>  
+                                            <f:selectItems value="#{productController.listOne}" var="pi" itemLabel="#{pi.productId} - #{pi.name}" itemValue="#{pi}"/>                                           
                                             
-                                            <f:param name="testParam" value="hello Baby" />
                                             <f:param name="rowIndex" value="#{rowIndex}" />
                                             <p:ajax event="change" listener="#{stockInController.processPrice}" update="oPrice, oAmount, 
                                                     :createBuyForm:oSubTotal, :createBuyForm:oAmountDiscount, :createBuyForm:oAmountVAT, 

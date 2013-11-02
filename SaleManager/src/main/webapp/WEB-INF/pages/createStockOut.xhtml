@@ -36,11 +36,10 @@
             <p:panelGrid>  
                 <p:row>  
                     <p:column colspan="4" styleClass="ui-widget-header">
-
                         <p:dataTable id="iSIOutTable" var="item" value="#{stockOutController.newT.listOfSaleItem}" editable="true"
                                      widgetVar="wSIOutTable" rowKey="#{item.saleItemId}" scrollable="true" scrollHeight="150"
                                      emptyMessage="No sale item found with given criteria" editMode="cell"                                  
-                                     resizableColumns="true" liveResize="true" >   
+                                     resizableColumns="true" liveResize="true" rowIndexVar="rowIndex">   
 
                             <f:facet name="header">  
                                 <p:outputPanel style="text-align:left"> 
@@ -75,10 +74,17 @@
                                                          filter="true" filterMatchMode="contains" required="true">                              
                                             <f:selectItems value="#{productController.listOne}" var="pi" itemLabel="#{pi.productId} - #{pi.name}" itemValue="#{pi}"/>  
 
+                                            <f:param name="rowIndex" value="#{rowIndex}" />
+                                            <p:ajax event="change" listener="#{stockOutController.processPrice}" update="oPrice, oAmount, 
+                                                    :createSaleForm:oSubTotal, :createSaleForm:oAmountDiscount, :createSaleForm:oAmountVAT, 
+                                                    :createSaleForm:oTotal, :createSaleForm:oAmountAfterPayment"/>   
+
                                             <p:column> #{p.productId} </p:column>
                                             <p:column> #{p.name} </p:column>
                                             <p:column> #{p.manufacturer} </p:column>
-                                            <p:column> #{p.unit} </p:column>                                        
+                                            <p:column> #{p.unit} </p:column>         
+                                            <p:column> #{p.priceIn} </p:column>
+                                            <p:column> #{p.priceOut} </p:column>
 
                                         </p:selectOneMenu>
                                     </f:facet>  
@@ -107,7 +113,7 @@
                             <p:column id="priceColumn" headerText="#{bundle.Price}" style="width:70px; text-align:right">                              
                                 <p:cellEditor>  
                                     <f:facet name="output">  
-                                        <h:outputText value="#{item.price}" >
+                                        <h:outputText id="oPrice" value="#{item.price}" >
                                             <f:convertNumber pattern="#,##0" />
                                         </h:outputText> 
                                     </f:facet>  
